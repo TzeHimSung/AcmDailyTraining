@@ -27,7 +27,7 @@
 
 using namespace std;
 
-const int maxn=1e5+10;
+const int maxn=1e6+10;
 int n,m,a[maxn],b[maxn],f[maxn],s[maxn],t[maxn],sum=0,T,z=0;
 
 int main()
@@ -69,7 +69,7 @@ int main()
             }
             else
             {
-                while(a[b[j]]) j++;
+                for (;!a[b[j]];j++);
                 a[b[j]]--; s[++z]=i; t[z]=b[j];
             }
         }
