@@ -24,3 +24,5 @@
 #define init(a,b) fill(begin(a),end(a),b)
 #define eps 1e-8
 #define pi 3.1415926 //
+
+using namespace std;
