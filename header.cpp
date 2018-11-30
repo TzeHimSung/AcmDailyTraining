@@ -23,6 +23,7 @@
 #define mem(a,b) memset(a,b,sizeof(a))
 #define init(a,b) fill(begin(a),end(a),b)
 #define eps 1e-8
-#define pi 3.1415926 //
-
+#define pi 3.1415926 
+//namespace
 using namespace std;
+//header end
