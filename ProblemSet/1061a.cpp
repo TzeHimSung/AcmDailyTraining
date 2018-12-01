@@ -27,3 +27,12 @@
 //namespace
 using namespace std;
 //header end
+
+i32 n,k;
+
+int main()
+{
+    scanf("%d%d",&n,&k);
+    printf("%d\n",(k%n==0)?k/n:k/n+1);
+    return 0;
+}
