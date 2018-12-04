@@ -21,8 +21,8 @@
 #define ll int64_t
 #define pb push_back
 #define mp make_pair 
-#define fi first
-#define se second
+#define fir first
+#define sec second
 #define init(a,b) fill(begin(a),end(a),b)
 #define sot(a,b) sort(a+1,a+1+b)
 #define rep1(i,x) for(int i=1;i<=x;i++)
