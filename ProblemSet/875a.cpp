@@ -19,7 +19,6 @@
 //define
 #define int int32_t
 #define ll int64_t
-#define dou double
 #define pb push_back
 #define mp make_pair 
 #define fir first
@@ -33,3 +32,24 @@
 //namespace
 using namespace std;
 //header end
+
+vector<int>ans;
+int n;
+
+int main()
+{
+    ans.clear();
+    scanf("%d",&n);
+    int tmp=n,dig=0;
+    while (tmp) dig++,tmp/=10;
+    rep1(i,n-dig*9,n)
+    {
+        tmp=i; int sum=i;
+        while (tmp) sum+=tmp%10,tmp/=10;
+        if (sum==n) ans.pb(i);
+    }
+    printf("%d\n",ans.size());
+    repa(i,ans) printf("%d ",i);
+    if (ans.size()) puts("");
+    return 0;
+}

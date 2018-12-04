@@ -33,3 +33,20 @@
 //namespace
 using namespace std;
 //header end
+
+int r,d,n,ans=0;
+dou x,y,z;
+
+int main()
+{
+    scanf("%d%d%d",&r,&d,&n);
+    d=r-d;
+    rep1(i,1,n)
+    {
+        scanf("%lf%lf%lf",&x,&y,&z);
+        dou dis=sqrt(x*x+y*y);
+        if (dis>=d+z && dis+z<=r) ans++;
+    }
+    printf("%d\n",ans);
+    return 0;
+}
