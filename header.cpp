@@ -17,15 +17,15 @@
 #include <queue>
 #include <stack>
 //define
-#define ll long long 
+#define int int32_t
+#define ll int64_t
 #define pb push_back
 #define mp make_pair 
 #define init(a,b) fill(begin(a),end(a),b)
 #define sot(a,b) sort(a+1,a+1+b)
-#define rep(i,a) for(int i=1;i<=a;i++)
+#define rep1(i,x) for(int i=1;i<=x;i++)
+#define rep0(i,x) for(int i=0;i<x;i++)
 #define eps 1e-8
-#define int int32_t
-#define ll int64_t
 //namespace
 using namespace std;
 //header end
