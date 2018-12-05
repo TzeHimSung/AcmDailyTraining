@@ -38,7 +38,7 @@ int ret,n=0,m=0;
 
 int main()
 {
-    printf("? 0 0\n");
+    puts("? 0 0");
     fflush(stdout);
     scanf("%d",&ret);
     for (int i=29;i>=0;i--)
