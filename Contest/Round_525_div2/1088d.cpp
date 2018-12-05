@@ -34,11 +34,42 @@
 using namespace std;
 //header end
 
-int n,m,x;
+int n=0,m=0,ret1,ret2,nx=0,ny=0;
 
 int main()
 {
     printf("? 0 0"); fflush(stdout);
-    scanf("%d",&x);
+    scanf("%d",&ret1);
+    for (int i=29;i>=0;i--)
+    {
+        int tmp=1<<i;
+        nx+=tmp,ny+=tmp;
+        printf("? %d %d\n",nx,ny);
+        fflush(stdout);
+        nx-=tmp,ny-=tmp;
+        scanf("%d",&ret2);
+        if (ret1*ret2<0)
+        {
+            if (ret1==1) n+=tmp,nx+=tmp;
+                else m+=tmp,ny+=tmp;
+            printf("? %d %d\n",nx,ny);
+            fflush(stdout);
+            scanf("%d",&ret1);
+        }
+        else
+        {
+            nx+=tmp;
+            printf("? %d %d\n",nx,ny);
+            fflush(stdout);
+            nx-=tmp;
+            scanf("%d",&ret2);
+            if (ret2==-1)
+            {
+                nx+=tmp,ny+=tmp,n+=tmp,m+=tmp;
+            }
+        }
+    }
+    printf("! %d %d\n",n,m);
+    fflush(stdout);
     return 0;
 }
