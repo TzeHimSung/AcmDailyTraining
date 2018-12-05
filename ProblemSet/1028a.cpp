@@ -34,3 +34,24 @@
 //namespace
 using namespace std;
 //header end
+
+int n,m;
+const int maxn=120;
+char s[maxn][maxn];
+int top=-1,btn=-1,le=-1,ri=-1;
+
+int main()
+{
+    scanf("%d%d",&n,&m);
+    rep1(i,1,n) scanf("%s",s[i]+1);
+    rep1(i,1,n)
+        rep1(j,1,m)
+            if (s[i][j]=='B')
+            {
+                btn=i,ri=j;
+                if (top==-1) top=i;
+                if (le==-1) le=j;
+            }
+    printf("%d %d\n",(top+btn)/2,(le+ri)/2);
+    return 0;
+}

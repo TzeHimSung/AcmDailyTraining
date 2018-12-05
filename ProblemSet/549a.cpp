@@ -34,3 +34,32 @@
 //namespace
 using namespace std;
 //header end
+
+int n,m;
+const int maxn=60;
+char s[maxn][maxn];
+const int px[]{0,0,1,1};
+const int py[]{0,1,0,1};
+
+int main()
+{
+    scanf("%d%d",&n,&m);
+    rep1(i,1,n) scanf("%s",s[i]+1);
+    int ans=0;
+    rep1(i,1,n-1)
+        rep1(j,1,m-1)
+        {
+            int s1=0,s2=0,s3=0,s4=0;
+            rep0(k,0,4)
+            {
+                int nx=i+px[k],ny=j+py[k];
+                if (nx<=n && ny<=m && s[nx][ny]=='f') s1=1;
+                if (nx<=n && ny<=m && s[nx][ny]=='a') s2=1;
+                if (nx<=n && ny<=m && s[nx][ny]=='c') s3=1;
+                if (nx<=n && ny<=m && s[nx][ny]=='e') s4=1;
+            }
+            if (s1+s2+s3+s4==4) ans++;
+        }
+    printf("%d\n",ans);
+    return 0;
+}

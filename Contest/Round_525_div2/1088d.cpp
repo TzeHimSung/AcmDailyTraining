@@ -44,10 +44,10 @@ int main()
     for (int i=29;i>=0;i--)
     {
         int a,b;
-        printf("? %d %d\n",n|(1<<i),m);
+        printf("? %d %d\n",n|(1<<i),m); //just guess
         fflush(stdout);
         scanf("%d",&a);
-        printf("? %d %d\n",n,m|(1<<i));
+        printf("? %d %d\n",n,m|(1<<i)); //guess too
         fflush(stdout);
         scanf("%d",&b);
         if (a!=b)
