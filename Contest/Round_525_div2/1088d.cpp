@@ -34,39 +34,32 @@
 using namespace std;
 //header end
 
-int n=0,m=0,ret1,ret2,nx=0,ny=0;
+int ret,n=0,m=0;
 
 int main()
 {
-    printf("? 0 0"); fflush(stdout);
-    scanf("%d",&ret1);
+    printf("? 0 0\n");
+    fflush(stdout);
+    scanf("%d",&ret);
     for (int i=29;i>=0;i--)
     {
-        int tmp=1<<i;
-        nx+=tmp,ny+=tmp;
-        printf("? %d %d\n",nx,ny);
+        int a,b;
+        printf("? %d %d\n",n|(1<<i),m);
         fflush(stdout);
-        nx-=tmp,ny-=tmp;
-        scanf("%d",&ret2);
-        if (ret1*ret2<0)
+        scanf("%d",&a);
+        printf("? %d %d\n",n,m|(1<<i));
+        fflush(stdout);
+        scanf("%d",&b);
+        if (a!=b)
         {
-            if (ret1==1) n+=tmp,nx+=tmp;
-                else m+=tmp,ny+=tmp;
-            printf("? %d %d\n",nx,ny);
-            fflush(stdout);
-            scanf("%d",&ret1);
+            if (a==1) continue;
+            else n|=(1<<i),m|=(1<<i);
         }
         else
         {
-            nx+=tmp;
-            printf("? %d %d\n",nx,ny);
-            fflush(stdout);
-            nx-=tmp;
-            scanf("%d",&ret2);
-            if (ret2==-1)
-            {
-                nx+=tmp,ny+=tmp,n+=tmp,m+=tmp;
-            }
+            if (ret==1) n|=(1<<i);
+                else m|=(1<<i);
+            ret=a;
         }
     }
     printf("! %d %d\n",n,m);
