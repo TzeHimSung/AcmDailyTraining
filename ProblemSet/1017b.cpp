@@ -40,7 +40,7 @@ int n,f[maxn][4];
 char a[maxn],b[maxn];
 ll ans=0;
 
-int cal(int x)
+int cal(int x) //hash
 {
     return 2*(a[x]-'0')+b[x]-'0';
 }
