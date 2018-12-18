@@ -37,41 +37,20 @@
 using namespace std;
 //header end
 
-const int maxn=8e5+10;
-
-struct SegmentTree
-{
-    set<int>num[maxn];
-
-    void update(int curr,int l,int r,int pos,int val)
-    {
-        if (l==r)
-        {
-            num[curr].insert(val);
-            return;
-        }
-        int mid=(l+r)>>1;
-        if (pos<=mid) update(lson,l,mid,pos,val);
-        else update(rson,mid+1,r,pos,val);
-        num[curr].merge(num[lson]); //merge needs cpp17
-        num[curr].merge(num[rson]);
-    }
-
-    int query(int curr,int l,int r,int ql,int qr)
-    {
-
-    }
-};
-
 int n,m;
+const int maxn=2e5+10;
+int a[maxn],b[maxn],maxx=0;
 
 int main()
 {
+    init(a,0); init(b,0);
     scanf("%d%d",&n,&m);
-    rep1(i,1,n)
+    rep1(i,1,n) scanf("%d",&a[i]);
+    sot(a,n);
+    rep1(i,1,m)
     {
-        int x;
+        int x; scanf("%d",&x);
+        printf("%d ",upper_bound(a+1,a+1+n,x)-a-1);
     }
-    
     return 0;
 }
