@@ -36,3 +36,25 @@
 //namespace
 using namespace std;
 //header end
+
+const int maxn=8e5+10;
+struct segmentTree
+{
+    int mx[maxn],mn[maxn];
+    
+    void update(int curr, int l, int r, int pos, int val)
+    {
+        if (l==r)
+        {
+            mn[curr]=mx[curr]=val;
+            return;
+        }
+        int mid=(l+r)>>1;
+        if (pos<=mid) update(lson,l,mid,pos,val);
+        else update(rson,mid+1,r,pos,val);
+        mx[curr]=max(mx[lson],mx[rson]);
+        mn[curr]=min(mn[lson],mn[rson]);
+    }
+
+
+}; 
