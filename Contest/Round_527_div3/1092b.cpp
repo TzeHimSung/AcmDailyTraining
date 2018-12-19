@@ -20,7 +20,7 @@
 #define int int32_t
 #define ll int64_t
 #define dou double
-#define pb emplace_back
+#define pb push_back
 #define mp make_pair 
 #define fir first
 #define sec second
@@ -36,3 +36,16 @@
 //namespace
 using namespace std;
 //header end
+
+const int maxn=1e2+10;
+int n,a[maxn],ans=0;
+
+int main()
+{
+    scanf("%d",&n);
+    rep1(i,1,n) scanf("%d",&a[i]);
+    sot(a,n);
+    for (int i=1;i<=n;i+=2) ans+=a[i+1]-a[i];
+    printf("%d\n",ans); 
+    return 0;
+}

@@ -20,7 +20,7 @@
 #define int int32_t
 #define ll int64_t
 #define dou double
-#define pb emplace_back
+#define pb push_back
 #define mp make_pair 
 #define fir first
 #define sec second
@@ -36,3 +36,22 @@
 //namespace
 using namespace std;
 //header end
+
+int n,m,re,times;
+
+int main()
+{
+    int t; scanf("%d",&t);
+    while (t--)
+    {
+        scanf("%d%d",&n,&m);
+        re=n%m; times=n/m;
+        rep1(i,1,m)
+            rep1(j,1,times) 
+                printf("%c",(char)(i+'a'-1));
+        rep1(i,1,re) 
+            printf("%c",(char)(i+'a'-1));
+        puts("");
+    }
+    return 0;
+}
