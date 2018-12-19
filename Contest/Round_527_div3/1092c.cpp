@@ -39,33 +39,33 @@ using namespace std;
 
 const int maxn=3e2+10;
 string s[maxn],s1="",s2="",p[maxn];
-int n,m,ans[maxn],numid[maxn],a[5];
+int n,m,ans[maxn],sign[maxn],a[5];
 
 bool check(string str)
 {
     int l=str.size(),k=0;
     rep1(i,2,l)
     {
-        k++; p[k]=""; numid[k]=1;
+        k++; p[k]=""; sign[k]=1; //sign==1 后缀, sign==2 前缀
         rep1(j,i,l)
-            p[k]+=str[j-1];
+            p[k]+=str[j-1]; //枚举str的所有后缀，放在p里
     }
     rep0(i,1,l)
     {
-        p[++k]=""; numid[k]=2;
-        rep1(j,1,i) p[k]+=str[j-1];
+        p[++k]=""; sign[k]=2;
+        rep1(j,1,i) p[k]+=str[j-1]; //枚举str的所有前缀，继续放在p里
     }
     rep1(i,1,2*n-2)
     {
         ans[i]=0;
         rep1(j,1,k)
-            if (numid[j]>0 && s[i]==p[j])
+            if (sign[j]>0 && s[i]==p[j])
             {
-                ans[i]=numid[j];
-                numid[j]=0;
+                ans[i]=sign[j];
+                sign[j]=0;
                 break;
             }
-        if (!ans[i]) return false;
+        if (!ans[i]) return false; //如果不匹配，说明方案不正确
     }
     return true;
 }
@@ -79,6 +79,8 @@ int main()
         if (s[i].size()==n-1 && s1=="") s1=s[i];
         else if (s[i].size()==n-1 && s2=="") s2=s[i];
     }
+    //take the longest 
+    //make the string from s1 and s2
     if (check(s1+s2[n-2]))
     {
         rep1(i,1,2*n-2)
