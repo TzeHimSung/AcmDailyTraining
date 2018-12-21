@@ -36,3 +36,25 @@
 //namespace
 using namespace std;
 //header end
+
+const int maxn=1e5+10;
+char s[maxn];
+map<char,int>m;
+
+int main()
+{
+    m.clear();
+    scanf("%s",s+1);
+    int len=strlen(s+1);
+    if (len&1)
+    {
+        puts("-1");
+        return 0;
+    }
+    rep1(i,1,len) 
+        if (!m.count(s[i])) m[s[i]]=1; 
+            else m[s[i]]++;
+    int a=abs(m['U']-m['D']),b=abs(m['L']-m['R']);
+    printf("%d\n",a+b>>1);
+    return 0;
+}

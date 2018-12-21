@@ -1,4 +1,4 @@
-//basic header
+//basic
 #include <iostream>
 #include <cstdio>
 #include <cstdlib>
@@ -36,3 +36,29 @@
 //namespace
 using namespace std;
 //header end
+
+int a[7],sum=0;
+
+int main()
+{
+    rep1(i,1,6) 
+    {
+        scanf("%d",&a[i]);
+        sum+=a[i];
+    }
+    sot(a,6);
+    int l=2,r=6;
+    while (l<r)
+    {
+        int s1=a[1]+a[l]+a[r],s2=sum-s1;
+        if (s1<s2) l++;
+            else if (s1>s2) r--;
+                else
+                {
+                    puts("YES");
+                    return 0;
+                }
+    }
+    puts("NO");
+    return 0;
+}

@@ -1,4 +1,4 @@
-//basic header
+//basic
 #include <iostream>
 #include <cstdio>
 #include <cstdlib>
@@ -36,3 +36,24 @@
 //namespace
 using namespace std;
 //header end
+
+int n,k,ans=0;
+priority_queue<int>q;
+
+int main()
+{
+    while (!q.empty()) q.pop();
+    scanf("%d%d",&n,&k);
+    rep0(i,1,n)
+    {
+        int x; scanf("%d",&x); q.push(x);
+    }
+    while (k<=q.top())
+    {
+        k++; ans++;
+        int x=q.top();
+        q.pop(); q.push(x-1);
+    }
+    printf("%d\n",ans);
+    return 0;
+}

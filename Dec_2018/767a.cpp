@@ -1,4 +1,4 @@
-//basic header
+//basic
 #include <iostream>
 #include <cstdio>
 #include <cstdlib>
@@ -36,3 +36,20 @@
 //namespace
 using namespace std;
 //header end
+
+const int maxn=1e5+10;
+int a[maxn],n,sign;
+
+int main()
+{
+    scanf("%d",&n); sign=n;
+    rep1(i,1,n)
+    {
+        int x; scanf("%d",&x);
+        a[x]=1;
+        if (x==sign) printf("%d ",sign--);
+        while (a[sign]) printf("%d ",sign--);
+        puts("");
+    }
+    return 0;
+}

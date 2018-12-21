@@ -1,4 +1,4 @@
-//basic header
+//basic
 #include <iostream>
 #include <cstdio>
 #include <cstdlib>
@@ -36,3 +36,17 @@
 //namespace
 using namespace std;
 //header end
+
+const int maxn=1e3+10;
+char s[maxn];
+int len;
+
+int main()
+{
+    scanf("%s",s+1);
+    int len=strlen(s+1);
+    rep1(i,1,len) printf("%c",s[i]);
+    for (int i=len;i>=1;i--) printf("%c",s[i]);
+    puts("");
+    return 0;
+}
