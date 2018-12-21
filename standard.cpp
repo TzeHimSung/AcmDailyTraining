@@ -1,4 +1,4 @@
-//basic header
+/* basic header */
 #include <iostream>
 #include <cstdio>
 #include <cstdlib>
@@ -7,7 +7,7 @@
 #include <climits>
 #include <cmath>
 #include <cstdint>
-//STL
+/* STL */
 #include <vector>
 #include <set>
 #include <map>
@@ -16,7 +16,7 @@
 #include <algorithm>
 #include <array>
 #include <iterator>
-//define
+/* define */
 #define int int32_t
 #define ll int64_t
 #define dou double
@@ -33,6 +33,16 @@
 #define inf 0x3f3f3f3f
 #define lson curr<<1
 #define rson curr<<1|1
-//namespace
+/* namespace */
 using namespace std;
-//header end
+/* header end */
+
+/* variable and function */
+
+
+/* main */
+int main()
+{
+
+    return 0;
+}
