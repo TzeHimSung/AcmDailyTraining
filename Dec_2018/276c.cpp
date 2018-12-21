@@ -37,12 +37,24 @@
 using namespace std;
 /* header end */
 
-/* variable and function */
+const int maxn=2e5+10;
+int a[maxn],c[maxn],n,m;
+ll ans=0;
 
-
-/* main */
 int main()
 {
-    
+    init(c,0);
+    scanf("%d%d",&n,&m);
+    rep1(i,1,n) scanf("%d",&a[i]);
+    while (m--)
+    {
+        int x,y; scanf("%d%d",&x,&y);
+        c[x]++; c[y+1]--;
+    }
+    rep1(i,1,n) c[i]+=c[i-1];
+    sot(a,n); sot(c,n);
+    rep1(i,1,n)
+        ans+=(ll)a[i]*(ll)c[i];
+    printf("%lld\n",ans);
     return 0;
 }
