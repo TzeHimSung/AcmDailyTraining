@@ -37,24 +37,21 @@
 using namespace std;
 /* header end */
 
-const int maxn=2e5+10;
-int a[maxn],c[maxn],n,m;
-ll ans=0;
+const int maxn=1e5+10;
+int n,k,a[maxn],tot=0;
+
+int cmp(int a,int b) {return a>b;}
 
 int main()
 {
-    init(c,0);
-    scanf("%d%d",&n,&m);
-    rep1(i,1,n) scanf("%d",&a[i]);
-    while (m--)
+    scanf("%d%d",&n,&k);
+    rep1(i,1,n) a[i]=i;
+    for (int i=k;i>0;i--)
     {
-        int x,y; scanf("%d%d",&x,&y);
-        c[x]++; c[y+1]--; //精妙,利用前缀和即可完美解决出现频率问题
+        if ((k-i)&1) a[i]=k-(tot++);
+        else a[i]=tot+1;
     }
-    rep1(i,1,n) c[i]+=c[i-1];
-    sot(a,n); sot(c,n);
-    rep1(i,1,n)
-        ans+=(ll)a[i]*(ll)c[i];
-    printf("%lld\n",ans);
+    rep1(i,1,n) printf("%d ",a[i]);
+    puts("");
     return 0;
 }

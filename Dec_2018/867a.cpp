@@ -37,24 +37,20 @@
 using namespace std;
 /* header end */
 
-const int maxn=2e5+10;
-int a[maxn],c[maxn],n,m;
-ll ans=0;
+const int maxn=1e2+10;
+char s[maxn];
+int a=0,b=0,n;
 
 int main()
 {
-    init(c,0);
-    scanf("%d%d",&n,&m);
-    rep1(i,1,n) scanf("%d",&a[i]);
-    while (m--)
-    {
-        int x,y; scanf("%d%d",&x,&y);
-        c[x]++; c[y+1]--; //精妙,利用前缀和即可完美解决出现频率问题
-    }
-    rep1(i,1,n) c[i]+=c[i-1];
-    sot(a,n); sot(c,n);
-    rep1(i,1,n)
-        ans+=(ll)a[i]*(ll)c[i];
-    printf("%lld\n",ans);
+    scanf("%d",&n);
+    scanf("%s",s+1);
+    rep1(i,2,n)
+        if (s[i]!=s[i-1])
+        {
+            a++;
+            if (s[i-1]=='S') b++;
+        }
+    if (a<2*b) puts("YES"); else puts("NO");
     return 0;
 }
