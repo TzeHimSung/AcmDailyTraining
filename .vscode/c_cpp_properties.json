@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.1/include/**",
+                "/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.1/include/sanitizer/**",
+                "/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.1/include-fixed/**",
+                "/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.1/install-tools/include/**",
+                "/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.1/plugin/include/**",
+                "/usr/include/c++/8.2.1/**",
+                "/usr/include/c++/8.2.1/x86_64-pc-linux-gnu/**",
+                "/usr/include/c++/8.2.1/x86_64-pc-linux-gnu/32/**"
+            ],
+            "defines": [],
+            "compilerPath": "/bin/gcc",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "clang-x64"
+        }
+    ],
+    "version": 4
+}
