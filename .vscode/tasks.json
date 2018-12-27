@@ -10,6 +10,7 @@
                 "${fileDirname}/${fileBasename}",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}.out",
+                "-Wall",
                 "-std=c++11"
             ],
             "group": {
