@@ -42,10 +42,6 @@ int y,b,r;
 int main()
 {  
     scanf("%d%d%d",&y,&b,&r);
-    int maxx=0;
-    if (y+1<=b && b+1<=r) maxx=y+y+1+y+2;
-    if (b-1<=y && b+1<=r) maxx=max(maxx,b+b-1+b+1);
-    if (r-2<=y && r-1<=b) maxx=max(maxx,r-2+r+r-1);
-    printf("%d\n",maxx);
+    printf("%d\n",3*(min(min(y+1,r-1),b)));
     return 0;
 }

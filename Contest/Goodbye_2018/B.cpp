@@ -39,17 +39,16 @@ using namespace std;
 
 const int maxn=1e3+10;
 int n;
-int x=0,y=0;
+ll x=0,y=0;
 
 int main()
 {
     scanf("%d",&n);
-    
     for (int i=1;i<=2*n;i++)
     {
         int a,b; scanf("%d%d",&a,&b);
         x+=a,y+=b;
     }
-    printf("%d %d\n",x/n,y/n);
+    printf("%lld %lld\n",x/n,y/n);
     return 0;
 }
