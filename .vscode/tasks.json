@@ -12,11 +12,7 @@
                 "${fileDirname}/${fileBasenameNoExtension}.out",
                 "-Wall",
                 "-std=c++11"
-            ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
+            ]
         }
     ]
 }
