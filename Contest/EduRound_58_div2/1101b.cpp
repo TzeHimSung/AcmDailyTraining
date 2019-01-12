@@ -37,14 +37,43 @@
 using namespace std;
 /* header end */
 
-const int maxn=3e5+10;
-int n;
+const int maxn=5e5+10;
 char s[maxn];
 
 int main()
 {
-    scanf("%d",&n);
-    scanf("%s",s+1);
-    
+    scanf("%[^\n]",&s);
+    int len=strlen(s),st=-1,ed=-1,stm=-1,edm=-1;
+    rep0(i,0,len) 
+        if (s[i]=='[')
+        {
+            st=i;
+            break;
+        }
+    for (int i=len-1;i>=0;i--)
+        if (s[i]==']')
+        {
+            ed=i;
+            break;
+        }
+    if (ed-st<3) return cout<<"-1"<<endl,0;
+    rep1(i,st+1,ed-1)
+        if (s[i]==':')
+        {
+            stm=i;
+            break;
+        }
+    for (int i=ed-1;i>=st+1;i--)
+        if (s[i]==':' && i!=stm)
+        {
+            edm=i;
+            break;
+        }
+    if (st==-1 || ed==-1 || stm==-1 || edm==-1)
+        return cout<<"-1"<<endl,0;
+    int ans=0;
+    rep1(i,stm+1,edm-1)
+        if (s[i]=='|') ans++;
+    printf("%d\n",ans+4);
     return 0;
 }
