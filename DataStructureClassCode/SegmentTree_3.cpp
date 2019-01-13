@@ -40,7 +40,7 @@ void pushdown(int curPos)
     }
 }
 
-void update(int curPos, int setVal, int curL, int curR, int qL, int qR)
+void intervalCover(int curPos, int setVal, int curL, int curR, int qL, int qR)
 {
     int lson=curPos*2, rson=curPos*2+1;
     if (qL<=curL && curR<=qR)
@@ -49,9 +49,9 @@ void update(int curPos, int setVal, int curL, int curR, int qL, int qR)
     {
         pushdown(curPos);
         int mid=curL+(curR-curL)/2;
-        if (qL<=mid) update(lson, setVal, curL, mid, qL, qR);
+        if (qL<=mid) intervalCover(lson, setVal, curL, mid, qL, qR);
             else maintain(lson, curL, mid);
-        if (mid<qR) update(rson, setVal, mid+1, curR, qL, qR);
+        if (mid<qR) intervalCover(rson, setVal, mid+1, curR, qL, qR);
             else maintain(rson, mid+1, curR);
     }
     maintain(curPos, curL, curR);
@@ -115,7 +115,7 @@ int main()
         if (op==1)
         {
             int l,r,v; cin>>l>>r>>v;
-            update(1,v,1,n,l,r);
+            intervalCover(1,v,1,n,l,r);
         }
         else
         {
