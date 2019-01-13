@@ -45,14 +45,8 @@ int main()
     while (q--)
     {
         scanf("%d%d%d",&l,&r,&d);
-        if (d<l) cout<<d<<endl;
-        else if (d>r) cout<<d<<endl;
-        else
-        {
-            int k=1;
-            while (l<=k*d && k*d<=r) k++;
-            cout<<k*d<<endl;
-        }
+        if (d<l) printf("%d\n",d);
+        else printf("%d\n",(r/d+1)*d);
     }
     return 0;
 }
