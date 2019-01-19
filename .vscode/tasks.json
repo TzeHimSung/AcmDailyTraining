@@ -4,7 +4,7 @@
         {
             "label": "build_cpp_files",
             "type": "shell",
-            "command":"g++",
+            "command": "g++",
             "args": [
                 "-g",
                 "${fileDirname}/${fileBasename}",
@@ -12,7 +12,11 @@
                 "${fileDirname}/${fileBasenameNoExtension}.out",
                 "-Wall",
                 "-std=c++11"
-            ]
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         }
     ]
 }
