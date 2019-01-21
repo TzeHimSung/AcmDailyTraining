@@ -38,12 +38,13 @@ using namespace std;
 /* header end */
 
 const int maxn = 1e3 + 10;
-int a[maxn], n, ans = INT_MAX, ansn;
+int a[maxn], n, ans = INT_MAX, t;
 
 int main()
 {
     scanf("%d", &n);
     rep1(i, 1, n) scanf("%d", &a[i]);
+    //for t
     rep1(i, 1, 150)
     {
         int cnt = 0;
@@ -53,10 +54,10 @@ int main()
         }
         if (cnt < ans)
         {
-            ansn = i;
+            t = i;
             ans = cnt;
         }
     }
-    printf("%d %d\n", ansn, ans);
+    printf("%d %d\n", t, ans);
     return 0;
 }

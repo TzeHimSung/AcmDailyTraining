@@ -16,89 +16,85 @@
 #include <algorithm>
 #include <array>
 #include <iterator>
+/* define */
+#define int int32_t
+#define ll int64_t
+#define dou double
+#define pb emplace_back
+#define mp make_pair
+#define fir first
+#define sec second
+#define init(a,b) fill(begin(a),end(a),b)
+#define sot(a,b) sort(a+1,a+1+b)
+#define rep1(i,a,b) for(int i=a;i<=b;i++)
+#define rep0(i,a,b) for(int i=a;i<b;i++)
+#define repa(i,a) for(auto &i:a)
+#define eps 1e-8
+#define inf 0x3f3f3f3f
+#define lson curr<<1
+#define rson curr<<1|1
+/* namespace */
 using namespace std;
-
-inline int read()
-{
-    int x = 0, ch = getchar(); bool fg = 1;
-    while(ch < '0' || ch > '9')
-    {
-        if(ch == '-') fg = 0;
-        ch = getchar();
-    }
-    while(ch >= '0' && ch <= '9')
-    {
-        x = x * 10 + ch - '0';
-        ch = getchar();
-    }
-    return fg ? x : -x;
-}
+/* header end */
 
 const int maxn = 1e3 + 10;
-int s[23];
-char mp[maxn][maxn];
-typedef pair<int, int> P;
-vector<P> g[25][2];
-int cnt[25];
-int per[25];
-bool de[25];
-int n, m, p;
-queue<pair<P, int> > q;
-int xt[] = {0, 0, -1, 1};
-int yt[] = {1, -1, 0, 0};
+int speed[23];
+char _mp[maxn][maxn];
+vector<pair<int, int>>g[25][2];
+int own[25], lastPos[25], dead[25], n, m, p;
+int px[] = {0, 0, -1, 1}, py[] = {1, -1, 0, 0};
+queue<pair<pair<int, int>, int> >q;
 
-void solve(int pt)
+void solve(int point)
 {
-    if(g[pt][per[pt]].size() == 0) return;
-    g[pt][per[pt] ^ 1].clear();
-    for(auto x : g[pt][per[pt]]) q.push(make_pair(x, s[pt]) );
-    while(!q.empty())
+    if (g[point][lastPos[point]].size() == 0) return;
+    g[point][lastPos[point] ^ 1].clear();
+    for (auto x : g[point][lastPos[point]])
+        q.push(mp(x, speed[point]));
+    while (!q.empty())
     {
-        int x = q.front().first.first, y = q.front().first.second;
-        int d = q.front().second;
+        int curx = q.front().first.first, cury = q.front().first.second;
+        int curSpeed = q.front().second;
         q.pop();
-        if(d == 0) continue;
-        for(int k = 0; k < 4; k++)
+        if (!curSpeed) continue;
+        rep0(k, 0, 4)
         {
-            int xx = x + xt[k];
-            int yy = y + yt[k];
-            if(xx < 1 || xx > n || yy < 1 || y > m) continue;
-            if(mp[xx][yy] != '.') continue;
-            mp[xx][yy] = '#';
-            g[pt][per[pt] ^ 1].push_back(P(xx, yy));
-            q.push(make_pair(P(xx, yy), d - 1) );
+            int nx = curx + px[k], ny = cury + py[k];
+            if (nx < 1 || nx > n || ny < 1 || ny > m) continue;
+            if (_mp[nx][ny] != '.') continue;
+            _mp[nx][ny] = '#';
+            g[point][lastPos[point] ^ 1].pb(mp(nx, ny));
+            q.push(mp(mp(nx, ny), curSpeed - 1));
         }
     }
-    cnt[pt] += g[pt][per[pt] ^ 1].size();
-    per[pt] ^= 1;
+    own[point] += g[point][lastPos[point] ^ 1].size();
+    lastPos[point] ^= 1;
 }
 
 int main()
 {
-    n = read(), m = read(), p = read();
-    for(int i = 1; i <= p; i++) s[i] = read();
-    for(int i = 1; i <= n; i++)
+    scanf("%d%d%d", &n, &m, &p);
+    rep1(i, 1, p) cin >> speed[i];
+    //init graph
+    rep1(i, 1, n)
     {
-        scanf("%s", mp[i] + 1);
-        for(int j = 1; j <= m; j++)
+        scanf("%s", _mp[i] + 1);
+        rep1(j, 1, m)
+        //if find born point
+        if (_mp[i][j] != '.' && _mp[i][j] != '#')
         {
-            if(mp[i][j] != '.' && mp[i][j] != '#')
-            {
-                g[mp[i][j] - '0'][0].push_back(P(i, j));
-                cnt[mp[i][j] - '0']++;
-            }
+            g[_mp[i][j] - '0'][0].pb(mp(i, j)); //g[player_num][0] saves the born point
+            own[_mp[i][j] - '0']++;
         }
     }
-    int re = p, pt = 1;
-    while(re)
+    int remain = p, point = 1;
+    while (remain)
     {
-        solve(pt);
-        if(g[pt][per[pt]].size() == 0 && !de[pt])
-        {
-            de[pt] = 1; re--;
-        }
-        pt = pt % p + 1;
+        solve(point);
+        if (g[point][lastPos[point]].size() == 0 && !dead[point])
+            dead[point] = 1, remain--;
+        point = point % p + 1;
     }
-    for(int i = 1; i <= p; i++) printf("%d ", cnt[i]);
+    rep1(i, 1, p) printf("%d ", own[i]);
     return 0;
 }

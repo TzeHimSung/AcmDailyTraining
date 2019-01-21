@@ -38,8 +38,9 @@ using namespace std;
 /* header end */
 
 const int maxn = 3e4 + 10;
+const int maxs = 2e5 + 10;
 int t, n, m, k, dp[maxn], times[30];
-char s[200010];
+char s[maxs];
 
 int main()
 {

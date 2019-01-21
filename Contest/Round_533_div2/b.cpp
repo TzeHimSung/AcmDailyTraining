@@ -43,10 +43,12 @@ int n, k, len, ans = 0;
 int main()
 {
     cin >> n >> k >> s;
-    rep0(i, 0, 25)
+    //for alphabet
+    rep1(i, 0, 25)
     {
         char c = 'a' + i;
         int cnt = 0, _size = 0;
+        //for string
         rep0(j, 0, n)
         {
             if (s[j] == c)
