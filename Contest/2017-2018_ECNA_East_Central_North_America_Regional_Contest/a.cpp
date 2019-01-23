@@ -44,22 +44,22 @@ using namespace std;
 
 pair<double, double> operator+(pair<double, double> a, pair<double, double> b)
 {
-    return mp(a.x + b.x, a.y + b.y);
+    return mp(a.first + b.first, a.second + b.second);
 }
 
 pair<double, double> operator-(pair<double, double> a, pair<double, double> b)
 {
-    return mp(a.x - b.x, a.y - b.y);
+    return mp(a.first - b.first, a.second - b.second);
 }
 
 double operator*(pair<double, double> a, pair<double, double> b)
 {
-    return a.x * b.y - b.x * a.y;
+    return a.first * b.second - b.first * a.second;
 }
 
 double operator^(pair<double, double> a, pair<double, double> b)
 {
-    return a.x * b.x + a.y * b.y;
+    return a.first * b.first + a.second * b.second;
 }
 
 double cross(pair<double, double> o, pair<double, double> a, pair<double, double> b)
@@ -105,9 +105,9 @@ int n;
 
 double seg(pair<double, double> o, pair<double, double> a, pair<double, double> b)
 {
-    if (cmp(b.x - a.x) == 0)
-        return (o.y - a.y) / (b.y - a.y);
-    return (o.x - a.x) / (b.x - a.x);
+    if (cmp(b.first - a.first) == 0)
+        return (o.second - a.second) / (b.second - a.second);
+    return (o.first - a.first) / (b.first - a.first);
 }
 
 double PolygonUnion()
