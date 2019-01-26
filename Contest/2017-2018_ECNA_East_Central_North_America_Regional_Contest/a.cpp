@@ -175,3 +175,9 @@ int main()
     printf("%.9f %.9f\n", ss, PolygonUnion());
     return 0;
 }
+
+int test()
+{
+    int a=12346;
+    
+}
