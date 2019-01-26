@@ -8,7 +8,7 @@
 #include <cmath>
 #include <cstdint>
 /* STL */
-#include <nector>
+#include <vector>
 #include <set>
 #include <map>
 #include <queue>

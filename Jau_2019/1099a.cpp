@@ -29,19 +29,32 @@
 #define repa(i,a) for(auto &i:a)
 #define eps 1e-8
 #define int_inf 0x3f3f3f3f
-#define ll_inf 0x7f7f7f7f7f7f7f7f
+#define ll_int 0x7f7f7f7f7f7f7f7f
 #define lson curPos<<1
 #define rson curPos<<1|1
 /* namespace */
 using namespace std;
 /* header end */
 
-/* variable and function */
+int w, h, w1, h1, w2, h2;
 
-
-/* main */
 int main()
 {
-
+    cin >> w >> h >> w1 >> h1 >> w2 >> h2;
+    for (int i = h; i >= 0; i--)
+    {
+        w += i;
+        if (i == h1)
+        {
+            w -= w1;
+            if (w <= 0) w = 0;
+        }
+        else if (i == h2)
+        {
+            w -= w2;
+            if (w <= 0) w = 0;
+        }
+    }
+    cout << w << endl;
     return 0;
 }
