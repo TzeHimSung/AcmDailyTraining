@@ -81,7 +81,7 @@ private:
 public:
     int n;
     pair<double, double> p[maxp];
-    pair<double, double>& operator[](int idx)
+    pair<double, double> &operator[](int idx)
     {
         return p[idx];
     }

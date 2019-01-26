@@ -4,7 +4,6 @@
 #include <cstdlib>
 #include <string>
 #include <cstring>
-#include <climits>
 #include <cmath>
 #include <cstdint>
 /* STL */
@@ -36,12 +35,24 @@
 using namespace std;
 /* header end */
 
-/* variable and function */
+const int maxn = 1e2 + 10;
+int a[maxn], n, k, numOfInfo = 0, numOfNet = 0, ans = 0;
 
-
-/* main */
 int main()
 {
-
+    cin >> n >> k;
+    rep1(i, 1, n)
+    {
+        cin >> a[i];
+        if (a[i] > 0) numOfInfo++; else numOfNet++;
+    }
+    rep1(i, 1, k)
+    {
+        int p = numOfInfo, q = numOfNet;
+        for (int j = i; j <= n; j += k)
+                if (a[j] == 1) p--; else q--;
+        ans = max(ans, abs(p - q));
+    }
+    cout << ans << endl;
     return 0;
 }
