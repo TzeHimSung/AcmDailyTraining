@@ -47,33 +47,34 @@ int main()
     rep0(i, 0, n) cin >> a[i];
     char lastChar = ' ';
     int cnt = 0, pos = 0;
+    //scan all char
     rep0(i, 0, n)
     {
         cin >> s[i];
         if (s[i] == lastChar)
         {
-            if (!cnt) pos = i - 1;
+            if (!cnt) pos = i - 1; //current segment start point
             cnt++;
         }
         else if (cnt)
         {
-            _size[pos] = cnt + 1;
+            _size[pos] = cnt + 1; //_size used to record length of each part
             cnt = 0;
         }
-        if (i == n - 1 && cnt)
+        if (i == n - 1 && cnt) //special issue
             _size[pos] = cnt + 1;
         lastChar = s[i];
     }
     rep0(i, 0, n)
     {
-        if (_size[i] <= k) ans += a[i];
+        if (_size[i] <= k) ans += a[i]; //fit the problem
         else
         {
             vector<int>tmp;
             for (int j = i; j < _size[i] + i; j++) tmp.pb(a[j]);
             sort(tmp.begin(), tmp.end());
             int cnt = 0;
-            for (int p = _size[i] - 1; p >= 0; p--)
+            for (int p = _size[i] - 1; p >= 0; p--) //fuck, brute force
             {
                 if (cnt != k)
                 {
