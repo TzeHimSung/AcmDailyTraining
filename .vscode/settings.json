@@ -3,6 +3,7 @@
         "cstdint": "cpp",
         "string": "cpp",
         "iostream": "cpp",
-        "climits": "cpp"
+        "climits": "cpp",
+        "cfloat": "cpp"
     }
 }

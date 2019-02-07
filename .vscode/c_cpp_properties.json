@@ -3,22 +3,38 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/**",
-                "/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.1/include/**",
-                "/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.1/include/tr1/**",
-                "/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.1/include/sanitizer/**",
-                "/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.1/include-fixed/**",
-                "/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.1/install-tools/include/**",
-                "/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.1/plugin/include/**",
-                "/usr/include/c++/8.2.1/**",
-                "/usr/include/c++/8.2.1/x86_64-pc-linux-gnu/**",
-                "/usr/include/c++/8.2.1/x86_64-pc-linux-gnu/32/**"
+                "${workspaceFolder}",
+                "/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.1/include",
+                "/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.1/include/tr1",
+                "/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.1/include/tr2",
+                "/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.1/include/sanitizer",
+                "/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.1/include-fixed",
+                "/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.1/install-tools/include",
+                "/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.1/plugin/include",
+                "/usr/include/c++/8.2.1",
+                "/usr/include/c++/8.2.1/x86_64-pc-linux-gnu",
+                "/usr/include/c++/8.2.1/x86_64-pc-linux-gnu/32"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
             "cStandard": "c11",
             "cppStandard": "c++11",
-            "intelliSenseMode": "gcc-x64"
+            "intelliSenseMode": "gcc-x64",
+            "browse": {
+                "path": [
+                    "${workspaceFolder}",
+                    "/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.1/include",
+                    "/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.1/include/tr1/",
+                    "/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.1/include/tr2",
+                    "/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.1/include/sanitizer",
+                    "/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.1/include-fixed",
+                    "/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.1/install-tools/include",
+                    "/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.1/plugin/include",
+                    "/usr/include/c++/8.2.1",
+                    "/usr/include/c++/8.2.1/x86_64-pc-linux-gnu",
+                    "/usr/include/c++/8.2.1/x86_64-pc-linux-gnu/32"
+                ]
+            }
         }
     ],
     "version": 4

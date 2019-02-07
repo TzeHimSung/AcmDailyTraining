@@ -6,8 +6,6 @@
 #include <cstring>
 #include <cmath>
 #include <cstdint>
-#include <climits>
-#include <float.h>
 /* STL */
 #include <vector>
 #include <set>
@@ -31,19 +29,34 @@
 #define repa(i,a) for(auto &i:a)
 #define eps 1e-8
 #define int_inf 0x3f3f3f3f
-#define ll_inf 0x7f7f7f7f7f7f7f7f
+#define ll_int 0x7f7f7f7f7f7f7f7f
 #define lson curPos<<1
 #define rson curPos<<1|1
 /* namespace */
 using namespace std;
 /* header end */
 
-/* variable and function */
+string a, b;
+int c = 0, d = 0;
 
+int isVowel(char c)
+{
+    if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u')
+        return 1;
+    else return 0;
+}
 
-/* main */
 int main()
 {
-
+    cin >> a >> b;
+    int len1 = a.size(), len2 = b.size();
+    if (len1 != len2)
+        return cout << "No", 0;
+    rep0(i, 0, len1)
+    {
+        if ((isVowel(a[i]) && !isVowel(b[i])) || (!isVowel(a[i]) && isVowel(b[i])))
+            return cout << "No", 0;
+    }
+    puts("Yes");
     return 0;
 }
