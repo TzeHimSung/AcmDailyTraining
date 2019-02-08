@@ -50,6 +50,7 @@ istream &operator >> (istream &X, vector<T> &Y)
 
 ll calc(int l, int r)
 {
+    //the delta value is the num of heros
     return upper_bound(v.begin(), v.end(), r) - upper_bound(v.begin(), v.end(), l - 1);
 }
 
