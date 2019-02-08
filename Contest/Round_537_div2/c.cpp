@@ -67,7 +67,7 @@ ll solve(int pos, int N)
 int main()
 {
     cin >> n >> k >> a >> b;
-    v.resize(k);
+    v.resize(k); //resize之后就可以直接cin了
     cin >> v;
     sort(v.begin(), v.end());
     cout << solve(1, n) << endl;
