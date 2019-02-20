@@ -39,13 +39,45 @@ using namespace std;
 /* header end */
 
 const int maxn = 2e5 + 10;
-int a[maxn], n, m;
+int a[maxn], n, m, ans = -1;
+
+int check(int x)
+{
+    int sub = 0, num = 0, sum = 0;
+    rep0(i, 0, n)
+    {
+        num++;
+        sum += max(0, a[i] - sub);
+        if (sum >= m)
+            return 1;
+        if (num == x)
+        {
+            num = 0;
+            sub++;
+        }
+    }
+    return 0;
+}
 
 int main()
 {
     cin >> n >> m;
-    rep1(i, 1, n) cin >> a[i];
-    sot(a, n);
-
+    rep0(i, 0, n) cin >> a[i];
+    sort(a, a + n, greater<int>());
+    int l = 1, r = n;
+    while (l <= r)
+    {
+        int mid = l + (r - l) / 2;
+        if (check(mid))
+        {
+            ans = mid;
+            r = mid - 1;
+        }
+        else
+        {
+            l = mid + 1;
+        }
+    }
+    cout << ans << endl;
     return 0;
 }
