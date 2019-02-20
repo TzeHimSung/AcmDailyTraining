@@ -2,6 +2,13 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "java",
+            "name": "Java 1.8.0",
+            "request": "launch",
+            "mainClass": "${file}",
+            "console": "integratedTerminal"
+        },
+        {
             "name": "GNU C++ 8.2.1",
             "type": "cppdbg",
             "request": "launch",
