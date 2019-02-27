@@ -59,6 +59,7 @@ void solve(int a, int b)
 {
     int faa = getfa(a), fab = getfa(b);
     if (faa > fab) swap(faa, fab);
+    //renew info
     cld[faa].insert(cld[faa].end(), cld[fab].begin(), cld[fab].end());
     fa[fab] = faa;
 }
@@ -66,7 +67,7 @@ void solve(int a, int b)
 int main()
 {
     cin >> n;
-    rep1(i, 1, n)
+    rep1(i, 1, n) //init
     {
         fa[i] = i;
         cld[i].clear();
@@ -77,6 +78,7 @@ int main()
         int x, y; cin >> x >> y;
         solve(x, y);
     }
+    //print
     for (auto i : cld[1]) cout << i << " ";
     puts("");
     return 0;
