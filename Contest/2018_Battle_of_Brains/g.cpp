@@ -38,41 +38,30 @@
 using namespace std;
 /* header end */
 
-const int maxn = 5e3 + 10;
-vector<int>a[maxn]; //info of sugar
-int n, m;
-
-int solve(int p, int q)
-{
-    if (p == q) return 0;
-    else if (q > p) return q - p;
-    else return n - p + q;
-}
+const int mod = 1e9 + 7;
+const int maxn = 1e5 + 10;
+ll n, dp[maxn], f[maxn];
+int t;
+char s[maxn];
 
 int main()
 {
-    cin >> n >> m;
-    rep1(i, 1, m)
+    cin >> t;
+    rep1(cnt, 1, t)
     {
-        int x, y; cin >> x >> y;
-        a[x].pb(y);
-    }
-    rep1(i, 1, n)
-    {
-        int ans = 0;
-        rep1(j, 1, n)
+        cin >> n ;
+        scanf("%s", s + 1);
+        cout << "Case " << cnt << ": ";
+        rep1(i, 0, n) dp[i] = 0, f[i] = 0;
+        ll ans = 0;
+        rep1(i, 1, n)
+        dp[i] = dp[i - 1] + (ll)(i + 1) * i / 2;
+        rep1(i, 1, n)
         {
-            int tmp = -1;
-            rep0(k, 0, (int)a[j].size())
-            {
-                if (tmp == -1)
-                    tmp = solve(i, j) + ((int)a[j].size() - 1) * n + solve(j, a[j][k]);
-                else
-                    tmp = min(tmp, solve(i, j) + ((int)a[j].size() - 1) * n + solve(j, a[j][k]));
-            }
-            ans = max(ans, tmp);
+            f[i] = dp[n] - dp[n - i] - dp[i - 1];
+            ans = (ans + f[i] * (int)s[i]) % mod;
         }
-        cout << ans << " ";
+        cout << ans << endl;
     }
     return 0;
 }

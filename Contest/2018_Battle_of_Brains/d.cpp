@@ -38,41 +38,23 @@
 using namespace std;
 /* header end */
 
-const int maxn = 5e3 + 10;
-vector<int>a[maxn]; //info of sugar
-int n, m;
-
-int solve(int p, int q)
-{
-    if (p == q) return 0;
-    else if (q > p) return q - p;
-    else return n - p + q;
-}
+int t, n;
 
 int main()
 {
-    cin >> n >> m;
-    rep1(i, 1, m)
+    cin >> t;
+    rep1(cnt, 1, t)
     {
-        int x, y; cin >> x >> y;
-        a[x].pb(y);
-    }
-    rep1(i, 1, n)
-    {
-        int ans = 0;
-        rep1(j, 1, n)
+        cin >> n;
+        cout << "Case " << cnt << ": ";
+        cout << n;
+        n /= 10;
+        while (n)
         {
-            int tmp = -1;
-            rep0(k, 0, (int)a[j].size())
-            {
-                if (tmp == -1)
-                    tmp = solve(i, j) + ((int)a[j].size() - 1) * n + solve(j, a[j][k]);
-                else
-                    tmp = min(tmp, solve(i, j) + ((int)a[j].size() - 1) * n + solve(j, a[j][k]));
-            }
-            ans = max(ans, tmp);
+            cout << n % 10;
+            n /= 10;
         }
-        cout << ans << " ";
+        puts("");
     }
     return 0;
 }

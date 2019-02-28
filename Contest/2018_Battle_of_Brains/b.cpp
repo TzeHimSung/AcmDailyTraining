@@ -38,41 +38,18 @@
 using namespace std;
 /* header end */
 
-const int maxn = 5e3 + 10;
-vector<int>a[maxn]; //info of sugar
-int n, m;
-
-int solve(int p, int q)
-{
-    if (p == q) return 0;
-    else if (q > p) return q - p;
-    else return n - p + q;
-}
+const double pi = acos(-1.0);
+int t;
+double m, d, v, r;
 
 int main()
 {
-    cin >> n >> m;
-    rep1(i, 1, m)
+    cin >> t;
+    for (int cnt = 1; cnt <= t; cnt++)
     {
-        int x, y; cin >> x >> y;
-        a[x].pb(y);
-    }
-    rep1(i, 1, n)
-    {
-        int ans = 0;
-        rep1(j, 1, n)
-        {
-            int tmp = -1;
-            rep0(k, 0, (int)a[j].size())
-            {
-                if (tmp == -1)
-                    tmp = solve(i, j) + ((int)a[j].size() - 1) * n + solve(j, a[j][k]);
-                else
-                    tmp = min(tmp, solve(i, j) + ((int)a[j].size() - 1) * n + solve(j, a[j][k]));
-            }
-            ans = max(ans, tmp);
-        }
-        cout << ans << " ";
+        cin >> m >> d; v = m / d; r = pow(v * 3.0 / 4.0 / pi, 1.0 / 3);
+        cout << "Case " << cnt << ": ";
+        printf("%.4f\n", 4 * pi * r * r);
     }
     return 0;
 }
