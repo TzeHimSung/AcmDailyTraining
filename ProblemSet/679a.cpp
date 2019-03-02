@@ -50,7 +50,7 @@ int main()
         printf("%d\n", p[i]);
         fflush(stdout);
         scanf("%s", s + 1);
-        if (!strcmp(s + 1, "yes")) cnt++;
+        if (!strcmp(s + 1, "yes")) cnt++; //strcmp return 0 while equal
     }
     if (cnt >= 2) puts("composite");
     else puts("prime");
