@@ -30,8 +30,8 @@
 #define rep0(i,a,b) for(int i=a;i<b;i++)
 #define repa(i,a) for(auto &i:a)
 #define eps 1e-8
-#define int_inf 0x3f3f3f3f
-#define ll_inf 0x7f7f7f7f7f7f7f7f
+#define int_inf (1<<30)-1
+#define ll_inf (1LL<<62)-1
 #define lson curPos<<1
 #define rson curPos<<1|1
 /* namespace */
