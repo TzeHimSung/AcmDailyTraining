@@ -4,6 +4,7 @@
         "string": "cpp",
         "iostream": "cpp",
         "climits": "cpp",
-        "cfloat": "cpp"
+        "cfloat": "cpp",
+        "*.tcc": "cpp"
     }
 }
