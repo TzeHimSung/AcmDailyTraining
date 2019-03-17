@@ -3,39 +3,36 @@ import java.lang.*;
 import java.math.BigInteger;
 
 public class Main {
-    static final int maxn = 2000;
+    static final int maxn = 200000;
     static int[] N = new int[maxn];
     static int[] p = new int[maxn];
     static int cnt = 0, num = 0, tot = 0;
-    static PQ[] A = new PQ[maxn];
+    static PQ ans = new PQ();
     static BigInteger Limit = BigInteger.ONE;
 
     public static void main(String[] args) {
         Scanner cin = new Scanner(System.in);
         sha();
         int t = cin.nextInt();
-        for (int cnt = 1; cnt <= t; cnt++) {
+        for (int _cnt = 1; _cnt <= t; _cnt++) {
+            num = 0;
+            tot = 0;
+            Limit = BigInteger.ONE;
             BigInteger x = cin.nextBigInteger();
+            ans.setA(BigInteger.ONE);
             while (Limit.multiply(BigInteger.valueOf(p[num + 1])).compareTo(x) < 0
                     || Limit.multiply(BigInteger.valueOf(p[num + 1])).compareTo(x) == 0) {
                 num++;
-                Limit.multiply(BigInteger.valueOf(p[num]));
+                ans.a = ans.a.multiply(BigInteger.valueOf(p[num] + 1));
+                Limit = Limit.multiply(BigInteger.valueOf(p[num]));
             }
-            for (int i = 0; i < maxn; i++)
-                A[i] = new PQ();
-            dfs(0, BigInteger.ONE, 0);
-            for (int i = 2; i <= tot; i++) {
-                BigInteger xx = lcm(A[i].b, A[1].b);
-                A[1].a.multiply(xx.divide(A[1].b));
-                A[1].a.add(xx.divide(A[i].b));
-                A[1].b = xx;
-                BigInteger y = gcd(A[1].a, A[1].b);
-                A[1].a.divide(y);
-                A[1].b.divide(y);
-            }
-            System.out.print(A[1].b);
-            System.out.print(" / ");
-            System.out.println(A[1].a);
+            ans.b = Limit;
+            BigInteger y = gcd(ans.a, ans.b);
+            ans.a = ans.a.divide(y);
+            ans.b = ans.b.divide(y);
+            System.out.print(ans.b);
+            System.out.print("/");
+            System.out.println(ans.a);
         }
     }
 
@@ -63,18 +60,6 @@ public class Main {
 
     static BigInteger lcm(BigInteger a, BigInteger b) {
         return a.multiply(b).divide(gcd(a, b));
-    }
-
-    static void dfs(long now, BigInteger sum, int cur) {
-        if (now > num)
-            return;
-        A[++tot].setA(BigInteger.ONE);
-        A[tot].setB(sum);
-        for (int i = cur + 1; i <= num; i++) {
-            if (sum.multiply(BigInteger.valueOf(p[i])).compareTo(Limit) > 0)
-                continue;
-            dfs(now + 1, sum.multiply(BigInteger.valueOf(p[i])), i);
-        }
     }
 }
 

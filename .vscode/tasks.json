@@ -11,7 +11,8 @@
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}.out",
                 "-Wall",
-                "-std=c++11"
+                "-std=c++11",
+                "-O2"
             ],
             "group": {
                 "kind": "build",
