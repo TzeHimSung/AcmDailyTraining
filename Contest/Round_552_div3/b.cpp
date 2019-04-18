@@ -38,45 +38,37 @@
 using namespace std;
 /* header end */
 
-const int maxn = 1e7 + 10;
-int n, vis[maxn], qu[5];
-ll ansLcm = ll_inf, a, b;
+set<int>s;
+int n, x;
 
 int main()
 {
-    scanf("%d", &n);
+    s.clear();
+    cin >> n;
     rep1(i, 1, n)
     {
-        int x; scanf("%d", &x);
-        if (vis[x])
-        {
-            if (ansLcm > x)
-            {
-                ansLcm = x;
-                a = vis[x];
-                b = i;
-            }
-        }
-        else vis[x] = i;
+        cin >> x;
+        s.insert(x);
     }
-    rep1(i, 1, 1e7)
+    if (s.size() == 1) puts("0");
+    else if (s.size() == 2)
     {
-        int len = 0;
-        for (int j = i; j <= 1e7; j += i)
-        {
-            if (vis[j]) qu[len++] = j;
-            if (len == 2) break;
-        }
-        if (len == 2)
-        {
-            ll num1 = qu[0], num2 = qu[1], tmpLcm = num1 * num2 / i;
-            if (tmpLcm < ansLcm)
-            {
-                ansLcm = tmpLcm, a = vis[num1], b = vis[num2];
-            }
-        }
+        int b[2], p = 0;
+        for (auto i : s) b[p++] = i;
+        sort(b, b + 2);
+        if ((b[1] - b[0]) % 2 == 0)
+            cout << (b[1] - b[0]) / 2 << endl;
+        else
+            cout << b[1] - b[0] << endl;
     }
-    if (a > b) swap(a, b);
-    printf("%lld %lld\n", a, b);
+    else if (s.size() >= 4) puts("-1");
+    else
+    {
+        int b[3], p = 0;
+        for (auto i : s) b[p++] = i;
+        sort(b, b + 3);
+        if (b[2] - b[1] == b[1] - b[0]) cout << b[1] - b[0] << endl;
+        else puts("-1");
+    }
     return 0;
 }

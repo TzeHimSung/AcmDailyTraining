@@ -38,45 +38,35 @@
 using namespace std;
 /* header end */
 
-const int maxn = 1e7 + 10;
-int n, vis[maxn], qu[5];
-ll ansLcm = ll_inf, a, b;
+int a, b, c, ans = 0;
 
 int main()
 {
-    scanf("%d", &n);
-    rep1(i, 1, n)
+    scanf("%d%d%d", &a, &b, &c);
+    int week = min(a / 3, min(b / 2, c / 2));
+    a -= week * 3, b -= week * 2, c -= week * 2, ans += week * 7;
+    int pre = ans;
+    rep1(i, 1, 7)
     {
-        int x; scanf("%d", &x);
-        if (vis[x])
+        int x = a, y = b, z = c, tmp = pre;
+        rep1(j, i, i + 6)
         {
-            if (ansLcm > x)
+            int curr = j > 7 ? j - 7 : j;
+            if (curr == 1 || curr == 4 || curr == 7)
             {
-                ansLcm = x;
-                a = vis[x];
-                b = i;
+                if (x)x--, tmp++; else break;
+            }
+            else if (curr == 2 || curr == 6)
+            {
+                if (y) y--, tmp++; else break;
+            }
+            else if (curr == 3 || curr == 5)
+            {
+                if (z) z--, tmp++; else break;
             }
         }
-        else vis[x] = i;
+        ans = max(ans, tmp);
     }
-    rep1(i, 1, 1e7)
-    {
-        int len = 0;
-        for (int j = i; j <= 1e7; j += i)
-        {
-            if (vis[j]) qu[len++] = j;
-            if (len == 2) break;
-        }
-        if (len == 2)
-        {
-            ll num1 = qu[0], num2 = qu[1], tmpLcm = num1 * num2 / i;
-            if (tmpLcm < ansLcm)
-            {
-                ansLcm = tmpLcm, a = vis[num1], b = vis[num2];
-            }
-        }
-    }
-    if (a > b) swap(a, b);
-    printf("%lld %lld\n", a, b);
+    printf("%d\n", ans);
     return 0;
 }

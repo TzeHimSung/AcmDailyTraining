@@ -32,51 +32,39 @@
 #define eps 1e-8
 #define int_inf 0x3f3f3f3f
 #define ll_inf 0x7f7f7f7f7f7f7f7f
-#define lson curPos<<1
-#define rson curPos<<1|1
 /* namespace */
 using namespace std;
 /* header end */
 
-const int maxn = 1e7 + 10;
-int n, vis[maxn], qu[5];
-ll ansLcm = ll_inf, a, b;
+const int maxn = 2e5 + 10;
+int n, k, p = 1, a[maxn], l[maxn], r[maxn], ans[maxn];
+priority_queue<int>q;
 
 int main()
 {
-    scanf("%d", &n);
+    scanf("%d%d", &n, &k);
+    l[0] = r[0] = 0; l[n + 1] = r[n + 1] = n + 1;
     rep1(i, 1, n)
     {
         int x; scanf("%d", &x);
-        if (vis[x])
-        {
-            if (ansLcm > x)
-            {
-                ansLcm = x;
-                a = vis[x];
-                b = i;
-            }
-        }
-        else vis[x] = i;
+        q.push(x);
+        a[x] = i, l[i] = i - 1, r[i] = i + 1;
     }
-    rep1(i, 1, 1e7)
+    while (!q.empty() && p++)
     {
-        int len = 0;
-        for (int j = i; j <= 1e7; j += i)
+        while (!q.empty() && ans[a[q.top()]]) q.pop();
+        if (q.empty()) break;
+        int pos = a[q.top()]; q.pop();
+        ans[pos] = p % 2 + 1;
+        int lpos = pos, rpos = pos;
+        rep1(i, 1, k)
         {
-            if (vis[j]) qu[len++] = j;
-            if (len == 2) break;
+            lpos = l[lpos], rpos = r[rpos];
+            ans[lpos] = ans[rpos] = p % 2 + 1;
         }
-        if (len == 2)
-        {
-            ll num1 = qu[0], num2 = qu[1], tmpLcm = num1 * num2 / i;
-            if (tmpLcm < ansLcm)
-            {
-                ansLcm = tmpLcm, a = vis[num1], b = vis[num2];
-            }
-        }
+        l[r[rpos]] = l[lpos], r[l[lpos]] = r[rpos];
     }
-    if (a > b) swap(a, b);
-    printf("%lld %lld\n", a, b);
+    rep1(i, 1, n) printf("%d", ans[i]);
+    puts("");
     return 0;
 }

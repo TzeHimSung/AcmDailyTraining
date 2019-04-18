@@ -38,45 +38,23 @@
 using namespace std;
 /* header end */
 
-const int maxn = 1e7 + 10;
-int n, vis[maxn], qu[5];
-ll ansLcm = ll_inf, a, b;
+int n, a, b;
 
 int main()
 {
-    scanf("%d", &n);
+    scanf("%d%d%d", &n, &a, &b);
+    int ans = 0, tmp = b;
     rep1(i, 1, n)
     {
         int x; scanf("%d", &x);
-        if (vis[x])
+        if (x == 1 && a && tmp > b)
         {
-            if (ansLcm > x)
-            {
-                ansLcm = x;
-                a = vis[x];
-                b = i;
-            }
+            ++ans, --a, b = min(++b, tmp);
         }
-        else vis[x] = i;
+        else if (b) ++ans, --b;
+        else if (a) ++ans, --a;
+        else break;
     }
-    rep1(i, 1, 1e7)
-    {
-        int len = 0;
-        for (int j = i; j <= 1e7; j += i)
-        {
-            if (vis[j]) qu[len++] = j;
-            if (len == 2) break;
-        }
-        if (len == 2)
-        {
-            ll num1 = qu[0], num2 = qu[1], tmpLcm = num1 * num2 / i;
-            if (tmpLcm < ansLcm)
-            {
-                ansLcm = tmpLcm, a = vis[num1], b = vis[num2];
-            }
-        }
-    }
-    if (a > b) swap(a, b);
-    printf("%lld %lld\n", a, b);
+    printf("%d\n", ans);
     return 0;
 }

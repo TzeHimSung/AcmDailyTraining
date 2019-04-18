@@ -38,45 +38,12 @@
 using namespace std;
 /* header end */
 
-const int maxn = 1e7 + 10;
-int n, vis[maxn], qu[5];
-ll ansLcm = ll_inf, a, b;
+int a[5];
 
 int main()
 {
-    scanf("%d", &n);
-    rep1(i, 1, n)
-    {
-        int x; scanf("%d", &x);
-        if (vis[x])
-        {
-            if (ansLcm > x)
-            {
-                ansLcm = x;
-                a = vis[x];
-                b = i;
-            }
-        }
-        else vis[x] = i;
-    }
-    rep1(i, 1, 1e7)
-    {
-        int len = 0;
-        for (int j = i; j <= 1e7; j += i)
-        {
-            if (vis[j]) qu[len++] = j;
-            if (len == 2) break;
-        }
-        if (len == 2)
-        {
-            ll num1 = qu[0], num2 = qu[1], tmpLcm = num1 * num2 / i;
-            if (tmpLcm < ansLcm)
-            {
-                ansLcm = tmpLcm, a = vis[num1], b = vis[num2];
-            }
-        }
-    }
-    if (a > b) swap(a, b);
-    printf("%lld %lld\n", a, b);
+    cin >> a[1] >> a[2] >> a[3] >> a[4];
+    sot(a, 4);
+    cout << a[4] - a[1] << " " << a[4] - a[2] << " " << a[4] - a[3] << endl;
     return 0;
 }
