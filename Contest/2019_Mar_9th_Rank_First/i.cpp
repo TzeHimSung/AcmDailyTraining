@@ -85,11 +85,11 @@ bool cmp(const Node &a, const Node &b)
     return a.pos < b.pos;
 }
 
-void cdqSeparation(int l, int r)
+void cdqSeparation(int l, int r) //important!
 {
     if (l == r) return;
     int mid = (l + r) >> 1;
-    cdqSeparation(l, mid);
+    cdqSeparation(l, mid); //must separate left block firstly
     sort(p + l, p + mid + 1);
     sort(p + mid + 1, p + r + 1);
     int j = l;

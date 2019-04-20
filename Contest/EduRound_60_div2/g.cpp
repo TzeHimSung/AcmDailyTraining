@@ -108,11 +108,11 @@ int main()
         for (; num[i] > num[ri[i]]; ri[i] = ri[ri[i]]);
     }
     build(tot = 1, 1, n);
-    rep1(i, 1, n)
+    rep1(i,1,n)
     {
-        add(1, 1, 1, n, le[i] + 1, i);
-        rep0(j, 0, (int)leftQ[i].size())
-        ans[leftQ[i][j].second] = ask(1, 1, n, leftQ[i][j].first, i);
+        add(1,1,1,n,le[i]+1,i);
+        rep0(j,0,(int)leftQ[i].size())
+            ans[leftQ[i][j].second]=ask(1,1,n,leftQ[i][j].first,i);
     }
     rep1(i, 1, tot) segT[i].init();
     for (int i = n; i >= 1; i--)

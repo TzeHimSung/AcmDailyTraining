@@ -49,6 +49,6 @@ int main()
         n++;
         a += b + c + d;
         if (a * 2 >= n) puts("Yes"); else puts("No");
-    }
+    }	
     return 0;
 }
