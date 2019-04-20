@@ -1,25 +1,97 @@
+/* basic header */
 #include <iostream>
-#include <stdio.h>
-#include <math.h>
-#include <algorithm>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <string>
+#include <cstring>
+#include <cmath>
+#include <cstdint>
+#include <climits>
+#include <float.h>
+/* STL */
 #include <vector>
+#include <set>
+#include <map>
+#include <queue>
 #include <stack>
-#include <assert.h>
-typedef long long ll;
+#include <algorithm>
+#include <array>
+#include <iterator>
+/* define */
+#define ll long long
+#define dou double
+#define pb emplace_back
+#define mp make_pair
+#define fir first
+#define sec second
+#define init(a,b) fill(begin(a),end(a),b)
+#define sot(a,b) sort(a+1,a+1+b)
+#define rep1(i,a,b) for(int i=a;i<=b;++i)
+#define rep0(i,a,b) for(int i=a;i<b;++i)
+#define repa(i,a) for(auto &i:a)
+#define eps 1e-8
+#define int_inf 0x3f3f3f3f
+#define ll_inf 0x7f7f7f7f7f7f7f7f
+#define lson curPos<<1
+#define rson curPos<<1|1
+/* namespace */
 using namespace std;
+/* header end */
 
-const int N = 5e5 + 10;
-int a[N];
-int l[N], r[N];
-int n;
+const int maxn = 5e5 + 10;
 
-void gao()
+struct Node
 {
-    stack<int>st;
-    st.push(1);
+    ll maxx, minn;
+};
+
+struct SegT
+{
+    Node mem[maxn << 2];
+
+    void build(ll *s, int curPos, int curL, int curR)
+    {
+        if (curL == curR)
+        {
+            mem[curPos].maxx = mem[curPos].minn = s[curL];
+            return;
+        }
+        int mid = (curL + curR) >> 1;
+        build(s, lson, curL, mid);
+        build(s, rson, mid + 1, curR);
+        mem[curPos].maxx = max(mem[lson].maxx, mem[rson].maxx);
+        mem[curPos].minn = min(mem[lson].minn, mem[rson].minn);
+    }
+
+    ll queryMax(int curPos, int curL, int curR, int qL, int qR)
+    {
+        if (qL <= curL && curR <= qR)
+            return mem[curPos].maxx;
+        int mid = (curL + curR) >> 1;
+        if (qR <= mid) return queryMax(lson, curL, mid, qL, qR);
+        else if (qL > mid) return queryMax(rson, mid + 1, curR, qL, qR);
+        else return max(queryMax(lson, curL, mid, qL, mid), queryMax(rson, mid + 1, curR, mid + 1, qR));
+    }
+
+    ll queryMin(int curPos, int curL, int curR, int qL, int qR)
+    {
+        if (qL <= curL && curR <= qR)
+            return mem[curPos].minn;
+        int mid = (curL + curR) >> 1;
+        if (qR <= mid) return queryMin(lson, curL, mid, qL, qR);
+        else if (qL > mid) return queryMin(rson, mid + 1, curR, qL, qR);
+        else return min(queryMin(lson, curL, mid, qL, mid), queryMin(rson, mid + 1, curR, mid + 1, qR));
+    }
+};
+SegT segT1, segT2;
+int n, a[maxn], l[maxn], r[maxn];
+ll ans = -1e18, s1[maxn], s2[maxn];
+
+void solve()
+{
+    stack<int>st; st.push(1);
     l[1] = 1;
-    for (int i = 2; i <= n; i++)
+    rep1(i, 2, n)
     {
         while (!st.empty() && a[i] <= a[st.top()]) st.pop();
         if (st.empty()) l[i] = 1;
@@ -27,8 +99,7 @@ void gao()
         st.push(i);
     }
     while (!st.empty()) st.pop();
-    r[n] = n;
-    st.push(n);
+    r[n] = n; st.push(n);
     for (int i = n - 1; i >= 1; i--)
     {
         while (!st.empty() && a[i] < a[st.top()]) st.pop();
@@ -38,71 +109,30 @@ void gao()
     }
 }
 
-#define lson (root<<1)
-#define rson (root<<1|1)
-
-struct Tree
-{
-    ll ma[N << 2], mi[N << 2];
-    void build(ll *s, int root, int l, int r)
-    {
-        if (l == r)
-        {
-            ma[root] = mi[root] = s[l];
-            return ;
-        }
-        int m = (l + r) >> 1;
-        build(s, lson, l, m);
-        build(s, rson, m + 1, r);
-        ma[root] = max(ma[lson], ma[rson]);
-        mi[root] = min(mi[lson], mi[rson]);
-    }
-    ll query_max(int root, int l, int r, int a, int b)
-    {
-        if (l == a && r == b) return ma[root];
-        int m = (l + r) >> 1;
-        if (b <= m) return query_max(lson, l, m, a, b);
-        else if (a > m) return query_max(rson, m + 1, r, a, b);
-        else return max(query_max(lson, l, m, a, m), query_max(rson, m + 1, r, m + 1, b));
-    }
-    ll query_min(int root, int l, int r, int a, int b)
-    {
-        if (l == a && r == b) return mi[root];
-        int m = (l + r) >> 1;
-        if (b <= m) return query_min(lson, l, m, a, b);
-        else if (a > m) return query_min(rson, m + 1, r, a, b);
-        else return min(query_min(lson, l, m, a, m), query_min(rson, m + 1, r, m + 1, b));
-    }
-} t[2];
-
-ll s[2][N];
-void solve()
-{
-    scanf("%d", &n);
-    for (int i = 1; i <= n; i++) scanf("%d", a + i);
-    //前缀后缀和
-    for (int i = 1; i <= n; i++) s[0][i] = s[0][i - 1] + a[i];
-    for (int i = n; i >= 1; i--) s[1][i] = s[1][i + 1] + a[i];
-    t[0].build(s[0], 1, 1, n);
-    t[1].build(s[1], 1, 1, n);
-    gao();
-    ll ans = -1e18;
-    for (int i = 1; i <= n; i++)
-    {
-        ll ml = t[1].query_max(1, 1, n, l[i], i) - s[1][i + 1];
-        ll mr = t[0].query_max(1, 1, n, i, r[i]) - s[0][i - 1];
-        ll tmp = (ml + mr - a[i]) * a[i];
-        ans = max(ans, tmp);
-        ml = t[1].query_min(1, 1, n, l[i], i) - s[1][i + 1];
-        mr = t[0].query_min(1, 1, n, i, r[i]) - s[0][i - 1];
-        tmp = (ml + mr - a[i]) * a[i];
-        ans = max(ans, tmp);
-    }
-    cout << ans << endl;
-}
-
 int main()
 {
+    scanf("%d", &n);
+    s1[0] = 0; s2[n + 1] = 0;
+    rep1(i, 1, n)
+    {
+        scanf("%d", &a[i]);
+        s1[i] = s1[i - 1] + a[i];
+    }
+    for (int i = n; i >= 1; i--) s2[i] = s2[i + 1] + a[i];
+    segT1.build(s1, 1, 1, n);
+    segT2.build(s2, 1, 1, n);
     solve();
+    rep1(i, 1, n)
+    {
+        ll maxl = segT2.queryMax(1, 1, n, l[i], i) - s2[i + 1];
+        ll maxr = segT1.queryMax(1, 1, n, i, r[i]) - s1[i - 1];
+        ll tmp = a[i] * (maxl + maxr - a[i]);
+        ans = max(ans, tmp);
+        maxl = segT2.queryMin(1, 1, n, l[i], i) - s2[i + 1];
+        maxr = segT1.queryMin(1, 1, n, i, r[i]) - s1[i - 1];
+        tmp = a[i] * (maxl + maxr - a[i]);
+        ans = max(ans, tmp);
+    }
+    printf("%lld\n", ans);
     return 0;
 }
