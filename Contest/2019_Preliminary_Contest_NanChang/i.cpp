@@ -90,23 +90,24 @@ ll ans = -1e18, s1[maxn], s2[maxn];
 
 void solve()
 {
-    stack<int>st; st.push(1);
+    int st[20], p = 0;
+    memset(st, 0, sizeof(st));
     l[1] = 1;
     rep1(i, 2, n)
     {
-        while (!st.empty() && a[i] <= a[st.top()]) st.pop();
-        if (st.empty()) l[i] = 1;
-        else l[i] = st.top() + 1;
-        st.push(i);
+        while (p && a[i] <= a[st[p]]) p--;
+        if (!p) l[i] = 1; else l[i] = st[p] + 1;
+        st[++p] = i;
     }
-    while (!st.empty()) st.pop();
-    r[n] = n; st.push(n);
+    while (p) p--;
+    r[n] = n;
+    st[++p] = n;
     for (int i = n - 1; i >= 1; i--)
     {
-        while (!st.empty() && a[i] < a[st.top()]) st.pop();
-        if (st.empty()) r[i] = n;
-        else r[i] = st.top() - 1;
-        st.push(i);
+        while (p && a[i] < a[st[p]]) p--;
+        if (!p) r[i] = n;
+        else r[i] = st[p] - 1;
+        st[++p] = i;
     }
 }
 

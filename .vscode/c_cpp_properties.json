@@ -5,8 +5,6 @@
             "includePath": [
                 "${workspaceFolder}",
                 "/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.1/include",
-                "/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.1/include/tr1",
-                "/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.1/include/tr2",
                 "/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.1/include/sanitizer",
                 "/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.1/include-fixed",
                 "/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.1/install-tools/include",
@@ -24,8 +22,6 @@
                 "path": [
                     "${workspaceFolder}",
                     "/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.1/include",
-                    "/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.1/include/tr1/",
-                    "/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.1/include/tr2",
                     "/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.1/include/sanitizer",
                     "/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.1/include-fixed",
                     "/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.1/install-tools/include",

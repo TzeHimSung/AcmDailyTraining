@@ -18,6 +18,17 @@
                 "kind": "build",
                 "isDefault": true
             }
+        },
+        {
+            "label": "build_cpp_files(debug)",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-g",
+                "${fileDirname}/${fileBasename}",
+                "-O0",
+                "${fileDirname}/${fileBasenameNoExtension}.out",
+            ]
         }
     ]
 }
