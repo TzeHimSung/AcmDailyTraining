@@ -1,10 +1,13 @@
 {
     "files.associations": {
+        "*.js": "javascript",
+        "*.vue": "html",
         "cstdint": "cpp",
         "string": "cpp",
         "iostream": "cpp",
         "climits": "cpp",
         "cfloat": "cpp",
-        "*.tcc": "cpp"
+        "*.tcc": "cpp",
+        "complex": "cpp"
     }
 }

@@ -48,7 +48,7 @@ struct Node
 struct SegT
 {
     Node mem[maxn << 2];
-
+    //被hry的线段树爆了
     void build(ll *s, int curPos, int curL, int curR)
     {
         if (curL == curR)
@@ -89,7 +89,7 @@ ll ans = -1e18, s1[maxn], s2[maxn];
 
 void solve()
 {
-    stack<int>st; st.push(1);
+    stack<int>st; st.push(1); //单调栈开搞，栈内存放a数组的下标
     l[1] = 1;
     rep1(i, 2, n)
     {
@@ -112,6 +112,7 @@ void solve()
 int main()
 {
     scanf("%d", &n);
+    //s1是前缀和，s2是后缀和
     s1[0] = 0; s2[n + 1] = 0;
     rep1(i, 1, n)
     {
@@ -119,6 +120,7 @@ int main()
         s1[i] = s1[i - 1] + a[i];
     }
     for (int i = n; i >= 1; i--) s2[i] = s2[i + 1] + a[i];
+    //线段树维护前缀后缀和区间最值
     segT1.build(s1, 1, 1, n);
     segT2.build(s2, 1, 1, n);
     solve();
