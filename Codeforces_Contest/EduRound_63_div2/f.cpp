@@ -2,7 +2,7 @@
 
 using namespace std;
 
-const int MAXN = 20;
+const int MAXN = 2e2 + 10;
 
 struct Node
 {
@@ -66,7 +66,6 @@ int main()
     for (i = 1; i <= m; i++) p[i] = i;
     for (int jo = 1; jo <= 20000; jo++)
     {
-        //随机建图
         for (i = 1; i <= 100; i++)
         {
             int x = rand() % m + 1, y = rand() % m + 1;
