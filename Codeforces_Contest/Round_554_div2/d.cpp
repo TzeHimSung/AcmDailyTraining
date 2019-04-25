@@ -38,49 +38,29 @@
 using namespace std;
 /* header end */
 
-vector<int>ans;
-int n, op = 0;
+const int maxn = 1e3 + 10;
+const int mod = 1e9 + 7;
 
-inline int lowbit(int x)
-{
-    return x & -x;
-}
-
-int get(int x)
-{
-    int ret = 1;
-    while (ret <= x) ret <<= 1;
-    return ret - 1;
-}
-
-int calc(int x)
-{
-    int ret = 0, tmp = 1;
-    while (tmp <= x) ret++, tmp <<= 1;
-    return ret;
-}
-
-int check(int x)
-{
-    x++;
-    if (x - lowbit(x)) return true; else return false;
-}
+int n, dp[maxn][maxn][2];
 
 int main()
 {
     scanf("%d", &n);
-    while (check(n))
+    rep1(i, 0, n)
     {
-        op++;
-        if (op & 1)
-        {
-            ans.pb(calc(n));
-            n ^= get(n);
-        }
-        else n++;
+        dp[i][i + 1][0] = -int_inf;
+        dp[n + 1][i][0] = -int_inf;
     }
-    printf("%d\n", op);
-    for (auto i : ans) printf("%d ", i);
-    puts("");
+    dp[n][n][0] = dp[n][n][1] = 0;
+    for (int i = n; i >= 0; i--)
+    {
+        for (int j = i - (j == n); j >= 0; j--)
+        {
+            dp[i][j][0] = (dp[i][j + 1][1] + dp[i + 1][j][1]) % mod;
+            dp[i][j][1] = (dp[i][j + 1][0] + dp[i + 1][j][1] + 1) % mod;
+            dp[i][j][1] = (dp[i][j][0] + ((i + j) & 1)) % mod;
+        }
+    }
+    printf("%d\n", dp[0][0][1]);
     return 0;
 }

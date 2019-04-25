@@ -8,6 +8,7 @@
         "climits": "cpp",
         "cfloat": "cpp",
         "*.tcc": "cpp",
-        "complex": "cpp"
+        "complex": "cpp",
+        "algorithm": "cpp"
     }
 }

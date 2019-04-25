@@ -1,4 +1,22 @@
-#include <bits/stdc++.h>
+/* basic header */
+#include <iostream>
+#include <cstdio>
+#include <cstdlib>
+#include <string>
+#include <cstring>
+#include <cmath>
+#include <cstdint>
+#include <climits>
+#include <float.h>
+/* STL */
+#include <vector>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <algorithm>
+#include <array>
+#include <iterator>
 /* define */
 #define ll long long
 #define dou double
@@ -6,6 +24,7 @@
 #define mp make_pair
 #define fir first
 #define sec second
+#define init(a,b) fill(begin(a),end(a),b)
 #define sot(a,b) sort(a+1,a+1+b)
 #define rep1(i,a,b) for(int i=a;i<=b;++i)
 #define rep0(i,a,b) for(int i=a;i<b;++i)
@@ -14,41 +33,37 @@
 #define int_inf 0x3f3f3f3f
 #define ll_inf 0x7f7f7f7f7f7f7f7f
 #define lson curPos<<1
-#define rson (curPos<<1)+1
+#define rson curPos<<1|1
 /* namespace */
 using namespace std;
 /* header end */
 
-ll a, b, curLcm = 0, ans = 0;
+ll a, b, minLcm = 0, ans = 0, delta;
+
+ll lcm(ll a, ll b)
+{
+    return a / __gcd(a, b) * b;
+}
 
 int main()
 {
-    scanf("%lld%lld", &a, &b);
-    curLcm = a * b / __gcd(a, b);
-    int delta = abs(a - b);
-    for (ll i = 1, tmp; i * i <= delta; i++)
+    scanf("%lld%lld", &a, &b); delta = abs(b - a);
+    minLcm = lcm(a, b);
+    for (ll i = 1; i * i <= delta; i++)
     {
-        if (delta % i == 0)
+        if (!(delta % i))
         {
-            tmp = i;
-            ll p = a / tmp * tmp;
-            if (a % tmp) p += tmp;
-            ll k = p - a, q = b + k;
-            tmp = p / tmp * q;
-            if (tmp < curLcm || (tmp == curLcm && k < ans))
+            ll tmp = i - (a % i);
+            if (lcm(a + tmp, b + tmp) < minLcm)
             {
-                curLcm = tmp;
-                ans = k;
+                minLcm = lcm(a + tmp, b + tmp);
+                ans = tmp;
             }
-            tmp = delta / i;
-            p = a / tmp * tmp;
-            if (a % tmp) p += tmp;
-            k = p - a; q = b + k;
-            tmp = p / tmp * q;
-            if (tmp < curLcm || (tmp == curLcm && k < ans))
+            tmp = (delta / i) - (a % (delta / i));
+            if (lcm(a + tmp, b + tmp) < minLcm)
             {
-                curLcm = tmp;
-                ans = k;
+                minLcm = lcm(a + tmp, b + tmp);
+                ans = tmp;
             }
         }
     }
