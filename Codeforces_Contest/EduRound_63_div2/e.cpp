@@ -92,24 +92,23 @@ struct Mod
     }
 } m(MOD);
 
-//拉格朗日插值法
-#define X real()
-#define Y imag()
+//拉格朗日插值法，要先定义mod P意义下的运算
 class Lagrange
 {
 public:
-    static vector<ll> solve(vector<complex<ll>> p)
+    static vector<ll> solve(vector<pair<ll, ll>> p)
     {
-        vector<ll> ret(p.size()), sum(p.size());
-        ret[0] = p[0].Y, sum[0] = 1;
-        rep0(i, 1, p.size())
+        int psize = (int)p.size();
+        vector<ll> ret(psize), sum(psize);
+        ret[0] = p[0].second, sum[0] = 1;
+        rep0(i, 1, psize)
         {
-            for (int j = p.size() - 1; j >= i; j--)
-                p[j].imag(m.mul(p[j].Y - p[j - 1].Y, m.inv(p[j].X - p[j - i].X)));
+            for (int j = psize - 1; j >= i; j--)
+                p[j].second = m.mul(p[j].second - p[j - 1].second, m.inv(p[j].first - p[j - i].first));
             for (int j = i; ~j; j--)
             {
-                sum[j] = m.add(j ? sum[j - 1] : 0, -m.mul(sum[j], p[i - 1].X));
-                ret[j] = m.add(ret[j], m.mul(sum[j], p[i].Y));
+                sum[j] = m.add(j ? sum[j - 1] : 0, -m.mul(sum[j], p[i - 1].first));
+                ret[j] = m.add(ret[j], m.mul(sum[j], p[i].second));
             }
         }
         return ret;
@@ -118,7 +117,7 @@ public:
 
 int main()
 {
-    vector<complex<ll>>v;
+    vector<pair<ll, ll>>v; //点值向量
     for (ll i = 0, x; i < 11; i++)
     {
         printf("? %lld\n", i);
@@ -128,7 +127,8 @@ int main()
             return printf("! %lld\n", i), 0;
         v.push_back({i, x % m.mod});
     }
-    vector<ll> ret = Lagrange().solve(v);
+    vector<ll> ret = Lagrange().solve(v); //多项式系数向量
+    //秦九韶检验
     for (ll i = 0; i < m.mod; i++)
     {
         ll sum = 0;
