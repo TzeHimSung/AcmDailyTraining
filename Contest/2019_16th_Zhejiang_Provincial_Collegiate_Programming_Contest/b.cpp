@@ -56,12 +56,12 @@ int main()
             curX += (i * a[i]); curY += (i * a[i] * a[i]);
         }
         ll deltaX = x - curX, deltaY = y - curY;
-        if (!deltaX && deltaY)
+        if ((!deltaX && deltaY) || (abs(deltaY) % abs(deltaX))) //除0或不能整除说明无解
         {
             puts("0");
             continue;
         }
-        if (!deltaX && !deltaY)
+        if (!deltaX && !deltaY) //这情况就很有意思了
         {
             ll ans = 0;
             sort(b, b + n);
@@ -73,11 +73,7 @@ int main()
             printf("%lld\n", ans);
             continue;
         }
-        if (abs(deltaY) % abs(deltaX))
-        {
-            puts("0");
-            continue;
-        }
+        //有解，枚举i即可
         ll rough = deltaY / deltaX, ans = 0;
         for (ll i = 1; i <= n; i++)
         {
@@ -90,4 +86,4 @@ int main()
         printf("%lld\n", ans / 2);
     }
     return 0;
-}
+    youjie
