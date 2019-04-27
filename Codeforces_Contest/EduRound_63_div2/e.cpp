@@ -117,7 +117,7 @@ public:
 
 int main()
 {
-    vector<pair<ll, ll>>v; //点值向量
+    vector<pair<ll, ll>>v; //函数值向量
     for (ll i = 0, x; i < 11; i++)
     {
         printf("? %lld\n", i);
@@ -128,11 +128,12 @@ int main()
         v.push_back({i, x % m.mod});
     }
     vector<ll> ret = Lagrange().solve(v); //多项式系数向量
+    int retSize = (int)ret.size();
     //秦九韶检验
     for (ll i = 0; i < m.mod; i++)
     {
         ll sum = 0;
-        for (ll j = 0, x = 1; j < ret.size(); j++, x = m.mul(x, i))
+        for (ll j = 0, x = 1; j < retSize; j++, x = m.mul(x, i))
             sum = m.add(sum, m.mul(x, ret[j]));
         if (sum == 0)
             return printf("! %lld\n", i), 0;
