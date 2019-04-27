@@ -52,7 +52,6 @@ int main()
         int sum1 = 0, sum2 = 0, sign1 = 1, sign2 = 1;
         rep1(i, 1, len1) sum1 += a[i] - '0';
         rep1(i, 1, len2) sum2 += b[i] - '0';
-        // if (sum1 % 3 == 0) sign1 = 2; if (sum2 % 3 == 0) sign2 = 2;
         if (sum1 % 3 == 2) sign1 = 2; if (sum2 % 3 == 1) sign2 = 2;
         printf("%d\n", abs(sign1 - sign2) % 2);
     }
