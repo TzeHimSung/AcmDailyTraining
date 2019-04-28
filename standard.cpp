@@ -24,7 +24,6 @@
 #define mp make_pair
 #define fir first
 #define sec second
-#define init(a,b) fill(begin(a),end(a),b)
 #define sot(a,b) sort(a+1,a+1+b)
 #define rep1(i,a,b) for(int i=a;i<=b;++i)
 #define rep0(i,a,b) for(int i=a;i<b;++i)
@@ -41,9 +40,8 @@ using namespace std;
 /* variable and function */
 
 
-/* main */
 int main()
 {
-
+    /* main */
     return 0;
 }

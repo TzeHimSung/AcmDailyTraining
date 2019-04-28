@@ -56,7 +56,7 @@ int main()
             curX += (i * a[i]); curY += (i * a[i] * a[i]);
         }
         ll deltaX = x - curX, deltaY = y - curY;
-        if ((!deltaX && deltaY) || (abs(deltaY) % abs(deltaX))) //除0或不能整除说明无解
+        if (!deltaX && deltaY) //除0说明无解
         {
             puts("0");
             continue;
@@ -73,6 +73,12 @@ int main()
             printf("%lld\n", ans);
             continue;
         }
+        //不能整除说明无解，不能跟上面的if合在一起，不然会报浮点错误
+        if (abs(deltaY) % abs(deltaX))
+        {
+            puts("0");
+            continue;
+        }
         //有解，枚举i即可
         ll rough = deltaY / deltaX, ans = 0;
         for (ll i = 1; i <= n; i++)
@@ -86,4 +92,4 @@ int main()
         printf("%lld\n", ans / 2);
     }
     return 0;
-    youjie
+}
