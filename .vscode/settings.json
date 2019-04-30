@@ -9,6 +9,7 @@
         "cfloat": "cpp",
         "*.tcc": "cpp",
         "complex": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "array": "cpp"
     }
 }

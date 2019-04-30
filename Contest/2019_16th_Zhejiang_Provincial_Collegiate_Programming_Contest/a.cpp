@@ -113,7 +113,6 @@ void query(int curPos, int l, int r, ll K)
             int mid = (_l + _r) >> 1;
             ll sp = sn + (ll) l * mid;
             ll g = sp * (sp - 1) / 2 - sm - (ll) l * (l - 1) / 2 * mid;
-            // cerr << mid << ' ' << g << '\n';
             if (g <= K)
             {
                 if (g < K)
