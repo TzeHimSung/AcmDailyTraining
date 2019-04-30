@@ -1,170 +1,128 @@
-#include <bits/stdc++.h>
-typedef long long ll;
+#include<bits/stdc++.h>
 using namespace std;
-
-const int N = 1e5 + 10;
-const int INF = 1e8;
-vector<int>dat[26];
-char s[N];
-char t[3][1005];
-int cnt[3];
-int n, Q;
-
-int dp[255][255][255];
-
-int _find(int id, int pos)
+const int N = 1e5 + 7;
+int n, q, la, lb, lc, p[N], sum[N][27], f[255][255][255];
+char s[N], a[N], b[N], c[N];
+int find(int v, int pos)
 {
-    int ans = upper_bound(dat[id].begin(), dat[id].end(), pos) - dat[id].begin();
-    if (ans == (int)dat[id].size()) return INF;
-    else return dat[id][ans];
+    if (pos > n)return 1e9;
+    if (sum[n][v] - sum[pos - 1][v] == 0)return 1e9;
+    int L = pos, R = n, mid, ret = 1e9;
+    while (L <= R)
+    {
+        mid = L + R >> 1;
+        if (sum[mid][v] - sum[pos - 1][v] == 0)L = mid + 1;
+        else R = mid - 1, ret = mid;
+    }
+    return ret;
 }
-
-void _min(int &a, int b)
+void del1()
 {
-    a = min(a, b);
+    for (int i = 0; i <= lb; i++)
+        for (int j = 0; j <= lc; j++)
+            f[la][i][j] = 1e9;
+    la--;
 }
-
-void add(int a, char ch)
+void del2()
 {
-    cnt[a]++;
-    int C = cnt[a];
-    t[a][C] = ch;
-    if (a == 0)
-    {
-        for (int i = 0; i <= cnt[1]; i++)
-        {
-            for (int j = 0; j <= cnt[2]; j++)
-            {
-                dp[C][i][j] = INF;
-                if (i && dp[C][i - 1][j] < n)
-                {
-                    _min(dp[C][i][j], _find(t[1][i] - 'a', dp[C][i - 1][j]));
-                }
-                if (j && dp[C][i][j - 1] < n)
-                {
-                    _min(dp[C][i][j], _find(t[2][j] - 'a', dp[C][i][j - 1]));
-                }
-                if (dp[C - 1][i][j] < n)
-                {
-                    _min(dp[C][i][j], _find(ch - 'a', dp[C - 1][i][j]));
-                }
-            }
-        }
-    }
-    else if (a == 1)
-    {
-        for (int i = 0; i <= cnt[0]; i++)
-        {
-            for (int j = 0; j <= cnt[2]; j++)
-            {
-                dp[i][C][j] = INF;
-                if (i && dp[i - 1][C][j] < n)
-                {
-                    _min(dp[i][C][j], _find(t[0][i] - 'a', dp[i - 1][C][j]));
-                }
-                if (j && dp[i][C][j - 1] < n)
-                {
-                    _min(dp[i][C][j], _find(t[2][j] - 'a', dp[i][C][j - 1]));
-                }
-                if (dp[i][C - 1][j] < n)
-                {
-                    _min(dp[i][C][j], _find(ch - 'a', dp[i][C - 1][j]));
-                }
-            }
-        }
-    }
-    else
-    {
-        for (int i = 0; i <= cnt[0]; i++)
-        {
-            for (int j = 0; j <= cnt[1]; j++)
-            {
-                dp[i][j][C] = INF;
-                if (i && dp[i - 1][j][C] <= n)
-                {
-                    _min(dp[i][j][C], _find(t[0][i] - 'a', dp[i - 1][j][C]));
-                }
-                if (j && dp[i][j - 1][C] <= n)
-                {
-                    _min(dp[i][j][C], _find(t[1][j] - 'a', dp[i][j - 1][C]));
-                }
-                if (dp[i][j][C - 1] <= n)
-                {
-                    _min(dp[i][j][C], _find(ch - 'a', dp[i][j][C - 1]));
-                }
-            }
-        }
-    }
+    for (int i = 0; i <= la; i++)
+        for (int j = 0; j <= lc; j++)
+            f[i][lb][j] = 1e9;
+    lb--;
 }
-
-void del(int a)
+void del3()
 {
-    int C = cnt[a];
-    if (a == 0)
-    {
-        for (int i = 0; i <= cnt[1]; i++)
-        {
-            for (int j = 0; j <= cnt[2]; j++)
-            {
-                dp[C][i][j] = INF;
-            }
-        }
-    }
-    else if (a == 1)
-    {
-        for (int i = 0; i <= cnt[0]; i++)
-        {
-            for (int j = 0; j <= cnt[2]; j++)
-            {
-                dp[i][C][j] = INF;
-            }
-        }
-    }
-    else
-    {
-        for (int i = 0; i <= cnt[0]; i++)
-        {
-            for (int j = 0; j <= cnt[1]; j++)
-            {
-                dp[i][j][C] = INF;
-            }
-        }
-    }
-    cnt[a]--;
+    for (int i = 0; i <= la; i++)
+        for (int j = 0; j <= lb; j++)
+            f[i][j][lc] = 1e9;
+    lc--;
 }
-
-void solve()
+void add1()
 {
-    scanf("%d%d", &n, &Q);
-    scanf("%s", s + 1);
-    for (int i = 1; i <= n; i++)
-        dat[s[i] - 'a'].push_back(i);
-    while (Q--)
-    {
-        char op[3], ch;
-        int a;
-        scanf("%s", op);
-        if (op[0] == '+')
-        {
-            scanf("%d %c", &a, &ch);
-            add(a - 1, ch);
-        }
-        else
-        {
-            scanf("%d", &a);
-            del(a - 1);
-        }
-        if (dp[cnt[0]][cnt[1]][cnt[2]] <= n) printf("YES\n");
-        else printf("NO\n");
-    }
+    la++; cin >> a[la];
+    p[n + 1] = 1e9;
+        for (int i = n; i >= 1; i--)if (s[i] == a[la])p[i] = i; else p[i] = p[i + 1];
+    for (int i = 0; i <= lb; i++)
+        for (int j = 0; j <= lc; j++)
+            if (f[la - 1][i][j] < 1e9)
+                f[la][i][j] = p[f[la - 1][i][j] + 1];
+            else f[la][i][j] = 1e9;
+    for (int i = 0; i <= lb; i++)
+        for (int j = 0; j <= lc; j++)
+            if (f[la][i][j] < 1e9)
+            {
+                int pos = i < lb ? find(b[i + 1] - 'a', f[la][i][j] + 1) : 1e9;
+                if (pos < 1e9)f[la][i + 1][j] = min(f[la][i + 1][j], pos);
+                pos = j < lc ? find(c[j + 1] - 'a', f[la][i][j] + 1) : 1e9;
+                if (pos < 1e9)f[la][i][j + 1] = min(f[la][i][j + 1], pos);
+            }
 }
-
+void add2()
+{
+    lb++; cin >> b[lb];
+    p[n + 1] = 1e9;
+        for (int i = n; i >= 1; i--)if (s[i] == b[lb])p[i] = i; else p[i] = p[i + 1];
+    for (int i = 0; i <= la; i++)
+        for (int j = 0; j <= lc; j++)
+            if (f[i][lb - 1][j] < 1e9)
+                f[i][lb][j] = p[f[i][lb - 1][j] + 1];
+            else f[i][lb][j] = 1e9;
+    for (int i = 0; i <= la; i++)
+        for (int j = 0; j <= lc; j++)
+            if (f[i][lb][j] < 1e9)
+            {
+                int pos = i < la ? find(a[i + 1] - 'a', f[i][lb][j] + 1) : 1e9;
+                if (pos < 1e9)f[i + 1][lb][j] = min(f[i + 1][lb][j], pos);
+                pos = j < lc ? find(c[j + 1] - 'a', f[i][lb][j] + 1) : 1e9;
+                if (pos < 1e9)f[i][lb][j + 1] = min(f[i][lb][j + 1], pos);
+            }
+}
+void add3()
+{
+    lc++; cin >> c[lc];
+    p[n + 1] = 1e9;
+        for (int i = n; i >= 1; i--)if (s[i] == c[lc])p[i] = i; else p[i] = p[i + 1];
+    for (int i = 0; i <= la; i++)
+        for (int j = 0; j <= lb; j++)
+            if (f[i][j][lc - 1] < 1e9)
+                f[i][j][lc] = p[f[i][j][lc - 1] + 1];
+            else f[i][j][lc] = 1e9;
+    for (int i = 0; i <= la; i++)
+        for (int j = 0; j <= lb; j++)
+            if (f[i][j][lc] < 1e9)
+            {
+                int pos = i < la ? find(a[i + 1] - 'a', f[i][j][lc] + 1) : 1e9;
+                if (pos < 1e9)f[i + 1][j][lc] = min(f[i + 1][j][lc], pos);
+                pos = j < lb ? find(b[j + 1] - 'a', f[i][j][lc] + 1) : 1e9;
+                if (pos < 1e9)f[i][j + 1][lc] = min(f[i][j + 1][lc], pos);
+            }
+}
 int main()
 {
-
-    //freopen("1.in","r",stdin);
-    //freopen("1.out","w",stdout);
-    solve();
-
-    return 0;
+    scanf("%d%d", &n, &q);
+    scanf("%s", s + 1);
+    for (int i = 1; i <= n; i++)
+        for (int j = 0; j < 26; j++)
+            sum[i][j] = sum[i - 1][j] + (j == s[i] - 'a');
+    for (int i = 0; i <= 250; i++)
+        for (int j = 0; j <= 250; j++)
+            for (int k = 0; k <= 250; k++)
+                f[i][j][k] = 1e9;
+    f[0][0][0] = 0;
+    while (q--)
+    {
+        char ch; int x;
+        cin >> ch >> x;
+        if (ch == '+')
+        {
+            if (x == 1)add1();
+            else if (x == 2)add2();
+            else add3();
+        }
+        else if (x == 1)del1();
+        else if (x == 2)del2();
+        else del3();
+        if (f[la][lb][lc] == 1e9)puts("NO");
+        else puts("YES");
+    }
 }
