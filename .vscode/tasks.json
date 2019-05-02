@@ -19,6 +19,19 @@
                 "kind": "build",
                 "isDefault": true
             }
+        },
+        {
+            "label": "debug_cpp_files",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-g",
+                "${fileDirname}/${fileBasename}",
+                "-o",
+                "${fileDirname}/${fileBasenameNoExtension}.out",
+                "-std=c++14",
+                "-O0"
+            ]
         }
     ]
 }

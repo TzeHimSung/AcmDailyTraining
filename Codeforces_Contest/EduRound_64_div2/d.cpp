@@ -1,12 +1,46 @@
-#include <bits/stdc++.h>
+/* basic header */
+#include <iostream>
+#include <cstdio>
+#include <cstdlib>
+#include <string>
+#include <cstring>
+#include <cmath>
+#include <cstdint>
+#include <climits>
+#include <float.h>
+/* STL */
+#include <vector>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <algorithm>
+#include <array>
+#include <iterator>
+/* define */
 #define ll long long
-
+#define dou double
+#define pb emplace_back
+#define mp make_pair
+#define fir first
+#define sec second
+#define sot(a,b) sort(a+1,a+1+b)
+#define rep1(i,a,b) for(int i=a;i<=b;++i)
+#define rep0(i,a,b) for(int i=a;i<b;++i)
+#define repa(i,a) for(auto &i:a)
+#define eps 1e-8
+#define int_inf 0x3f3f3f3f
+#define ll_inf 0x7f7f7f7f7f7f7f7f
+#define lson curPos<<1
+#define rson curPos<<1|1
+/* namespace */
 using namespace std;
+/* header end */
 
 const int maxn = 2e5 + 10;
 
 int n, dp[2][maxn];
-vector<pair<int, int>> adj[maxn];
+vector<pair<int, int>> graph[maxn];
 ll ans;
 
 void calc(int u, pair<int, int> v, int mt)
@@ -19,7 +53,7 @@ void calc(int u, pair<int, int> v, int mt)
 
 void dfs1(int u, int p)
 {
-    for (pair<int, int> v : adj[u])
+    for (pair<int, int> v : graph[u])
     {
         if (v.first == p)
             continue;
@@ -27,13 +61,13 @@ void dfs1(int u, int p)
         calc(u, v, 1);
     }
     ans += dp[0][u] + dp[1][u];
-    ++dp[0][u];
+    dp[0][u]++;
 }
 
 void dfs2(int u, int p, int pp1, int pp2)
 {
     ans += pp1 + pp2;
-    for (pair<int, int> v : adj[u])
+    for (pair<int, int> v : graph[u])
     {
         if (v.first == p)
             continue;
@@ -48,13 +82,12 @@ void dfs2(int u, int p, int pp1, int pp2)
 
 int main()
 {
-    cin >> n;
+    scanf("%d", &n);
     for (int i = 1, u, v, c; i < n; i++)
     {
-        cin >> u >> v >> c;
-        --u; --v;
-        adj[u].push_back(pair<int, int>(v, c));
-        adj[v].push_back(pair<int, int>(u, c));
+        scanf("%d%d%d", &u, &v, &c); --u; --v;
+        graph[u].pb(mp(v, c));
+        graph[v].pb(mp(u, c));
     }
     dfs1(0, -1); dfs2(0, -1, 0, 0);
     cout << ans << endl;
