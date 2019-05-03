@@ -39,7 +39,6 @@ using namespace std;
 
 /* variable and function */
 
-
 int main()
 {
     /* main */
