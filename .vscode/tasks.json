@@ -31,7 +31,8 @@
                 "${fileDirname}/${fileBasenameNoExtension}.out",
                 "-std=c++14",
                 "-O0"
-            ]
+            ],
+            "group": "build"
         }
     ]
 }
