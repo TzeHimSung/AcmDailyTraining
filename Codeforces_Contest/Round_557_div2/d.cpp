@@ -54,13 +54,13 @@ int main()
     }
     rep0(i, 0, n) sort(a[i].begin(), a[i].end());
     rep1(i, 1, n / 2)
-    if (n % i == 0)
+    if (!(n % i))
     {
         for (int j = i; j < n; j += i)
             for (int k = j; k < j + i; k++)
                 if (a[k] != a[k - i]) goto mark;
         return puts("Yes"), 0;
-mark:;
+        mark:;
     }
     puts("No");
     return 0;
