@@ -37,17 +37,31 @@
 using namespace std;
 /* header end */
 
-const int maxn = 60;
-int n, a[maxn], SG[2][maxn];
+const int maxn = 1e5 + 10;
+vector<int> a[maxn];
+int n, m;
 
 int main()
 {
-    scanf("%d", &n);
-    rep1(i, 1, n)
+    scanf("%d%d", &n, &m);
+    while (m--)
     {
-        scanf("%d", &a[i]);
+        int x, y; scanf("%d%d", &x, &y); x--; y--;
+        if (x > y) swap(x, y);
+        if (abs(x - y) > n / 2) swap(x, y);
+        a[x].pb(min(abs(x - y), n - abs(x - y)));
+        if (abs(x - y) == n / 2) a[y].pb(n / 2);
     }
-    SG[0][1] = 1; SG[1][1] = 0; SG[0][2] = 0; SG[1][2] = 1;
-    rep1(i, 1, n)
+    rep0(i, 0, n) sort(a[i].begin(), a[i].end());
+    rep1(i, 1, n / 2)
+    if (n % i == 0)
+    {
+        for (int j = i; j < n; j += i)
+            for (int k = j; k < j + i; k++)
+                if (a[k] != a[k - i]) goto mark;
+        return puts("Yes"), 0;
+mark:;
+    }
+    puts("No");
     return 0;
 }

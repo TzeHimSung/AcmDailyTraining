@@ -43,17 +43,17 @@ int n, k, a[maxn], l[maxn], r[maxn];
 int main()
 {
     scanf("%d%d", &n, &k);
-    int ans = (n - 2) * 3 + 4;
+    int ans = (n - 2) * 3 + 4; //答案最大可能值
     rep1(i, 1, k)
     {
         scanf("%d", &a[i]);
-        r[a[i]] = i;
-        if (!l[a[i]]) l[a[i]] = i;
+        r[a[i]] = i; //记录a[i]在查询数组最右边的位置
+        if (!l[a[i]]) l[a[i]] = i; //记录a[i]在查询数组最左边的位置
     }
     rep1(i, 1, n)
     {
-        if (!l[i]) continue;
-        if (i == 1)
+        if (!l[i]) continue; //说明没出现过这个数字，直接忽略
+        if (i == 1) //这里把所有不符合答案的情况都排除掉，首尾要特判一下
         {
             if (r[2] && l[1] < r[2]) ans--;
         }
