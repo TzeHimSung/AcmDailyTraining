@@ -37,15 +37,25 @@
 using namespace std;
 /* header end */
 
-int t, a, b, c, d;
+const int maxn = 51;
+int a[maxn][maxn], b[maxn][maxn], n, m;
 
 int main()
 {
-    scanf("%d", &t);
-    while (t--)
+    scanf("%d%d", &n, &m);
+    rep1(i, 1, n) rep1(j, 1, m) scanf("%d", &a[i][j]);
+    rep1(i, 1, n) rep1(j, 1, m)
     {
-        scanf("%d%d%d%d", &a, &b, &c, &d);
-        printf("%d\n", abs(a - c) + abs(b - d));
+        scanf("%d", &b[i][j]);
+        if (a[i][j] > b[i][j]) swap(a[i][j], b[i][j]);
     }
+    int flag = 1;
+    rep1(i, 1, n) rep1(j, 2, m)
+    if (a[i][j] <= a[i][j - 1] || b[i][j] <= b[i][j - 1])
+        flag = 0;
+    rep1(j, 1, m) rep1(i, 2, n)
+    if (a[i][j] <= a[i - 1][j] || b[i][j] <= b[i - 1][j])
+        flag = 0;
+    if (flag) puts("Possible"); else puts("Impossible");
     return 0;
 }

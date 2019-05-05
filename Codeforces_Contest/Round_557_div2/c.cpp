@@ -37,15 +37,37 @@
 using namespace std;
 /* header end */
 
-int t, a, b, c, d;
+const int maxn = 1e5 + 10;
+int n, k, a[maxn], l[maxn], r[maxn];
 
 int main()
 {
-    scanf("%d", &t);
-    while (t--)
+    scanf("%d%d", &n, &k);
+    int ans = (n - 2) * 3 + 4;
+    rep1(i, 1, k)
     {
-        scanf("%d%d%d%d", &a, &b, &c, &d);
-        printf("%d\n", abs(a - c) + abs(b - d));
+        scanf("%d", &a[i]);
+        r[a[i]] = i;
+        if (!l[a[i]]) l[a[i]] = i;
     }
+    rep1(i, 1, n)
+    {
+        if (!l[i]) continue;
+        if (i == 1)
+        {
+            if (r[2] && l[1] < r[2]) ans--;
+        }
+        else if (i == n)
+        {
+            if (r[n - 1] && l[n] < r[n - 1]) ans--;
+        }
+        else
+        {
+            if (l[i] < r[i + 1]) ans--;
+            if (l[i] < r[i - 1]) ans--;
+        }
+        if (l[i]) ans--;
+    }
+    printf("%d\n", ans);
     return 0;
 }

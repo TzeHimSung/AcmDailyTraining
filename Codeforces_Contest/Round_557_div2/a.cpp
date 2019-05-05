@@ -37,15 +37,20 @@
 using namespace std;
 /* header end */
 
-int t, a, b, c, d;
+const int maxn = 60;
+int n, h, m, a[maxn];
+ll ans = 0;
 
 int main()
 {
-    scanf("%d", &t);
-    while (t--)
+    scanf("%d%d%d", &n, &h, &m);
+    rep1(i, 1, n) a[i] = h;
+    while (m--)
     {
-        scanf("%d%d%d%d", &a, &b, &c, &d);
-        printf("%d\n", abs(a - c) + abs(b - d));
+        int l, r, x; scanf("%d%d%d", &l, &r, &x);
+        rep1(i, l, r) a[i] = min(a[i], x);
     }
+    rep1(i, 1, n) ans += pow(a[i], 2);
+    printf("%lld\n", ans);
     return 0;
 }

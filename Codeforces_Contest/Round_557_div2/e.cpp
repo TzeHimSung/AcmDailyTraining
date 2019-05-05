@@ -37,15 +37,17 @@
 using namespace std;
 /* header end */
 
-int t, a, b, c, d;
+const int maxn = 60;
+int n, a[maxn], SG[2][maxn];
 
 int main()
 {
-    scanf("%d", &t);
-    while (t--)
+    scanf("%d", &n);
+    rep1(i, 1, n)
     {
-        scanf("%d%d%d%d", &a, &b, &c, &d);
-        printf("%d\n", abs(a - c) + abs(b - d));
+        scanf("%d", &a[i]);
     }
+    SG[0][1] = 1; SG[1][1] = 0; SG[0][2] = 0; SG[1][2] = 1;
+    rep1(i, 1, n)
     return 0;
 }
