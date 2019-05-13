@@ -56,7 +56,7 @@ int main()
     }
     rep1(i, 1, m)
     {
-        ll x; scanf("%d", &x);
+        ll x; scanf("%lld", &x);
         minn = min(minn, x);
         sum2 += x;
     }
