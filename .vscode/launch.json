@@ -2,27 +2,6 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "GNU C++ 8.2.1",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "${fileDirname}/${fileBasenameNoExtension}.out",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
-            "environment": [],
-            "externalConsole": false,
-            "MIMode": "gdb",
-            "miDebuggerPath": "/usr/bin/gdb",
-            "setupCommands": [
-                {
-                    "description": "Enable pretty-printing for gdb",
-                    "text": "-enable pretty-printing",
-                    "ignoreFailures": true
-                }
-            ],
-            "preLaunchTask": "build_cpp_files"
-        },
-        {
             "name": "C++ debug",
             "type": "cppdbg",
             "request": "launch",
@@ -42,6 +21,27 @@
                 }
             ],
             "preLaunchTask": "debug_cpp_files"
+        },
+        {
+            "name": "GNU C++ 8.2.1",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${fileDirname}/${fileBasenameNoExtension}.out",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "/usr/bin/gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "build_cpp_files"
         },
         {
             "type": "java",

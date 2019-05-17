@@ -18,7 +18,8 @@
 using namespace std;
 /* header end */
 
-const int maxn = 1e6 + 10;
+const int maxn = 10;
+// const int maxn = 1e6 + 10;
 int n, x, l[maxn], r[maxn], a[maxn], pos[maxn]; //l[i],r[i]是i在数组中出现的最左最右位置
 
 int main()
@@ -30,31 +31,31 @@ int main()
         scanf("%d", &a[i]);
         l[a[i]] = min(i, l[a[i]]); r[a[i]] = max(i, r[a[i]]);
     }
-    int rpos = x, curL = n + 1, curR = 0;
-    while (rpos >= 1)
+    int curr = x, curL = n + 1, curR = 0; //curL从最右边+1开始，rpos从最大的数开始
+    while (curr >= 1)
     {
-        if (r[rpos] < curL) curL = min(curL, l[rpos--]);
+        if (r[curr] < curL) curL = min(curL, l[curr--]); //满足从curr开始递增时，r[curr]也递增
         else
         {
-            rpos++;
+            curr++;
             break;
         }
-        pos[rpos + 1] = curL;
+        pos[curr + 1] = curL; //这好像就是截了一半的数组l
     }
-    if (!rpos)
+    if (!curr) //如果一直递增，那就可以直接算出来
         return printf("%lld\n", 1LL * x * (x + 1) / 2), 0;
-    ll ans = x - rpos + 2;
-    for (int i = 1; i <= x; i++)
+    ll ans = x - curr + 2;
+    for (int i = 1; i <= x; i++) //遍历所有数
     {
-        curR = max(curR, r[i]);
+        curR = max(curR, r[i]); //当前处理过的数的最右出现位置
         while (curL <= curR)
         {
-            rpos++;
-            if (rpos == x + 1) curL = n + 1;
-            else curL = pos[rpos];
+            curr++;
+            if (curr == x + 1) curL = n + 1;
+            else curL = pos[curr];
         }
-        ans += x - rpos + 2;
-        if (l[i + 1] <= curR) break;
+        ans += x - curr + 2; //处理不下去就是加上这个表达式？
+        if (l[i + 1] <= curR) break; //？？？？
     }
     printf("%lld\n", ans);
     return 0;

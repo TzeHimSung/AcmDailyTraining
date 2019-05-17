@@ -1,33 +1,13 @@
 /* basic header */
-#include <iostream>
-#include <cstdio>
-#include <cstdlib>
-#include <string>
-#include <cstring>
-#include <cmath>
-#include <cstdint>
-#include <climits>
-#include <float.h>
-/* STL */
-#include <vector>
-#include <set>
-#include <map>
-#include <queue>
-#include <stack>
-#include <algorithm>
-#include <array>
-#include <iterator>
+#include <bits/stdc++.h>
 /* define */
 #define ll long long
 #define dou double
 #define pb emplace_back
 #define mp make_pair
-#define fir first
-#define sec second
 #define sot(a,b) sort(a+1,a+1+b)
 #define rep1(i,a,b) for(int i=a;i<=b;++i)
 #define rep0(i,a,b) for(int i=a;i<b;++i)
-#define repa(i,a) for(auto &i:a)
 #define eps 1e-8
 #define int_inf 0x3f3f3f3f
 #define ll_inf 0x7f7f7f7f7f7f7f7f
@@ -38,63 +18,60 @@ using namespace std;
 /* header end */
 
 const int maxn = 1e5 + 10;
-const int px[] = {0, -1, 0, 1, 0};
-const int py[] = {0, 0, -1, 0, 1};
-int a[2][maxn], n, vis[2][maxn];
-int cnt = 0;
-pair<int, int>lm, rm;
-struct Block
-{
-    pair<int, int>lm, rm;
-    Block() {}
-    Block(pair<int, int>a, pair<int, int>b): lm(a), rm(b) {}
-};
-vector<Block>v;
-
-int check(int x, int y)
-{
-    if (x >= 0 && x <= 1 && y >= 1 && y <= n && !vis[x][y]) return 1;
-    return 0;
-}
-
-void dfs(int x, int y)
-{
-    vis[x][y] = 1;
-    if (y < lm.second) lm = {x, y};
-    if (y > rm.second) rm = {x, y};
-    for (int i = 1; i <= 4; i++)
-    {
-        int nx = x + px[i], ny = y + py[i];
-        if (check(nx, ny)) dfs(nx, ny);
-    }
-}
+int n, ans = 0, start = 0, a[2][maxn];
+int pre, flag = 0, lastPos; //pre: 1(up 1 down 0) 2(up 0 down 1) 3(both 1)
 
 int main()
 {
     scanf("%d", &n);
-    for (int i = 0; i <= 1; i++)
-        for (int j = 1; j <= n; j++)
-            scanf("%d", &a[i][j]), vis[i][j] = (a[i][j]) ? 0 : 1;
-    for (int j = 1; j <= n; j++)
+    for (int i = 0; i < 2; i++)
+        for (int j = 0; j < n; j++)
+            scanf("%d", &a[i][j]);
+    for (int j = 0; j < n; j++)
     {
-        for (int i = 0; i <= 1; i++)
-            if (!vis[i][j])
-            {
-                cnt++; lm = {i, j}; rm = {i, j};
-                dfs(i, j);
-                v.push_back(Block(lm, rm));
-            }
-    }
-    if (cnt == 1) return puts("0"), 0;
-    ll ans = 0;
-    for (int i = 0; i < cnt - 1; i++)
-    {
-        ans += abs(v[i + 1].lm.first - v[i].rm.first) + abs(v[i + 1].lm.second - v[i].rm.second) - 1;
-        if (i + 2 < cnt)
+        int nowone = 0, nowtwo = 0;
+        if (a[0][j] == 1) nowone = 1;
+        if (a[1][j] == 1) nowtwo = 1;
+        if (nowone || nowtwo)
         {
-            if (v[i + 2].lm.second - v[i].rm.second == 2) ans--;
+            if (!flag)
+            {
+                lastPos = j;
+                if (nowone) pre = 1;
+                if (nowtwo) pre = 2;
+                if (nowone && nowtwo) pre = 3;
+                flag = 1;
+                continue;
+            }
+            else
+            {
+                ans += j - lastPos - 1;
+                if (nowone && nowtwo)
+                {
+                    pre = 3;
+                }
+                else if (nowone && !nowtwo)
+                {
+                    if (pre == 2)
+                    {
+                        ans++;
+                        pre = 3;
+                    }
+                    else pre = 1;
+                }
+                else if (!nowone && nowtwo)
+                {
+                    if (pre == 1)
+                    {
+                        ans++;
+                        pre = 3;
+                    }
+                    else pre = 2;
+                }
+                lastPos = j;
+            }
         }
     }
-    printf("%lld\n", ans);
+    printf("%d\n", ans);
     return 0;
 }
