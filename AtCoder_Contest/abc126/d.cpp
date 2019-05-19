@@ -17,11 +17,11 @@
 using namespace std;
 /* header end */
 
-const int maxn = 2000000;
+const int maxn = 1e5 + 10;
 struct Edge
 {
     int u, v, w;
-} edge[maxn];
+} edge[maxn * 2];
 int n, cnt, ans[maxn], vis[maxn];
 vector<int> g[maxn];
 
@@ -49,14 +49,9 @@ void bfs()
             if (!vis[edge[cur].v])
             {
                 if (edge[cur].w % 2 == 0)
-                {
                     ans[edge[cur].v] = ans[x];
-
-                }
                 else
-                {
                     ans[edge[cur].v] = 1 - ans[x];
-                }
                 Q.push(edge[cur].v);
             }
         }
