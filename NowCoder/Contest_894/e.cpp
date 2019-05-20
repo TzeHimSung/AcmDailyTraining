@@ -17,41 +17,66 @@
 using namespace std;
 /* header end */
 
-struct Query
+const int maxn = 5e6 + 10;
+const int mod = 1e9 + 7;
+
+struct Node
 {
-    int v, t, m, id;
-    Query() {}
-    Query(int a, int b, int c, int d): v(a), t(b), m(c), id(d) {}
-    Query(int a, int b, int c): v(a), t(b), id(c) {}
-    bool operator<(const Query &rhs)const
+    ll mv_2, _2mvg, mg_2;
+    Node()
     {
-        return t < rhs.t;
+        mv_2 = _2mvg = mg_2 = 0;
     }
-};
-int q;
-vector<Query>query;
+} bit[maxn];
+int q, op;
+ll v, m, t;
+
+void add(ll pos, ll a, ll b, ll c)
+{
+    while (pos < maxn)
+    {
+        bit[pos].mv_2 += a;
+        bit[pos]._2mvg += b;
+        bit[pos].mg_2 += c;
+        pos += pos & -pos;
+    }
+}
+
+Node sum(ll pos)
+{
+    Node ret = Node();
+    while (pos)
+    {
+        ret.mv_2 = (ret.mv_2 + bit[pos].mv_2) % mod;
+        ret._2mvg = (ret._2mvg + bit[pos]._2mvg) % mod;
+        ret.mg_2 = (ret.mg_2 + bit[pos].mg_2) % mod;
+        pos -= pos & -pos;
+    }
+    return ret;
+}
 
 int main()
 {
-    query.clear();
     scanf("%d", &q);
-    for (int i = 1; i <= q; i++)
+    while (q--)
     {
-        int op; scanf("%d", &op);
+        scanf("%d", &op);
         if (op == 1)
         {
-            int v, t, m; scanf("%d%d%d", &v, &t, &m);
-            query.pb(Query(v, t, m, i));
+            scanf("%lld%lld%lld", &v, &t, &m);
+            v = v - 10 * t;
+            add(v + 2e6, (m * v * v) % mod, (2LL * m * v * 10 % mod + mod) % mod, m * 100 % mod);
         }
         else
         {
-            int v, t; scanf("%d%d", &v, &t);
-            query.pb(Query(v, t, i));
+            scanf("%lld%lld", &v, &t);
+            v = v - 10 * t + 2e6;
+            Node ans = sum(v);
+            ll sum = ans.mv_2 % mod;
+            sum = (sum + ans._2mvg % mod * t % mod) % mod;
+            sum = (sum + ans.mg_2 % mod * t % mod * t % mod) % mod;
+            printf("%lld\n", (sum + mod) % mod);
         }
-    }
-    for (auto it : query)
-    {
-
     }
     return 0;
 }
