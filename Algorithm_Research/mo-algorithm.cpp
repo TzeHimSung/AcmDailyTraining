@@ -313,30 +313,24 @@
 #define INFI 123456789
 
 typedef long long ll;
-struct edge
-{
+struct edge {
     int next, node;
 } e[Q << 1 | 1];
 int head[N + 1], tot = 0;
-struct point
-{
+struct point {
     int x, y, n;
-    bool operator < (const point &p) const
-    {
+    bool operator < (const point &p) const {
         return x == p.x ? y < p.y : x < p.x;
     }
 } interval[Q + 1], p[Q + 1];
-struct inedge
-{
+struct inedge {
     int a, b, w;
-    bool operator < (const inedge &x) const
-    {
+    bool operator < (const inedge &x) const {
         return w < x.w;
     }
 } ie[Q << 3 | 1];
 int cnt = 0;
-struct BITnode
-{
+struct BITnode {
     int w, p;
 } arr[Q + 1];
 int n, q, col[N + 1], a[Q + 1], *l[Q + 1], f[N + 1], c[N + 1];
@@ -344,77 +338,63 @@ ll cur, ans[Q + 1];
 bool v[Q + 1];
 
 template <typename T>
-inline T abs(T x)
-{
+inline T abs(T x) {
     return x < (T)0 ? -x : x;
 }
 
-inline int dist(const point &a, const point &b)
-{
+inline int dist(const point &a, const point &b) {
     return abs(a.x - b.x) + abs(a.y - b.y);
 }
 
-inline void addinedge(int a, int b, int w)
-{
+inline void addinedge(int a, int b, int w) {
     ++cnt;
     ie[cnt].a = a, ie[cnt].b = b, ie[cnt].w = w;
 }
 
-inline void addedge(int a, int b)
-{
+inline void addedge(int a, int b) {
     e[++tot].next = head[a];
     head[a] = tot, e[tot].node = b;
 }
 
-inline bool cmp(int *a, int *b)
-{
+inline bool cmp(int *a, int *b) {
     return *a < *b;
 }
 
-inline int query(int x)
-{
+inline int query(int x) {
     int r = INFI, p = -1;
     for (; x <= q; x += x & -x)
         if (arr[x].w < r) r = arr[x].w, p = arr[x].p;
     return p;
 }
 
-inline void modify(int x, int w, int p)
-{
+inline void modify(int x, int w, int p) {
     for (; x > 0; x -= x & -x)
         if (arr[x].w > w) arr[x].w = w, arr[x].p = p;
 }
 
-int find(int x)
-{
+int find(int x) {
     return x == f[x] ? x : f[x] = find(f[x]);
 }
 
-inline ll calc(int x)
-{
+inline ll calc(int x) {
     return (ll)x * (x - 1);
 }
 
-inline void add(int l, int r)
-{
-    for (int i = l; i <= r; ++i)
-    {
+inline void add(int l, int r) {
+    for (int i = l; i <= r; ++i) {
         cur -= calc(c[col[i]]);
         cur += calc(++c[col[i]]);
     }
 }
 
-inline void remove(int l, int r)
-{
-    for (int i = l; i <= r; ++i)
-    {
+inline void remove(int l, int r) {
+    for (int i = l; i <= r; ++i) {
         cur -= calc(c[col[i]]);
         cur += calc(--c[col[i]]);
     }
 }
 
-void dfs(int x, int l, int r)
-{
+void dfs(int x, int l, int r) {
     v[x] = true;
     //Process right bound
     if (r < interval[x].y)
@@ -428,8 +408,7 @@ void dfs(int x, int l, int r)
         add(interval[x].x, l - 1);
     ans[x] = cur;
     //Moving on to next query
-    for (int i = head[x]; i; i = e[i].next)
-    {
+    for (int i = head[x]; i; i = e[i].next) {
         if (v[e[i].node]) continue;
         dfs(e[i].node, interval[x].x, interval[x].y);
     }
@@ -446,16 +425,14 @@ void dfs(int x, int l, int r)
         remove(interval[x].x, l - 1);
 }
 
-int main()
-{
+int main() {
     //Initialize
     scanf("%d%d", &n, &q);
     for (int i = 1; i <= n; ++i) scanf("%d", col + i);
     for (int i = 1; i <= q; ++i) scanf("%d%d", &interval[i].x, &interval[i].y);
     //Manhattan MST
     for (int i = 1; i <= q; ++i) p[i] = interval[i], p[i].n = i;
-    for (int dir = 1; dir <= 4; ++dir)
-    {
+    for (int dir = 1; dir <= 4; ++dir) {
         //Coordinate transform
         if (dir == 2 || dir == 4)
             for (int i = 1; i <= q; ++i) std::swap(p[i].x, p[i].y);
@@ -474,8 +451,7 @@ int main()
         //Initialize BIT
         for (int i = 1; i <= q; ++i) arr[i].w = INFI, arr[i].p = -1;
         //Find points and add edges
-        for (int i = q; i > 0; --i)
-        {
+        for (int i = q; i > 0; --i) {
             int pos = query(a[i]);
             if (pos != -1)
                 addinedge(p[i].n, p[pos].n, dist(p[i], p[pos]));
@@ -488,8 +464,7 @@ int main()
     for (int i = 1; i <= q; ++i) f[i] = i;
     //Add edges
     for (int i = 1; i <= cnt; ++i)
-        if (find(ie[i].a) != find(ie[i].b))
-        {
+        if (find(ie[i].a) != find(ie[i].b)) {
             f[find(ie[i].a)] = find(ie[i].b);
             addedge(ie[i].a, ie[i].b), addedge(ie[i].b, ie[i].a);
         }
@@ -498,12 +473,10 @@ int main()
     ++c[col[1]];
     dfs(1, 1, 1);
     //Output
-    for (int i = 1; i <= q; ++i)
-    {
+    for (int i = 1; i <= q; ++i) {
         ll x = ans[i], y = calc(interval[i].y - interval[i].x + 1);
         if (!x) printf("0/1\n");
-        else
-        {
+        else {
             ll g = __gcd(x, y);
             printf("%lld/%lld\n", x / g, y / g);
         }
