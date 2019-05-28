@@ -393,7 +393,7 @@ inline void remove(int l, int r) {
         cur += calc(--c[col[i]]);
     }
 }
-
+// why call dfs? 
 void dfs(int x, int l, int r) {
     v[x] = true;
     //Process right bound

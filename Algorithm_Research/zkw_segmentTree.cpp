@@ -18,37 +18,38 @@ using namespace std;
 /* header end */
 
 const int maxn = 1e5 + 10;
-int n, segt[maxn << 2], lp;
+int n, sum[maxn << 2], minn[maxn << 2], lp;
 
 //维护
 void maintain(int curpos) {
-    segt[curpos] = segt[lson] + segt[rson];
+    sum[curpos] = sum[lson] + sum[rson];
+    minn[curpos] = min(minn[lson] + minn[rson]);
 }
 
 //非递归建树，注意这里是倒着建的，时间复杂度O(n)
 void build() {
     for (lp = 1; lp < n; lp <<= 1);
-    for (int i = lp + 1; i <= lp + n; i++) scanf("%d", &segt[i]);
+    for (int i = lp + 1; i <= lp + n; i++) scanf("%d", &sum[i]);
     for (int i = lp - 1; i; i--) maintain(i);
 }
 
 //单点修改
 void update(int pos, int val) {
     pos += lp; //确定叶子位置只需O(1)
-    segt[pos] = val;
+    sum[pos] = val;
     for (pos >>= 1; pos; pos >>= 1) maintain(pos);
-    //还有一种压行写法
-    // segt[pos = pos + lp] = val;
-    // while (pos) maintain(segt[pos >>= 1]);
+    //还有一种压行写法，结构性其实更好
+    // sum[pos += lp] = val;
+    // while (pos) maintain(sum[pos >>= 1]);
 }
 
 //区间和查询
 int querySum(int l, int r) {
     int ret = 0;
-    //这里较难理解,
+    //这里较难理解，l^r^1==0时其实就是区间相交的边界。
     for (l += lp - 1, r += lp + 1; l ^ r ^ 1; l >>= 1, r >>= 1) {
-        if (~l & 1) ret += segt[l ^ 1];
-        if (r & 1) ret += segt[r ^ 1];
+        if (~l & 1) ret += minn[l ^ 1];
+        if (r & 1) ret += minn[r ^ 1];
     }
     return ret;
 }
@@ -57,11 +58,11 @@ int querySum(int l, int r) {
 int queryMin(int l, int r) {
     int L = 0, R = 0;
     for (l += lp - 1, r += lp + 1; l ^ r ^ 1; l >>= 1, r >>= 1) {
-        L += segt[l], R += segt[r];
-        if (~l & 1) L = min(L, segt[l ^ 1]);
-        if (r & 1) R = min(R, segt[r ^ 1]);
+        L += sum[l], R += sum[r];
+        if (~l & 1) L = min(L, sum[l ^ 1]);
+        if (r & 1) R = min(R, sum[r ^ 1]);
     }
-    int ret = min(L, R); while (l) ret += segt[l >>= 1];
+    int ret = min(L, R); while (l) ret += sum[l >>= 1];
 }
 
 int main() {

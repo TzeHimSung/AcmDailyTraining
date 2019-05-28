@@ -10,6 +10,7 @@
         "*.tcc": "cpp",
         "complex": "cpp",
         "algorithm": "cpp",
-        "array": "cpp"
+        "array": "cpp",
+        "cmath": "cpp"
     }
 }
