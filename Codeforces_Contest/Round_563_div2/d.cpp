@@ -17,15 +17,16 @@
 using namespace std;
 /* header end */
 
-int n, cur, x;
+int n, last, x;
 
 int main() {
-    cin >> n >> x; n = 1 << n;
+    cin >> n >> x;
+    n = 1 << n;
     cout << (x < n ? n / 2 : n) - 1 << endl;
     rep0(i, 1, n)
     if (i < (i ^ x)) {
-        cout << (i^cur) << " ";
-        cur = i;
+        cout << (i ^ last) << " ";
+        last = i;
     }
     return 0;
 }
