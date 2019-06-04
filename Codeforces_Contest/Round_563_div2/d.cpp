@@ -28,5 +28,6 @@ int main() {
         cout << (i ^ last) << " ";
         last = i;
     }
+    puts("");
     return 0;
 }
