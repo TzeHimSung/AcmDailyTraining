@@ -11,16 +11,15 @@
 #define eps 1e-8
 #define int_inf 0x3f3f3f3f
 #define ll_inf 0x7f7f7f7f7f7f7f7f
-#define lson curPos<<1
-#define rson curPos<<1|1
+#define lson curpos<<1
+#define rson curpos<<1|1
 /* namespace */
 using namespace std;
 /* header end */
 
 /* variable and function */
 
-int main()
-{
+int main() {
     /* main */
     return 0;
 }

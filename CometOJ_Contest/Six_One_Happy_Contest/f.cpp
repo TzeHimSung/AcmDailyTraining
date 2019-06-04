@@ -17,12 +17,26 @@
 using namespace std;
 /* header end */
 
-int n, m, q;
+const int maxn = 1e3 + 10;
+int n, m, q, a[maxn][maxn], curr = 0;
 
 int main() {
     cin >> n >> m >> q;
+    rep0(i, 1, n) {
+        rep0(j, 1, m) {
+            a[i][j] = 1;
+            curr++;
+        }
+    }
+    cout << curr << endl;
     while (q--) {
-        
+        int x, y; cin >> x >> y;
+        rep0(i, 0, 2) {
+            rep0(j, 0, 2) {
+                if (a[x - i][y - j]) a[x - i][y - j] = 0, curr--;
+            }
+        }
+        printf("%d\n", curr);
     }
     return 0;
 }
