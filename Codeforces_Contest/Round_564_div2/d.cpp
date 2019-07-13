@@ -17,11 +17,16 @@
 using namespace std;
 /* header end */
 
-int n;
+const int maxn = 2e5 + 10, mod = 998244353;
+int n, a[maxn];
 
 int main() {
-    cin >> n;
-    cout << n / 2 + 1 << endl;
-    rep1(i, 1, n) cout << (i + 1) / 2 << " " << i / 2 + 1 << endl;
+    scanf("%d", &n);
+    ll ans = n;
+    rep1(i, 1, n - 1) {
+        int x, y; scanf("%d%d", &x, &y);
+        ans = ans * (++a[x]) % mod * (++a[y]) % mod;
+    }
+    printf("%lld\n", ans);
     return 0;
 }
