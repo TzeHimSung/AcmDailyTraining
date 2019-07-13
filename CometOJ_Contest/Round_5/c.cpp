@@ -19,12 +19,13 @@ using namespace std;
 
 const int maxn = 5e5 + 10;
 int n, a[maxn], depth[maxn], vis[maxn];
-vector<int>adj[maxn], nodes[maxn];
-multiset<int>s;
+vector<int>adj[maxn], b[maxn];
+multiset<int>lim;
 priority_queue<int, vector<int>, greater<int>>q;
 
 void dfs(int x, int f) {
-    node[depth[x] = depth[f] + 1].pb(x);
+    depth[x] = depth[f] + 1;
+    b[depth[x]].pb(x);
     for (auto i : adj[x])
         if (i != f) dfs(i, x);
 }
@@ -37,9 +38,21 @@ int main() {
     }
     dfs(1, 0);
     rep1(i, 1, n) scanf("%d", &a[i]);
-    rep1(i, 2, n) s.insert(a[i]);
-    printf("1");
-    if (n == 1) puts(" ");
-
+    rep1(i, 2, n) lim.insert(a[i]);
+    printf("1 ");
+    if (n == 1) puts("");
+    int curr = 1, minn = 1;
+    while (curr != n) {
+        while (lim.size() && minn < *lim.begin()) {
+            minn++;
+            for (auto x : b[minn]) q.push(x);
+        }
+        int x = q.top();
+        lim.erase(lim.find(a[x]));
+        q.pop();
+        printf("%d ", x);
+        curr++;
+        if (curr == n) puts("");
+    }
     return 0;
 }
