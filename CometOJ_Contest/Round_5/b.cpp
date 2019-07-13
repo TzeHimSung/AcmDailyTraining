@@ -20,11 +20,24 @@ using namespace std;
 int q;
 ll n;
 
+int f(int x) {
+    int ret = 0;
+    while (x) {
+        ret += x % 10;
+        x /= 10;
+    }
+    return ret;
+}
+
 int main() {
     scanf("%d", &q);
     while (q--) {
+        int ans = 0;
         scanf("%lld", &n);
-
+        rep1(i, 1, 200) {
+            if (n % i == 0 && f(i) == (i >> 1)) ans++;
+        }
+        printf("%d\n", ans);
     }
     return 0;
 }
