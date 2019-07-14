@@ -33,34 +33,6 @@
                 "-O0"
             ],
             "group": "build"
-        },
-        {
-            "label": "build_kotlin_files",
-            "type": "shell",
-            "command": "kotlinc",
-            "args": [
-                "${fileDirname}/${fileBasename}",
-                "-include-runtime",
-                "-d",
-                "${fileDirname}/${fileBasenameNoExtension}.jar"
-            ],
-            "group": "build"
-        },
-        {
-            "label": "build_and_run_kotlin_files",
-            "type": "shell",
-            "command": "kotlinc",
-            "args": [
-                "${fileDirname}/${fileBasename}",
-                "-include-runtime",
-                "-d",
-                "${fileDirname}/${fileBasenameNoExtension}.jar",
-                "&&",
-                "java",
-                "-jar",
-                "${fileDirname}/${fileBasenameNoExtension}.jar",
-            ],
-            "group": "build"
         }
     ]
 }
