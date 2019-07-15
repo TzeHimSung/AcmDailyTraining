@@ -21,31 +21,31 @@ using namespace std;
 const int maxn = 5e5 + 10;
 int n, top = 0, maxx, pos, cur;
 ll ans = 0;
-int fir[maxn], nxt[maxn], gett[maxn], depth[maxn], son[maxn];
+int head[maxn], nxt[maxn], edge[maxn], depth[maxn], size[maxn];
 
 void addEdge(int x, int y) {
-    gett[++top] = y;
-    nxt[top] = fir[x];
-    fir[x] = top;
+    edge[++top] = y;
+    nxt[top] = head[x];
+    head[x] = top;
 }
 
 void dfs(int x, int fa) {
-    son[x] = 1;
-    for (int i = fir[x]; i; i = nxt[i]) {
-        int v = gett[i];
+    size[x] = 1;
+    for (int i = head[x]; i; i = nxt[i]) {
+        int v = edge[i];
         if (v == fa) continue;
         depth[v] = depth[x] + 1;
         dfs(v, x);
-        son[x] += son[v];
+        size[x] += size[v];
     }
 }
 
 void calc(int x, int fa, ll num) {
     ans = max(ans, num);
-    for (int i = fir[x]; i; i = nxt[i]) {
-        int v = gett[i];
+    for (int i = head[x]; i; i = nxt[i]) {
+        int v = edge[i];
         if (v == fa) continue;
-        calc(v, x, num + n - 2 * son[v]);
+        calc(v, x, num + n - 2 * size[v]);
     }
 }
 
