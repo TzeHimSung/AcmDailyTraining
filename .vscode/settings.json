@@ -2,6 +2,7 @@
     "files.associations": {
         "*.js": "javascript",
         "*.vue": "html",
+        "*.kt": "kotlin",
         "cstdint": "cpp",
         "string": "cpp",
         "iostream": "cpp",
@@ -11,6 +12,7 @@
         "complex": "cpp",
         "algorithm": "cpp",
         "array": "cpp",
-        "cmath": "cpp"
+        "cmath": "cpp",
+        "ostream": "cpp"
     }
 }
