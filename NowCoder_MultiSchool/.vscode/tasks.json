@@ -1,0 +1,38 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build_cpp_files",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-g",
+                "${fileDirname}/${fileBasename}",
+                "-o",
+                "${fileDirname}/${fileBasenameNoExtension}.out",
+                "-Wall",
+                "-std=c++14",
+                "-O2",
+                "-Weffc++"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "debug_cpp_files",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-g",
+                "${fileDirname}/${fileBasename}",
+                "-o",
+                "${fileDirname}/${fileBasenameNoExtension}.out",
+                "-std=c++14",
+                "-O0"
+            ],
+            "group": "build"
+        }
+    ]
+}

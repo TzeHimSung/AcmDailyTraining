@@ -1,0 +1,18 @@
+{
+    "files.associations": {
+        "*.js": "javascript",
+        "*.vue": "html",
+        "*.kt": "kotlin",
+        "cstdint": "cpp",
+        "string": "cpp",
+        "iostream": "cpp",
+        "climits": "cpp",
+        "cfloat": "cpp",
+        "*.tcc": "cpp",
+        "complex": "cpp",
+        "algorithm": "cpp",
+        "array": "cpp",
+        "cmath": "cpp",
+        "ostream": "cpp"
+    }
+}
