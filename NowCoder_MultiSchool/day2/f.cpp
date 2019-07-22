@@ -18,77 +18,48 @@
 using namespace std;
 /* header end */
 
-struct Edge {
-    int from, to, weight;
-    Edge() {}
-    Edge(int a, int b, int c) {
-        if (a < b) from = a, to = b;
-        else to = a, from = b;
-        weight = c;
+const int maxn = 30;
+int n, a[maxn], b[maxn], v[maxn][maxn], vis[maxn];
+ll ans = ll_inf, totCmp = 0;
+
+void dfs(int depth, int curr, ll sum) {
+    if (sum >= ans) return;
+    if (depth >= n) {
+        int b0 = b[0];
+        if (b[0] != n)
+            for (int i = a[a[0]] + 1; i < 2 * n; i++) {
+                for (int j = 1; j <= b[0]; j++) sum += v[i][b[j]];
+                b[++b[0]] = i;
+            }
+        ans = min(ans, sum);
+        b[0] = b0;
+        return;
     }
-    bool operator<(const Edge &rhs)const {
-        if (weight != rhs.weight) return weight > rhs.weight;
-        else return from < rhs.from;
+    ll addB = 0;
+    int a0 = a[0], b0 = b[0];
+    rep1(i, curr, n + depth) {
+        ll addA = 0;
+        rep1(j, 1, a[0]) addA += v[i][a[j]];
+        a[++a[0]] = i;
+        dfs(depth + 1, i + 1, sum + addA + addB);
+        a[0]--;
+        rep1(j, 1, b[0]) addB += v[i][b[j]];
+        b[++b[0]] = i;
     }
-};
-vector<Edge>v;
-const int maxn = 20;
-int n, vis[maxn];
-map<pair<int, int>, int>cnt;
-ll ans = 0;
+    a[0] = a0, b[0] = b0;
+}
 
 int main() {
-    cnt.clear();
+    memset(vis, 0, sizeof(vis));
     scanf("%d", &n);
-    n *= 2;
-    rep1(i, 1, n) {
-        rep1(j, 1, n) {
-            int k; scanf("%d", &k);
-            if (i == j) continue;
-            int aa = min(i, j), bb = max(i, j);
-            if (!cnt.count(mp(aa, bb))) {
-                v.pb(aa, bb, k);
-                cnt[mp(aa, bb)] = 1;
-            } else continue;
-        }
+    rep0(i, 0, 2 * n) {
+        rep0(j, 0, 2 * n)
+        scanf("%d", &v[i][j]);
     }
-    sort(v.begin(), v.end());
-    memset(vis, -1, sizeof(vis));
-    int num[2] = {0}; //num of color
-    for (auto i : v) {
-        if (vis[i.from] != -1 && vis[i.to] != -1) continue;
-        else {
-            ans += i.weight;
-            if (num[0] == n / 2) {
-                if (vis[i.from] == 0) {
-                    vis[i.to] = 1;
-                    num[1]++;
-                } else {
-                    vis[i.from] = 1;
-                    num[1]++;
-                }
-            } else if (num[1] == n / 2) {
-                if (vis[i.from] == 1) {
-                    vis[i.to] = 0;
-                    num[0]++;
-                } else {
-                    vis[i.from] = 0;
-                    num[0]++;
-                }
-            } else {
-                if (vis[i.from] == 1 || vis[i.from] == 0) {
-                    vis[i.to] = vis[i.from] ^ 1;
-                    num[vis[i.to]]++;
-                } else if (vis[i.to] == 1 || vis[i.to] == 0) {
-                    vis[i.from] = vis[i.to] ^ 1;
-                    num[vis[i.from]]++;
-                } else {
-                    vis[i.from] = 1; vis[i.to] = 0;
-                    num[0]++; num[1]++;
-                }
-            }
-        }
+    rep0(i, 0, 2 * n) {
+        rep0(j, i + 1, 2 * n) totCmp += v[i][j];
     }
-    printf("%lld\n", ans);
+    dfs(0, 0, 0);
+    printf("%lld\n", totCmp - ans);
     return 0;
 }
