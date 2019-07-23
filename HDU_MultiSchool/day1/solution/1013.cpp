@@ -14,7 +14,7 @@ int sgn(long long x) {
 
 struct P {
     long long d[3];
-    long long& operator[](int x) {
+    long long &operator[](int x) {
         return d[x];
     }
     P () {}
@@ -82,7 +82,7 @@ vector<P> convex(vector<P> p) {
     for (int i = 0; i < p.size(); i++) {
         while (S.size() >= 2
                 && sgn(det(S[S.size() - 2], S.back(), p[i])) <= 0)
-                    S.pop_back();
+            S.pop_back();
         S.push_back(p[i]);
     }
     ans = S;
@@ -90,7 +90,7 @@ vector<P> convex(vector<P> p) {
     for (int i = (int)p.size() - 1; i >= 0; i--) {
         while (S.size() >= 2
                 && sgn(det(S[S.size() - 2], S.back(), p[i])) <= 0)
-                    S.pop_back();
+            S.pop_back();
         S.push_back(p[i]);
     }
     for (int i = 1; i + 1 < S.size(); i++)
@@ -168,8 +168,7 @@ void PLA() {
         if (f(w, p[i].x) != p[i].y) {
             w = w + p[i].y * p[i].x;
             cnt = 0;
-        }
-        else {
+        } else {
             if (++cnt == n) break;
         }
         i = i + 1;
