@@ -13,7 +13,6 @@
 #define ll_inf 0x7f7f7f7f7f7f7f7f
 #define lson (curpos<<1)
 #define rson (curpos<<1|1)
-#define mid (curl+curr>>1)
 /* namespace */
 using namespace std;
 /* header end */
