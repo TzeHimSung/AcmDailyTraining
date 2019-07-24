@@ -1,5 +1,6 @@
 /* basic header */
-#include <bits/stdc++.h>
+#include <iostream>
+#include <cstring>
 /* define */
 #define ll long long
 #define dou double
@@ -18,84 +19,70 @@ using namespace std;
 /* header end */
 
 const int maxn = 1e5 + 10;
-priority_queue<int, vector<int>>q;
-ll curCir = -1;
+int a[maxn];
 
-void maintain() {
-    multiset<int>tmp; tmp.clear();
-    int firstL = 0, secondL = 0;
+struct Node {
+    int l, r, val[50];
+};
 
-    if (q.empty()) return;
-    else {
-        firstL = q.top(); tmp.insert(firstL);
-        q.pop();
+Node segt[maxn << 2];
+
+void maintain(Node &fa, Node &ls, Node &rs) {
+    int i = 0, j = 0;
+    rep0(c, 0, 50) {
+        if (i >= 50)
+            fa.val[c] = rs.val[j++];
+        else if (j >= 50)
+            fa.val[c] = ls.val[i++];
+        else if (ls.val[i] < rs.val[j])
+            fa.val[c] = rs.val[j++];
+        else fa.val[c] = ls.val[i++];
     }
-    if (q.empty()) return;
+}
+
+void build(int curpos, int curl, int curr) {
+    segt[curpos].l = curl, segt[curpos].r = curr;
+    // memset(segt[curpos].val, 0, sizeof(segt[curpos].val));
+    if (curl < curr) { // if is not leaf node
+        int mid = curl + curr >> 1;
+        build(lson, curl, mid); build(rson, mid + 1, curr);
+        maintain(segt[curpos], segt[lson], segt[rson]);
+    } else
+        segt[curpos].val[0] = a[curl]; // if is leaf node
+}
+
+Node query(int curpos, int curl, int curr) {
+    if (segt[curpos].l == curl && segt[curpos].r == curr) return segt[curpos];
     else {
-        secondL = q.top(); tmp.insert(secondL);
-        q.pop();
-    }
-    while (!q.empty()) {
-        int curr = q.top();
-        if (firstL - secondL < curr) {
-            curCir = firstL + secondL + curr;
-            break;
-        } else {
-            q.pop();
-            tmp.insert(curr);
+        int mid = segt[curpos].l + segt[curpos].r >> 1;
+        if (curr <= mid) return query(lson, curl, curr);
+        else if (curl > mid) return query(rson, curl, curr);
+        else {
+            Node lnode = query(lson, curl, mid), rnode = query(rson, mid + 1, curr);
+            Node ret; ret.l = curl, ret.r = curr;
+            maintain(ret, lnode, rnode);
+            return ret;
         }
     }
-    for (auto i : tmp) q.push(i);
 }
 
 int main() {
-    int n, m;
-    while (~scanf("%d%d", &n, &m)) {
-        // init
-        int a[maxn];
-        ll ans[maxn];
-        vector<pair<int, pair<int, int>>>v; // length l r
-        map<pair<int, int>, int> pos;
-        curCir = -1;
-        while (!q.empty()) q.pop();
-        pos.clear();
-        // input
+    int n, q;
+    while (~scanf("%d%d", &n, &q)) {
         rep1(i, 1, n) scanf("%d", &a[i]);
-        rep1(i, 1, m) {
+        build(1, 1, n);
+        while (q--) {
             int l, r; scanf("%d%d", &l, &r);
-            if (l > r) swap(l, r);
-            v.pb(mp(r - l + 1, mp(l, r))); pos[mp(l, r)] = i;
+            Node cur = query(1, l, r);
+            ll ans = -1;
+            rep0(i, 0, 48) {
+                if ((ll)cur.val[i] < (ll)cur.val[i + 1] + (ll)cur.val[i + 2]) {
+                    ans = (ll)cur.val[i] + (ll)cur.val[i + 1] + (ll)cur.val[i + 2];
+                    break;
+                }
+            }
+            printf("%lld\n", ans);
         }
-        sort(v.begin(), v.end());
-        int curl = (*v.begin()).second.first, curr = (*v.begin()).second.second;
-        // init state
-        rep1(i, curl, curr) q.push(a[i]);
-        maintain();
-        ans[pos[(*v.begin()).second]] = curCir;
-        v.erase(v.begin());
-        // enlarge interval
-        for (auto it : v) {
-            while (it.second.first < curl) {
-                q.push(a[--curl]);
-                maintain();
-            }
-            while (it.second.first > curl) {
-
-                q.push(a[++curl]);
-                maintain();
-            }
-            while (it.second.second < curr) {
-
-                q.push(a[--curr]);
-                maintain();
-            }
-            while (it.second.second > curr) {
-                q.push(a[++curr]);
-                maintain();
-            }
-            ans[pos[it.second]] = curCir;
-        }
-        rep1(i, 1, m) printf("%lld\n", ans[i]);
     }
     return 0;
 }
