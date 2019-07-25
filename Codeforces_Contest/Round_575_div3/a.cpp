@@ -22,7 +22,7 @@ int q;
 int main() {
     cin >> q;
     while (q--) {
-        unsigned long long sum = 0, a, b, c; cin >> a >> b >> c;
+        ll sum = 0, a, b, c; cin >> a >> b >> c;
         sum = (a + b + c) / 2;
         cout << sum << endl;
     }

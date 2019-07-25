@@ -18,30 +18,28 @@ using namespace std;
 /* header end */
 
 const int maxn = 2e5 + 10;
+const string rgb = "RGB";
+int q, n, k, dp[maxn];
 char s[maxn];
 
+int solve(int x) {
+    rep1(i, 1, n) {
+        dp[i] = dp[i - 1] + (rgb[x] != s[i]);
+        x = (x + 1) % 3;
+    }
+    int ret = dp[k];
+    for (int i = k + 1; i <= n; i++)
+        ret = min(ret, dp[i] - dp[i - k]);
+    return ret;
+}
+
 int main() {
-    int q; scanf("%d", &q);
+    scanf("%d", &q);
     while (q--) {
-        int n, k; scanf("%d%d", &n, &k);
+        scanf("%d%d", &n, &k);
         scanf("%s", s + 1);
-        // 0 is g    1 is b   2 is r
-        int dp[maxn][3]; dp[0][0] = dp[0][1] = dp[0][2] = 0;
-        rep1(i, 1, n) {
-            if (s[i - 1] == 'R') {
-                if (s[i] == 'G') dp[i][0] = dp[i - 1][2] + 1;
-                else dp[i][0] = max(dp[i - 1][0] + 1, dp[i - 1][1] + 1);
-            }
-            if (s[i - 1] == 'G') {
-                if (s[i] == 'B') dp[i][1] = dp[i - 1][0] + 1;
-                else dp[i][1] = max(dp[i - 1][1] + 1, dp[i - 1][2] + 1);
-            }
-            if (s[i - 1] == 'B') {
-                if (s[i] == 'R') dp[i][2] = dp[i - 1][1] + 1;
-                else dp[i][2] = max(dp[i - 1][2] + 1, dp[i - 1][0] + 1);
-            }
-        }
-        printf("%d\n", k - max(dp[n][1], max(dp[n][2], dp[n][3])));
+        int ans = min(min(solve(0), solve(1)), solve(2));
+        printf("%d\n", ans);
     }
     return 0;
 }
