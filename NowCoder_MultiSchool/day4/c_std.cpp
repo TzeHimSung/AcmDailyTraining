@@ -38,7 +38,7 @@
 using namespace std;
 /* header end */
 
-const int maxn = 5e5 + 10;
+const int maxn = 3e6 + 10;
 
 struct Node {
     ll maxx, minn;
@@ -46,7 +46,6 @@ struct Node {
 
 struct SegT {
     Node mem[maxn << 2];
-    //被hry的线段树爆了
     void build(ll *s, int curPos, int curL, int curR) {
         if (curL == curR) {
             mem[curPos].maxx = mem[curPos].minn = s[curL];
@@ -78,11 +77,11 @@ struct SegT {
     }
 };
 SegT segT1, segT2;
-int n, a[maxn], l[maxn], r[maxn];
+int n, a[maxn], b[maxn], _b[maxn], l[maxn], r[maxn];
 ll ans = -1e18, s1[maxn], s2[maxn];
 
 void solve() {
-    stack<int>st; st.push(1); //单调栈开搞，栈内存放a数组的下标
+    stack<int>st; st.push(1);
     l[1] = 1;
     rep1(i, 2, n) {
         while (!st.empty() && a[i] <= a[st.top()]) st.pop();
@@ -102,25 +101,25 @@ void solve() {
 
 int main() {
     scanf("%d", &n);
-    //s1是前缀和，s2是后缀和
     s1[0] = 0; s2[n + 1] = 0;
+    rep1(i, 1, n) scanf("%d", &a[i]);
     rep1(i, 1, n) {
-        scanf("%d", &a[i]);
-        s1[i] = s1[i - 1] + a[i];
+        scanf("%d", &b[i]); _b[i] = b[i];
+        s1[i] = s1[i - 1] + b[i];
     }
-    for (int i = n; i >= 1; i--) s2[i] = s2[i + 1] + a[i];
-    //线段树维护前缀后缀和区间最值
+    for (int i = n; i >= 1; i--) s2[i] = s2[i + 1] + b[i];
+    // 维护前缀后缀和区间最大最小值
     segT1.build(s1, 1, 1, n);
     segT2.build(s2, 1, 1, n);
     solve();
     rep1(i, 1, n) {
         ll maxl = segT2.queryMax(1, 1, n, l[i], i) - s2[i + 1];
         ll maxr = segT1.queryMax(1, 1, n, i, r[i]) - s1[i - 1];
-        ll tmp = a[i] * (maxl + maxr - a[i]);
+        ll tmp = a[i] * (maxl + maxr - b[i]);
         ans = max(ans, tmp);
         maxl = segT2.queryMin(1, 1, n, l[i], i) - s2[i + 1];
         maxr = segT1.queryMin(1, 1, n, i, r[i]) - s1[i - 1];
-        tmp = a[i] * (maxl + maxr - a[i]);
+        tmp = a[i] * (maxl + maxr - b[i]);
         ans = max(ans, tmp);
     }
     printf("%lld\n", ans);

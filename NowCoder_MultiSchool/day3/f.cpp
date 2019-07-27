@@ -30,7 +30,7 @@ int main() {
         }
         rep1(i, 1, n) {
             rep1(j, 1, n) maxx[j] = -int_inf, minn[j] = int_inf;
-            rep1(j, i, n) {
+            rep1(j, i, n) { // 处理第i行到第n行
                 // 维护第p列的极值
                 rep1(p, 1, n) maxx[p] = max(maxx[p], a[j][p]);
                 rep1(p, 1, n) minn[p] = min(minn[p], a[j][p]);
