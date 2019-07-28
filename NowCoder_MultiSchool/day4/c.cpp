@@ -18,58 +18,79 @@ using namespace std;
 /* header end */
 
 const int maxn = 3e6 + 10;
-struct Node {
-    ll maxx, minn;
-} segt[maxn << 2];
-ll a[maxn], b[maxn], _b[maxn], ans = -1e18;
+ll a[maxn], b[maxn], s1[maxn], s2[maxn], ans = -1e18;
 int n, l[maxn], r[maxn];
 
-void build(int curpos, int curl, int curr) {
-    if (curl == curr) {
-        segt[curpos].maxx = segt[curpos].minn = b[curl];
-        return;
+struct SegT {
+    struct Node {
+        ll maxx, minn;
+    } node[maxn << 2];
+
+    void build(ll *s, int curpos, int curl, int curr) {
+        if (curl == curr) {
+            node[curpos].maxx = node[curpos].minn = s[curl];
+            return;
+        }
+        int mid = curl + curr >> 1;
+        build(s, lson, curl, mid); build(s, rson, mid + 1, curr);
+        node[curpos].maxx = max(node[lson].maxx, node[rson].maxx);
+        node[curpos].minn = min(node[lson].minn, node[rson].minn);
     }
-    int mid = curl + curr >> 1;
-    build(lson, curl, mid); build(rson, mid + 1, curr);
-    segt[curpos].maxx = max(segt[lson].maxx, segt[rson].maxx);
-    segt[curpos].minn = min(segt[lson].minn, segt[rson].minn);
-}
 
-ll queryMax(int curpos, int curl, int curr, int ql, int qr) {
-    if (ql <= curl && curr <= qr) return segt[curpos].maxx;
-    int mid = curl + curr >> 1;
-    if (qr <= mid) return queryMax(lson, curl, mid, ql, qr);
-    if (ql > mid) return queryMax(rson, mid + 1, curr, ql, qr);
-    return max(queryMax(lson, curl, mid, ql, mid), queryMax(rson, mid + 1, curr, mid + 1, qr));
-}
+    ll queryMax(int curpos, int curl, int curr, int ql, int qr) {
+        if (ql <= curl && curr <= qr) return node[curpos].maxx;
+        int mid = curl + curr >> 1;
+        if (qr <= mid) return queryMax(lson, curl, mid, ql, qr);
+        if (ql > mid) return queryMax(rson, mid + 1, curr, ql, qr);
+        return max(queryMax(lson, curl, mid, ql, mid), queryMax(rson, mid + 1, curr, mid + 1, qr));
+    }
 
-ll queryMin(int curpos, int curl, int curr, int ql, int qr) {
-    if (ql <= curl && curr <= qr) return segt[curpos].minn;
-    int mid = curl + curr >> 1;
-    if (qr <= mid) return queryMin(lson, curl, mid, ql, qr);
-    if (ql > mid) return queryMin(rson, mid + 1, curr, ql, qr);
-    return min(queryMin(lson, curl, mid, ql, mid), queryMin(rson, mid + 1, curr, mid + 1, qr));
+    ll queryMin(int curpos, int curl, int curr, int ql, int qr) {
+        if (ql <= curl && curr <= qr) return node[curpos].minn;
+        int mid = curl + curr >> 1;
+        if (qr <= mid) return queryMin(lson, curl, mid, ql, qr);
+        if (ql > mid) return queryMin(rson, mid + 1, curr, ql, qr);
+        return min(queryMin(lson, curl, mid, ql, mid), queryMin(rson, mid + 1, curr, mid + 1, qr));
+    }
+} segt1, segt2;
+
+void determinLR() {
+    stack<int>st; st.push(1);
+    l[1] = 1; r[n] = n;
+    rep1(i, 2, n) {
+        while (!st.empty() && a[i] <= a[st.top()]) st.pop();
+        if (st.empty()) l[i] = 1; else l[i] = st.top() + 1;
+        st.push(i);
+    }
+    while (!st.empty()) st.pop();
+    st.push(n);
+    for (int i = n - 1; i >= 1; i--) {
+        while (!st.empty() && a[i] <= a[st.top()]) st.pop();
+        if (st.empty()) r[i] = n; else r[i] = st.top() - 1;
+        st.push(i);
+    }
 }
 
 int main() {
-    b[0] = 0;
     scanf("%d", &n);
+    s1[0] = s2[n + 1] = 0;
     rep1(i, 1, n) scanf("%lld", &a[i]);
     rep1(i, 1, n) {
-        scanf("%lld", &b[i]); _b[i] = b[i];
-        b[i] += b[i - 1];
+        scanf("%lld", &b[i]);
+        s1[i] = s1[i - 1] + b[i];
     }
-    build(1, 1, n);
+    for (int i = n; i >= 1; i--) s2[i] = s2[i + 1] + b[i];
+    segt1.build(s1, 1, 1, n); segt2.build(s2, 1, 1, n);
+    determinLR();
     rep1(i, 1, n) {
-        l[i] = r[i] = i;
-        while (l[i] > 1 && a[l[i] - 1] >= a[i]) l[i]--;
-        while (r[i] < n && a[r[i] + 1] >= a[i]) r[i]++;
-        if (a[i] > 0) {
-            ll ls = b[i] - queryMin(1, 1, n, l[i], i), rs = queryMax(1, 1, n, i, r[i]) - b[i];
-            ans = max(ans, a[i] * (rs + ls - _b[i]));
+        if (a[i] >= 0) {
+            ll lsum = segt2.queryMax(1, 1, n, l[i], i) - s2[i + 1], rsum = segt1.queryMax(1, 1, n, i, r[i]) - s1[i - 1];
+            ll tmp = a[i] * (lsum + rsum - b[i]);
+            ans = max(tmp, ans);
         } else {
-            ll ls = queryMax(1, 1, n, l[i], i), rs = queryMin(1, 1, n, i, r[i]) - b[i];
-            ans = max(ans, a[i] * (rs + ls - _b[i]));
+            ll lsum = segt2.queryMin(1, 1, n, l[i], i) - s2[i + 1], rsum = segt1.queryMin(1, 1, n, i, r[i]) - s1[i - 1];
+            ll tmp = a[i] * (lsum + rsum - b[i]);
+            ans = max(ans, tmp);
         }
     }
     printf("%lld\n", ans);

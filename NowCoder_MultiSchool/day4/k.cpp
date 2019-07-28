@@ -17,17 +17,22 @@
 using namespace std;
 /* header end */
 
-const int maxn = 1e5 + 10;
+// const int maxn = 1e5 + 10;
+const int maxn = 10;
 char s[maxn];
-int len, mod3[maxn];
+int n, pre[maxn], cnt[3];
 
 int main() {
-    scanf("%s", s + 1);
-    len = strlen(s + 1);
+    scanf("%s", s + 1); n = strlen(s + 1);
+    rep1(i, 1, n) pre[i] = (pre[i - 1] + s[i] - '0') % 3;
     ll ans = 0;
-    rep1(i, 1, len) mod3[i] = (s[i] - '0') % 3;
-    set<int>pos; pos.clear();
-
+    rep1(i, 1, n) {
+        if (s[i] == '0') {
+            ans++; // 算单独0
+            if (s[i - 1] == '0') ans += cnt[pre[i - 1]]; // 如果前一位也是0，满足被100整除的要求
+        }
+        cnt[pre[i - 1]]++;
+    }
     printf("%lld\n", ans);
     return 0;
 }

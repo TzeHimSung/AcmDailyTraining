@@ -38,7 +38,7 @@ void update(int pos, int val) {
     pos += lp; //确定叶子位置只需O(1)
     sum[pos] = val;
     for (pos >>= 1; pos; pos >>= 1) maintain(pos);
-    //还有一种压行写法，结构性其实更好
+    //还有一种压行写法
     // sum[pos += lp] = val;
     // while (pos) maintain(sum[pos >>= 1]);
 }
