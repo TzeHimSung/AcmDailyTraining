@@ -96,7 +96,6 @@ int main() {
     scanf("%d%d", &n, &m);
     for (i = 1; i <= n; i++) {
         scanf("%d", &sz);
-//        a[i].init();
         for (j = 0; j < sz; j++) {
             scanf("%lld", &x);
             a[i].insert(x);
