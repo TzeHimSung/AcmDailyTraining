@@ -64,15 +64,16 @@ struct LinearBasis {
     }
 };
 
-LinearBasis lb;
-const int LBsize = 55;
-ll a[LBsize];
-int n;
+const int LBsize = 1e4 + 10;
+int t;
 
 int main() {
-    scanf("%d", &n);
-    rep1(i, 1, n) scanf("%lld", &a[i]);
-    lb.build(a, n);
-    printf("%lld\n", lb.queryMax());
+    scanf("%d", &t);
+    while (t--) {
+        int n; ll a[LBsize];
+        scanf("%d", &n);
+        rep1(i, 1, n) scanf("%lld", &a[i]);
+
+    }
     return 0;
 }
