@@ -57,7 +57,7 @@ int MillerRobin(ll x) {
 ll qp(ll a, ll b, ll mod) {
     ll ret = 1, base = a;
     while (b) {
-        if (b & 1)ret = mulmod(ret, base, mod);
+        if (b & 1) ret = mulmod(ret, base, mod);
         base = mulmod(base, base, mod);
         b >>= 1;
     }

@@ -18,42 +18,54 @@ using namespace std;
 /* header end */
 
 const int maxn = 2e5 + 10;
-ll a[maxn];
+struct SegmentTree {
+    struct Node {
+        int num, sum;
+        Node() {
+            num = 0, sum = 0;
+        }
+    } mem[maxn << 2];
+
+    SegmentTree(int *a, int n) {
+        build(a, 1, 1, n);
+    }
+
+    void maintain(int curpos) {
+        mem[curpos].num = mem[lson].num + mem[rson].num;
+        mem[curpos].sum = mem[lson].sum + mem[rson].sum;
+    }
+
+    void build(int *a, int curpos, int curl, int curr) {
+        if (curl == curr) {
+            mem[curpos].num = 1;
+            mem[curpos].sum = a[curl];
+            return;
+        }
+        int mid = curl + curr >> 1;
+        build(a, lson, curl, mid); build(a, rson, mid + 1, curr);
+        maintain(curpos);
+    }
+
+    Node query(int curpos, int curl, int curr, int ql, int qr) {
+        if (ql <= curl && curr <= qr)
+            return mem[curpos];
+        int mid = curl + curr >> 1;
+        if (qr <= mid) return query(lson, curl, mid, ql, qr);
+        if (ql > mid) return query(rson, mid + 1, curr, ql, qr);
+        Node ret;
+
+    }
+};
 
 int main() {
-    int q; scanf("%d", &q);
-    while (q--) {
-        ll n, m, ans[maxn], currSum = 0;
-        scanf("%lld%lld", &n, &m);
-        for (int i = 1; i <= n; i++) scanf("%lld", &a[i]);
-        priority_queue<ll>q;
-        priority_queue<ll, vector<ll>, greater<ll>>p;
-        while (!q.empty()) q.pop();
-        ll cnt = 0;
-        for (int i = 1; i <= n; i++) {
-            if (currSum + a[i] <= m) {
-                q.push(a[i]);
-                currSum += a[i];
-            } else {
-                ll tmp = a[i - 1], _size = q.size();
-                while (!p.empty() && tmp >= p.top()) {
-                    tmp -= p.top(); currSum += p.top();
-                    cnt--;
-                    p.pop();
-                }
-                while (!q.empty() && currSum + a[i] > m) {
-                    currSum -= q.top(); p.push(q.top());
-                    q.pop();
-                    cnt++;
-                }
-                if (a[i] <= m) {
-                    q.push(a[i]); currSum += a[i];
-                } else cnt++;
-            }
-            ans[i] = cnt;
-        }
-        for (int i = 1; i <= n; i++) printf("%lld ", ans[i]);
-        puts("");
+    int t; scanf("%d", &t);
+    while (t--) {
+        int n, m, a[maxn], len;
+        scanf("%d%d", &n, &m);
+        sot(a, n);
+        len = unique(a + 1, a + 1 + n) - a - 1;
+        SegmentTree seg = SegmentTree(a, len);
+
     }
     return 0;
 }
