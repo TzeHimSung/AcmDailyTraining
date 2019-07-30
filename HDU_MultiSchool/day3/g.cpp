@@ -18,54 +18,77 @@ using namespace std;
 /* header end */
 
 const int maxn = 2e5 + 10;
+int t, n, ans[maxn];
+ll m, sum[maxn * 5], cnt[maxn * 5];
+
 struct SegmentTree {
-    struct Node {
-        int num, sum;
-        Node() {
-            num = 0, sum = 0;
-        }
-    } mem[maxn << 2];
+    struct STNode {
+        ll sum, cnt;
+    } mem[maxn * 5];
 
-    SegmentTree(int *a, int n) {
-        build(a, 1, 1, n);
+    SegmentTree() {
+        rep0(i, 0, maxn * 5) mem[i].cnt = mem[i].sum = 0;
     }
 
-    void maintain(int curpos) {
-        mem[curpos].num = mem[lson].num + mem[rson].num;
-        mem[curpos].sum = mem[lson].sum + mem[rson].sum;
+    int query(int curpos, int curl, int curr, ll val, ll tot) {
+        if (mem[curpos].sum + tot <= val) return mem[curpos].cnt;
+        int mid = curl + curr >> 1;
+        int ret = query(lson, curl, mid, val, tot);
+        if (ret == mem[lson].cnt)
+            ret += query(rson, mid + 1, curr, val, tot + mem[lson].sum);
+        return ret;
     }
 
-    void build(int *a, int curpos, int curl, int curr) {
+    void insert(int curpos, int pos, int curl, int curr, ll val) {
         if (curl == curr) {
-            mem[curpos].num = 1;
-            mem[curpos].sum = a[curl];
+            mem[curpos].sum = val; mem[curpos].cnt = 1;
             return;
         }
         int mid = curl + curr >> 1;
-        build(a, lson, curl, mid); build(a, rson, mid + 1, curr);
-        maintain(curpos);
+        if (pos <= mid) insert(lson, pos, curl, mid, val);
+        else insert(rson, pos, mid + 1, curr, val);
+        mem[curpos].sum = mem[lson].sum + mem[rson].sum;
+        mem[curpos].cnt = mem[lson].cnt + mem[rson].cnt;
     }
 
-    Node query(int curpos, int curl, int curr, int ql, int qr) {
-        if (ql <= curl && curr <= qr)
-            return mem[curpos];
-        int mid = curl + curr >> 1;
-        if (qr <= mid) return query(lson, curl, mid, ql, qr);
-        if (ql > mid) return query(rson, mid + 1, curr, ql, qr);
-        Node ret;
-
+    void clear() {
+        rep0(i, 0, maxn * 5) mem[i].cnt = mem[i].sum = 0;
     }
-};
+} st;
+
+struct Node {
+    ll val;
+    int num, rank;
+} a[maxn];
+
+bool cmp(const Node &lhs, const Node &rhs) {
+    return lhs.val < rhs.val;
+}
+
+bool cmp2(const Node &lhs, const Node &rhs) {
+    return lhs.num < rhs.num;
+}
 
 int main() {
-    int t; scanf("%d", &t);
+    scanf("%d", &t);
     while (t--) {
-        int n, m, a[maxn], len;
-        scanf("%d%d", &n, &m);
-        sot(a, n);
-        len = unique(a + 1, a + 1 + n) - a - 1;
-        SegmentTree seg = SegmentTree(a, len);
-
+        st.clear();
+        rep0(i, 0, maxn) ans[i] = 0;
+        scanf("%d%lld", &n, &m);
+        rep1(i, 1, n) {
+            scanf("%lld", &a[i].val);
+            a[i].num = i;
+        }
+        sort(a + 1, a + 1 + n, cmp);
+        rep1(i, 1, n) a[i].rank = i;
+        sort(a + 1, a + 1 + n, cmp2);
+        rep1(i, 1, n) {
+            int t = st.query(1, 1, n, m - a[i].val, 0);
+            ans[i] = i - 1 - t;
+            st.insert(1, a[i].rank, 1, n, a[i].val);
+        }
+        rep1(i, 1, n) printf("%d ", ans[i]);
+        puts("");
     }
     return 0;
 }
