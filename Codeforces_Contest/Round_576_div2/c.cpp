@@ -17,33 +17,26 @@
 using namespace std;
 /* header end */
 
-const int maxn = 4e5 + 10;
-int n, m, a[maxn], k = 0, ans = int_inf, sum[maxn];
-ll K;
+int n, I, k, K = 1, total = 0, ans;
+map<int, int>cnt;
+vector<pair<int, int>>v;
 
 int main() {
-    scanf("%d%d", &n, &m); k = m * 8 / n;
-    if (k > 33) k = 33;
-    K = pow(2, k);
-    rep1(i, 1, n) scanf("%d", &a[i]);
-    sot(a, n);
-    vector<pair<int, int>>v; // num,times
-    int cnt = 1;
-    rep1(i, 2, n) {
-        if (a[i] == a[i - 1]) cnt++;
-        else {
-            v.pb(mp(a[i - 1], cnt));
-            cnt = 1;
-        }
+    scanf("%d%d", &n, &I); k = (I << 3) / n;
+    rep1(i, 1, k) {
+        K <<= 1;
+        if (K > n) break;
     }
-    v.pb(mp(a[n], cnt));
-    int vsize = v.size();
-    sum[0] = 0;
-    for (int i = 0; i < vsize; i++)
-        sum[i + 1] = sum[i] + v[i].second;
-    rep1(i, 1, n - K + 1) {
-        ans = min(ans, n - (sum[i + K - 1] - sum[i - 1]));
+    for (int i = 0, a; i < n; i++) {
+        scanf("%d", &a);
+        cnt[a]++;
     }
-    printf("%d\n", ans);
+    for (auto i : cnt) v.pb(i);
+    for (int i = 0; i < min(K, (int)v.size()); i++)
+        total += v[i].second;
+    ans = total;
+    for (int i = K; i < (int)v.size(); i++)
+        total = total + v[i].second - v[i - K].second, ans = max(ans, total);
+    printf("%d\n", n - ans);
     return 0;
 }
