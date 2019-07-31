@@ -1,99 +1,117 @@
-#include <iostream>
-#include <cstdio>
-#include <algorithm>
+/* basic header */
+#include <bits/stdc++.h>
+/* define */
+#define ll long long
+#define dou double
+#define pb emplace_back
+#define mp make_pair
+#define sot(a,b) sort(a+1,a+1+b)
+#define rep1(i,a,b) for(int i=a;i<=b;++i)
+#define rep0(i,a,b) for(int i=a;i<b;++i)
+#define eps 1e-8
+#define int_inf 0x3f3f3f3f
+#define ll_inf 0x7f7f7f7f7f7f7f7f
+#define lson (curpos<<1)
+#define rson (curpos<<1|1)
+/* namespace */
 using namespace std;
-struct perminent_segment_tree {
-    struct node {
+/* header end */
+
+const int maxn = 2e5 + 10;
+int a[maxn], b[maxn];
+
+struct ChairmanTree {
+    struct Node {
         int l, r, lc, rc, val;
-    } tr[2000001];
-    int ver[200001];
-    int num, vernum;
-    void setRange(int l, int r) {
+    } segt[maxn * 40];
+
+    int ver[maxn], num, totVer;
+
+    void buildTree(int l, int r) {
         num = 0;
-        vernum = 0;
+        totVer = 0;
         ver[0] = 0;
-        build(l, r, 0);
+        build(0, l, r);
     }
-    void build(int l, int r, int now) {
-        tr[now].l = l; tr[now].r = r; tr[now].val = 0;
+
+    void build(int curpos, int l, int r) {
+        segt[curpos].l = l; segt[curpos].r = r; segt[curpos].val = 0;
         if (l < r) {
             int mid = (l + r) >> 1;
-            ++num; tr[now].lc = num;
-            ++num; tr[now].rc = num;
-            build(l, mid, tr[now].lc);
-            build(mid + 1, r, tr[now].rc);
+            segt[curpos].lc = ++num;
+            segt[curpos].rc = ++num;
+            build(segt[curpos].lc, l, mid);
+            build(segt[curpos].rc, mid + 1, r);
         }
     }
-    void pushup(node &f, node &l, node &r) {
-        f.val = l.val + r.val;
+
+    void maintain(Node &fa, Node &lhs, Node &rhs) {
+        fa.val = lhs.val + rhs.val;
     }
-    void add(int pos, int val) {
-        ++vernum;
-        ver[vernum] = update(pos, val, ver[vernum - 1]);
+
+    void addPoint(int pos, int val) {
+        totVer++;
+        ver[totVer] = update(ver[totVer - 1], pos, val);
     }
-    int update(int pos, int val, int now) {
+
+    int update(int curpos, int pos, int val) {
         int t = ++num;
-        tr[t] = tr[now];
-        if (tr[t].l == tr[t].r) {
-            tr[t].val += val;
-        } else {
-            int mid = tr[now].l + tr[now].r >> 1;
-            if (pos <= mid) tr[t].lc = update(pos, val, tr[t].lc);
-            else tr[t].rc = update(pos, val, tr[t].rc);
-            pushup(tr[t], tr[tr[t].lc], tr[tr[t].rc]);
+        segt[t] = segt[curpos];
+        if (segt[t].l == segt[t].r)
+            segt[t].val += val;
+        else {
+            int mid = segt[curpos].l + segt[curpos].r >> 1;
+            if (pos <= mid) segt[t].lc = update(segt[t].lc, pos, val);
+            else segt[t].rc = update(segt[t].rc, pos, val);
+            maintain(segt[t], segt[segt[t].lc], segt[segt[t].rc]);
         }
         return t;
     }
 
-    int query(int l, int r, int now1, int now2) {
-        if (tr[now1].l == l && tr[now1].r == r) {
-            return tr[now2].val - tr[now1].val;
-        }
-        int mid = tr[now1].l + tr[now1].r >> 1;
-        if (r <= mid) return query(l, r, tr[now1].lc, tr[now2].lc);
-        else if (l > mid) return query(l, r, tr[now1].rc, tr[now2].rc);
-        else return query(l, mid, tr[now1].lc, tr[now2].lc) + query(mid + 1, r, tr[now1].rc, tr[now2].rc);
+    int query(int curpos1, int curpos2, int l, int r) {
+        if (segt[curpos1].l == l && segt[curpos1].r == r)
+            return segt[curpos2].val - segt[curpos1].val;
+        int mid = segt[curpos1].l + segt[curpos1].r >> 1;
+        if (r <= mid) return query(segt[curpos1].lc, segt[curpos2].lc, l, r);
+        else if (l > mid) return query(segt[curpos1].rc, segt[curpos2].rc, l, r);
+        else return query(segt[curpos1].lc, segt[curpos2].lc, l, mid) + query(segt[curpos1].rc, segt[curpos2].rc, mid + 1, r);
     }
 
-};
-perminent_segment_tree tr;
-int a[200001], b[200001];
+} segt;
+
 int main() {
-    int T;
-    scanf("%d", &T);
-    while (T--) {
-        int n, m;
-        scanf("%d%d", &n, &m);
+    int caseNum;
+    scanf("%d", &caseNum);
+    while (caseNum--) {
+        int n, m; scanf("%d%d", &n, &m);
         for (int i = 0; i < n; ++i) {
-            scanf("%d", &a[i]);
-            b[i] = a[i];
+            scanf("%d", &a[i]); b[i] = a[i];
         }
         sort(b, b + n);
-        int len = unique(b, b + n) - b;
-        tr.setRange(0, len - 1);
+        int _size = unique(b, b + n) - b;
+        segt.buildTree(0, _size - 1);
         for (int i = 0; i < n; ++i) {
-            int t = lower_bound(b, b + len, a[i]) - b;
-            tr.add(t, 1);
+            int pos = lower_bound(b, b + _size, a[i]) - b;
+            segt.addPoint(pos, 1);
         }
-        int X = 0;
+        int ans = 0;
         for (int i = 0; i < m; ++i) {
             int l, r, p, k;
             scanf("%d%d%d%d", &l, &r, &p, &k);
-            l ^= X; r ^= X; p ^= X; k ^= X;
-            int L = -1, R = max(abs(p - b[0]), abs(p - b[len - 1])) + 1;
-            while (L + 1 < R) {
-                int mid = L + R >> 1;
-                int t1 = lower_bound(b, b + len, p - mid) - b;
-                int t2 = upper_bound(b, b + len, p + mid) - b - 1;
-                int s;
-                if (t1 <= t2) s = tr.query(t1, t2, tr.ver[l - 1], tr.ver[r]);
+            l ^= ans; r ^= ans; p ^= ans; k ^= ans;
+            int _l = -1, _r = max(abs(p - b[0]), abs(p - b[_size - 1])) + 1;
+            while (_l + 1 < _r) {
+                int mid = _l + _r >> 1, s;
+                int lInv = lower_bound(b, b + _size, p - mid) - b;
+                int rInv = upper_bound(b, b + _size, p + mid) - b - 1;
+                if (lInv <= rInv) s = segt.query(segt.ver[l - 1], segt.ver[r], lInv, rInv);
                 else s = 0;
-
-                if (s >= k) R = mid;
-                else L = mid;
+                if (s >= k) _r = mid;
+                else _l = mid;
             }
-            X = R;
-            printf("%d\n", X);
+            ans = _r;
+            printf("%d\n", ans);
         }
     }
+    return 0;
 }

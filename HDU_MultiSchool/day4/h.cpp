@@ -23,10 +23,9 @@ int a[maxn], b[maxn];
 struct ChairmanTree {
     struct Node {
         int l, r, lc, rc, val;
-    } segt[maxn * 25];
+    } segt[maxn * 40];
 
-    int ver[maxn];
-    int num, totVer;
+    int ver[maxn], num, totVer;
 
     void buildTree(int l, int r) {
         num = 0;
@@ -35,15 +34,15 @@ struct ChairmanTree {
         build(0, l, r);
     }
 
-    void build(int curpos, int l, int r) {
-        segt[curpos].l = l; segt[curpos].r = r; segt[curpos].val = 0;
-        if (l < r) {
-            int mid = (l + r) >> 1;
-            ++num; segt[curpos].lc = num;
-            ++num; segt[curpos].rc = num;
-            build(segt[curpos].lc, l, mid);
-            build(segt[curpos].rc, mid + 1, r);
+    void build(int curpos, int curl, int curr) {
+        if (curl == curr) {
+            segt[curpos].l = curl; segt[curpos].r = curr; segt[curpos].val = 0;
         }
+        int mid = (curl + curr) >> 1;
+        segt[curpos].lc = ++num;
+        segt[curpos].rc = ++num;
+        build(segt[curpos].lc, curl, mid);
+        build(segt[curpos].rc, mid + 1, curr);
     }
 
     void maintain(Node &fa, Node &lhs, Node &rhs) {
@@ -52,11 +51,11 @@ struct ChairmanTree {
 
     void addPoint(int pos, int val) {
         totVer++;
-        ver[totVer] = update(pos, val, ver[totVer - 1]);
+        ver[totVer] = update(ver[totVer - 1], pos, val);
     }
 
     int update(int curpos, int pos, int val) {
-        int t = num++;
+        int t = ++num;
         segt[t] = segt[curpos];
         if (segt[t].l == segt[t].r)
             segt[t].val += val;
@@ -89,11 +88,11 @@ int main() {
             scanf("%d", &a[i]); b[i] = a[i];
         }
         sort(b, b + n);
-        int _size = unique(b, b + n) - b;
+        int _size = unique(b, b + n) - b; // 离散化
         segt.buildTree(0, _size - 1);
         for (int i = 0; i < n; ++i) {
-            int pos = lower_bound(b, b + _size, a[i]) - b;
-            segt.addPoint(pos, 1);
+            int rank = lower_bound(b, b + _size, a[i]) - b;
+            segt.addPoint(rank, 1);
         }
         int ans = 0;
         for (int i = 0; i < m; ++i) {
@@ -110,7 +109,8 @@ int main() {
                 if (s >= k) _r = mid;
                 else _l = mid;
             }
-            printf("%d\n", _r);
+            ans = _r;
+            printf("%d\n", ans);
         }
     }
     return 0;

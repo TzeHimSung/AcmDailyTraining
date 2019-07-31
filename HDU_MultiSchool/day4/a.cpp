@@ -17,9 +17,37 @@
 using namespace std;
 /* header end */
 
-
+const int maxn = 2e7;
+ll bin[60];
+int ans[maxn];
 
 int main() {
-    /* main body */
+    bin[0] = 1;
+    for (int i = 1; i <= 40; i++) bin[i] = (bin[i - 1] << 1);
+    int T; cin >> T;
+    while (T--) {
+        int n;
+        cin >> n;
+        int sum = 0;
+        for (int i = 1; i <= n; i++) {
+            if (!(i & 1)) {
+                ans[i] = 1;
+                continue;
+            }
+            for (int j = 0; j <= 31; j++) {
+                if ((i & bin[j]) == 0) {
+                    if (bin[j] <= n) ans[i] = bin[j];
+                    else {
+                        ans[i] = 1;
+                        sum++;
+                    }
+                    break;
+                }
+            }
+        }
+        cout << sum << endl;
+        for (int i = 2; i <= n - 1; i++) cout << ans[i] << " ";
+        cout << ans[n] << endl;
+    }
     return 0;
 }
