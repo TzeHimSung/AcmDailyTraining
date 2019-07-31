@@ -17,67 +17,101 @@
 using namespace std;
 /* header end */
 
-const int maxn = 1e5 + 10;
-struct Node {
-    int l, r; //l r是左右子树根节点编号, sum是该节点对应区间内数的个数
-    ll sum = 0;
-};
+const int maxn = 2e5 + 10;
+int a[maxn], b[maxn];
 
-Node segt[maxn * 25];
-vector<int>v;
-int n, m, cnt = 0, root[maxn], a[maxn], ans;
+struct ChairmanTree {
+    struct Node {
+        int l, r, lc, rc, val;
+    } segt[maxn * 25];
 
-int getid(int x) { //返回数值x在数组v中的位置
-    return lower_bound(v.begin(), v.end(), x) - v.begin() + 1;
-}
+    int ver[maxn];
+    int num, totVer;
 
-void update(int curl, int curr, int &cur, int last, int pos) { //cur是当前版本树的根节点的编号，last是上一版本树的根节点的编号
-    cnt++;
-    segt[cnt] = segt[last];
-    segt[cnt].sum++;
-    cur = cnt;
-    if (curl == curr) return;
-    int mid = (curl + curr) >> 1;
-    if (mid >= pos) update(curl, mid, segt[cur].l, segt[last].l, pos); //往左递归
-    else update(mid + 1, curr, segt[cur].r, segt[last].r, pos);
-}
+    void buildTree(int l, int r) {
+        num = 0;
+        totVer = 0;
+        ver[0] = 0;
+        build(0, l, r);
+    }
 
-int query(int curl, int curr, int rql, int rqr, int k) {
-    if (curl == curr) return curl;
-    int mid = (curl + curr) >> 1, sum = segt[segt[rqr].l].sum - segt[segt[rql].l].sum;
-    if (sum >= k) return query(curl, mid, segt[rql].l, segt[rqr].l, k);
-    else return query(mid + 1, curr, segt[rql].r, segt[rqr].r, k - sum);
-}
+    void build(int curpos, int l, int r) {
+        segt[curpos].l = l; segt[curpos].r = r; segt[curpos].val = 0;
+        if (l < r) {
+            int mid = (l + r) >> 1;
+            ++num; segt[curpos].lc = num;
+            ++num; segt[curpos].rc = num;
+            build(segt[curpos].lc, l, mid);
+            build(segt[curpos].rc, mid + 1, r);
+        }
+    }
 
-int check(int x) {
+    void maintain(Node &fa, Node &lhs, Node &rhs) {
+        fa.val = lhs.val + rhs.val;
+    }
 
-}
+    void addPoint(int pos, int val) {
+        totVer++;
+        ver[totVer] = update(pos, val, ver[totVer - 1]);
+    }
+
+    int update(int curpos, int pos, int val) {
+        int t = num++;
+        segt[t] = segt[curpos];
+        if (segt[t].l == segt[t].r)
+            segt[t].val += val;
+        else {
+            int mid = segt[curpos].l + segt[curpos].r >> 1;
+            if (pos <= mid) segt[t].lc = update(segt[t].lc, pos, val);
+            else segt[t].rc = update(segt[t].rc, pos, val);
+            maintain(segt[t], segt[segt[t].lc], segt[segt[t].rc]);
+        }
+        return t;
+    }
+
+    int query(int curpos1, int curpos2, int l, int r) {
+        if (segt[curpos1].l == l && segt[curpos1].r == r)
+            return segt[curpos2].val - segt[curpos1].val;
+        int mid = segt[curpos1].l + segt[curpos1].r >> 1;
+        if (r <= mid) return query(segt[curpos1].lc, segt[curpos2].lc, l, r);
+        else if (l > mid) return query(segt[curpos1].rc, segt[curpos2].rc, l, r);
+        else return query(segt[curpos1].lc, segt[curpos2].lc, l, mid) + query(segt[curpos1].rc, segt[curpos2].rc, mid + 1, r);
+    }
+
+} segt;
 
 int main() {
-    int t; scanf("%d", &t);
-    while (t--) {
-        scanf("%d%d", &n, &m);
-        rep1(i, 1, n) {
-            scanf("%d", &a[i]);
-            v.push_back(a[i]);
+    int caseNum;
+    scanf("%d", &caseNum);
+    while (caseNum--) {
+        int n, m; scanf("%d%d", &n, &m);
+        for (int i = 0; i < n; ++i) {
+            scanf("%d", &a[i]); b[i] = a[i];
         }
-        sort(v.begin(), v.end());
-        v.erase(unique(v.begin(), v.end()), v.end()); //v是a数组排序并去重的结果
-        rep1(i, 1, n) //n次update,建n棵权值线段树
-        update(1, n, root[i], root[i - 1], getid(a[i])); //root[i]代表a[1..i]这个区间弄出来的权值线段树的根节点
-        rep1(i, 1, m) {
-            // int x, y, k; scanf("%d%d%d", &x, &y, &k);
-            // printf("%d\n", v[query(1, n, root[x - 1], root[y], k) - 1]);
-            int L, R, p, K; scanf("%d%d%d%d", &L, &R, &p, &K);
-            int l = 0, r = 1e6 + 10;
-            while (l <= r) {
-                int mid = l + r >> 1;
-                if (check(mid)) {
-                    ans = mid, l = mid + 1;
-                } else r = mid - 1;
+        sort(b, b + n);
+        int _size = unique(b, b + n) - b;
+        segt.buildTree(0, _size - 1);
+        for (int i = 0; i < n; ++i) {
+            int pos = lower_bound(b, b + _size, a[i]) - b;
+            segt.addPoint(pos, 1);
+        }
+        int ans = 0;
+        for (int i = 0; i < m; ++i) {
+            int l, r, p, k;
+            scanf("%d%d%d%d", &l, &r, &p, &k);
+            l ^= ans; r ^= ans; p ^= ans; k ^= ans;
+            int _l = -1, _r = max(abs(p - b[0]), abs(p - b[_size - 1])) + 1;
+            while (_l + 1 < _r) {
+                int mid = _l + _r >> 1, s;
+                int lInv = lower_bound(b, b + _size, p - mid) - b;
+                int rInv = upper_bound(b, b + _size, p + mid) - b - 1;
+                if (lInv <= rInv) s = segt.query(segt.ver[l - 1], segt.ver[r], lInv, rInv);
+                else s = 0;
+                if (s >= k) _r = mid;
+                else _l = mid;
             }
+            printf("%d\n", _r);
         }
-        printf("%d\n", ans);
     }
     return 0;
 }
