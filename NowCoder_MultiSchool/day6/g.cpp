@@ -30,8 +30,8 @@ int check(int x) {
     if (year < 1600 || year > 9999 || month < 1 || month > 12 || day < 1 || day > mon[month])
         return 0;
     if (month <= 2) month += 12, year--;
-    int w = (day + 2 * month + 3 * (month + 1) / 5 + year + year / 4 - year / 100 + year / 400 + 1) % 7;
-    if (w == 5) return true;
+    int ans = (day + 2 * month + 3 * (month + 1) / 5 + year + year / 4 - year / 100 + year / 400 + 1) % 7;
+    if (ans == 5) return true;
     else return false;
 }
 
