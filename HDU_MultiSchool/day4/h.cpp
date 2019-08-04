@@ -35,9 +35,8 @@ struct ChairmanTree {
     }
 
     void build(int curpos, int curl, int curr) {
-        if (curl == curr) {
-            segt[curpos].l = curl; segt[curpos].r = curr; segt[curpos].val = 0;
-        }
+        segt[curpos].l = curl; segt[curpos].r = curr; segt[curpos].val = 0;
+        if (curl == curr) return;
         int mid = (curl + curr) >> 1;
         segt[curpos].lc = ++num;
         segt[curpos].rc = ++num;
