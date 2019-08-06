@@ -47,7 +47,7 @@ void solve() {
     for (int i = 0; i < n; i++) {
         int a, b; scanf("%d%d", &a, &b);
         b = -b;
-        if (!a) c -= abs(b);
+        if (!a) c -= abs(b); //
         else {
             if (a < 0) a = -a, b = -b;
             f[tot++] = Function(a, b);
@@ -90,6 +90,7 @@ void solve() {
     for (auto i : func) printf(" %lld/%lld", i.b, i.a);
     puts("");
 }
+
 int main() {
     int caseNum; scanf("%d", &caseNum);
     while (caseNum--) solve();
