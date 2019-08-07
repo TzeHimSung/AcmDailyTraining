@@ -17,52 +17,69 @@
 using namespace std;
 /* header end */
 
-const int maxn = 2e3 + 10;
+const int maxn = 2e3 + 10, maxm = 4e3 + 10;
 struct Point {
-    int x, y, val;
-    Point() {}
-    Point(int a, int b, int c) {
-        x = a, y = b, val = c;
+    int x, y, z;
+    bool operator<(const Point &rhs) const {
+        return x < rhs.x;
     }
-    bool operator<(const Point &rhs)const {
-        if (x != rhs.x) return x < rhs.x;
-        else return y < rhs.y;
-    }
-};
+} e[maxn];
 
-ll sum[maxn];
+struct Node {
+    int pre, suf, s, v;
+} segt[maxm];
+
+int pos[maxn];
+
+void build(int curpos, int curl, int curr) {
+    segt[curpos].pre = segt[curpos].suf = segt[curpos].s = segt[curpos].v = 0;
+    if (curl == curr) {
+        pos[curl] = curpos;
+        return;
+    }
+    int mid = curl + curr >> 1;
+    build(lson, curl, mid); build(rson, mid + 1, curr);
+}
+
+void change(int curpos, int p) {
+    curpos = pos[curpos];
+    segt[curpos].s += p;
+    if (segt[curpos].s > 0)
+        segt[curpos].pre = segt[curpos].suf = segt[curpos].v = segt[curpos].s;
+    else
+        segt[curpos].pre = segt[curpos].suf = segt[curpos].v = 0;
+    for (curpos >>= 1; curpos; curpos >>= 1) {
+        segt[curpos].pre = max(segt[lson].pre, segt[lson].s + segt[rson].pre);
+        segt[curpos].suf = max(segt[rson].suf, segt[rson].s + segt[lson].suf);
+        segt[curpos].s = segt[lson].s + segt[rson].s;
+        segt[curpos].v = max(max(segt[lson].v, segt[rson].v), segt[lson].suf + segt[rson].pre);
+    }
+}
 
 int main() {
-    int t; scanf("%d", &t);
-    while (t--) {
+    int casenum; scanf("%d", &casenum);
+    while (casenum--) {
+        int n, tot = 0, tot2 = 0, b[maxn];
         ll ans = 0;
-        int n; scanf("%d", &n);
-        for (int i = 0; i <= n; i++) sum[i] = 0;
-        vector<Point>p;
-        map<pair<int, int>, int>m;
+        scanf("%d", &n);
         rep1(i, 1, n) {
-            int a, b, c; scanf("%d%d%d", &a, &b, &c);
-            p.pb(Point(a, b, c)); m[mp(a, b)] = c;
+            scanf("%d%d%d", &e[i].x, &e[i].y, &e[i].z);
+            b[++tot] = e[i].y;
         }
-        sort(p.begin(), p.end());
-        for (auto lp = p.begin(); lp != p.end(); lp++) {
-            stack<int>upY, downY; ll currAns = lp->val;
-            priority_queue<pair<int, int>>qUp, qDown; // y,val
-            while (!qUp.empty()) qUp.pop(); while (!qDown.empty()) qDown.pop();
-            upY.pb(lp->y); downY(lp->y);
-            for (auto rp = next(lp); rp != p.end(); rp++) {
-                // pickable
-                if (rp->val > 0) {
-                    if (rp->y > upY.top()) upY.push(rp->y);
-                    if (rp->y < downY.top()) downY.push(rp->y);
-                    currAns += rp->val;
-                } else { // unpickable
-                    if (rp->y > lp->y) qUp.push(mp(rp->y, rp->val));
-                    else qDown.push(mp(rp->y, rp->val));
+        sot(b, tot);
+        rep1(i, 1, tot)
+        if (i == 1 || b[i] != b[tot2]) b[++tot2] = b[i];
+        sot(e, n);
+        rep1(i, 1, n) e[i].y = lower_bound(b + 1, b + 1 + tot2, e[i].y) - b;
+        int j, k;
+        for (int i = 1; i <= n; i++)
+            if (i == 1 || e[i].x != e[i - 1].x) {
+                build(1, 1, tot2);
+                for (j = i; j <= n; j = k) {
+                    for (k = j; k <= n && e[j].x == e[k].x; k++) change(e[k].y, e[k].z);
+                    if (ans < segt[1].v) ans = segt[1].v;
                 }
             }
-            ans = max(ans, currAns);
-        }
         printf("%lld\n", ans);
     }
     return 0;
