@@ -12,8 +12,7 @@
                 "${fileDirname}/${fileBasenameNoExtension}.out",
                 "-Wall",
                 "-std=c++14",
-                "-O2",
-                "-Weffc++"
+                "-O2"
             ],
             "group": {
                 "kind": "build",
@@ -30,7 +29,8 @@
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}.out",
                 "-std=c++14",
-                "-O0"
+                "-O0",
+                "-Wall"
             ],
             "group": "build"
         }
