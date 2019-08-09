@@ -19,18 +19,18 @@ using namespace std;
 
 const int maxn = 1e5 + 10;
 struct Tree {
-    int H, C, P, index;
+    int height, cost, number, index;
     void input() {
-        scanf("%d%d%d", &H, &C, &P);
+        scanf("%d%d%d", &height, &cost, &number);
     }
 } tree[maxn];
 
 bool cmp1(Tree n1, Tree n2) {
-    return n1.C < n2.C;
+    return n1.cost < n2.cost;
 }
 
 bool cmp2(Tree n1, Tree n2) {
-    return n1.H < n2.H;
+    return n1.height < n2.height;
 }
 
 struct Node {
@@ -52,15 +52,15 @@ void build(int curpos, int curl, int curr) {
     build(curpos << 1, curl, mid); build(curpos << 1 | 1, mid + 1, curr);
 }
 
-void add(int curpos, int index, int C, int P) {
+void add(int curpos, int index, int cost, int number) {
     if (segt[curpos].l == index && segt[curpos].r == index) {
-        segt[curpos].num += P;
-        segt[curpos].sum += (ll)C * P;
+        segt[curpos].num += number;
+        segt[curpos].sum += (ll)cost * number;
         return;
     }
     int mid = segt[curpos].l + segt[curpos].r >> 1;
-    if (index <= mid) add(curpos << 1, index, C, P);
-    else add(curpos << 1 | 1, index, C, P);
+    if (index <= mid) add(curpos << 1, index, cost, number);
+    else add(curpos << 1 | 1, index, cost, number);
     maintain(curpos);
 }
 
@@ -79,29 +79,26 @@ int main() {
         ll ans = 0;
         rep0(i, 0, n) {
             tree[i].input();
-            ans += (ll)tree[i].C * tree[i].P; // calculate total cost
+            ans += (ll)tree[i].cost * tree[i].number; // calculate total cost
         }
         sort(tree, tree + n, cmp1); // sort by cost
         rep0(i, 0, n) tree[i].index = i + 1;
         build(1, 1, n); // build an empty tree
         sort(tree, tree + n, cmp2); // sort by height
-        ll tot = 0, numOfTallest = tree[0].P, res = ans - (ll)tree[0].P * tree[0].C; // re num of tree
-        int ansIndex = 0, j = 0;
+        ll tot = 0, numOfTallestTree = tree[0].number, res = ans - (ll)tree[0].number * tree[0].cost; // re num of tree
+        int j = 0;
         rep1(i, 1, n) { // enum every tree as the tallest one
-            if (i == n || tree[i].H != tree[i - 1].H) { // if the height is not equal
-                ll tmp = query(1, tot - numOfTallest + 1) + res;
-                if (ans > tmp) {
-                    ans = tmp;
-                    ansIndex = i - 1;
-                }
-                numOfTallest = tree[i].P;
+            if (i == n || tree[i].height != tree[i - 1].height) { // if the height is not equal
+                ll tmp = query(1, tot - numOfTallestTree + 1) + res;
+                ans = min(ans, tmp);
+                numOfTallestTree = tree[i].number;
                 if (i < n)
                     while (j < i) {
-                        add(1, tree[j].index, tree[j].C, tree[j].P);
-                        tot += tree[j++].P;
+                        add(1, tree[j].index, tree[j].cost, tree[j].number);
+                        tot += tree[j++].number;
                     }
-            } else numOfTallest += tree[i].P;
-            if (i < n) res -= (ll)tree[i].C * tree[i].P;
+            } else numOfTallestTree += tree[i].number;
+            if (i < n) res -= (ll)tree[i].cost * tree[i].number;
         }
         printf("%lld\n", ans);
     }
