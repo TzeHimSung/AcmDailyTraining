@@ -85,17 +85,17 @@ int main() {
         rep0(i, 0, n) tree[i].index = i + 1;
         build(1, 1, n); // build an empty tree
         sort(tree, tree + n, cmp2); // sort by height
-        ll tot = 0, numOfTallestTree = tree[0].number, res = ans - (ll)tree[0].number * tree[0].cost; // re num of tree
+        ll totNum = 0, numOfTallestTree = tree[0].number, res = ans - (ll)tree[0].number * tree[0].cost; // re num of tree
         int j = 0;
         rep1(i, 1, n) { // enum every tree as the tallest one
             if (i == n || tree[i].height != tree[i - 1].height) { // if the height is not equal
-                ll tmp = query(1, tot - numOfTallestTree + 1) + res;
+                ll tmp = query(1, totNum - numOfTallestTree + 1) + res;
                 ans = min(ans, tmp);
                 numOfTallestTree = tree[i].number;
                 if (i < n)
                     while (j < i) {
                         add(1, tree[j].index, tree[j].cost, tree[j].number);
-                        tot += tree[j++].number;
+                        totNum += tree[j++].number;
                     }
             } else numOfTallestTree += tree[i].number;
             if (i < n) res -= (ll)tree[i].cost * tree[i].number;
