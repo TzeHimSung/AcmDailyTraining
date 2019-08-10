@@ -17,98 +17,55 @@
 using namespace std;
 /* header end */
 
-const int maxn = 2e5 + 10;
-int a[maxn], b[maxn];
+const int maxn = 1e6 + 10;
+int a[maxn], root[maxn], cnt = 0;
 
-struct ChairmanTree {
-    struct Node {
-        int l, r, lc, rc, val;
-    } segt[maxn * 40];
+struct Node {
+    int l, r, sum;
+} segt[maxn * 40];
 
-    int ver[maxn], num, totVer;
+void update(int pos, int curl, int curr, int &curroot, int &lastroot) {
+    segt[++cnt] = segt[lastroot], segt[cnt].sum++, curroot = cnt;
+    if (curl == curr) return;
+    int mid = curl + curr >> 1;
+    if (pos <= mid) update(pos, curl, mid, segt[curroot].l, segt[lastroot].l);
+    else update(pos, mid + 1, curr, segt[curroot].r, segt[lastroot].r);
+}
 
-    void buildTree(int l, int r) {
-        num = 0;
-        totVer = 0;
-        ver[0] = 0;
-        build(0, l, r);
-    }
-
-    void build(int curpos, int curl, int curr) {
-        segt[curpos].l = curl; segt[curpos].r = curr; segt[curpos].val = 0;
-        if (curl == curr) return;
-        int mid = (curl + curr) >> 1;
-        segt[curpos].lc = ++num;
-        segt[curpos].rc = ++num;
-        build(segt[curpos].lc, curl, mid);
-        build(segt[curpos].rc, mid + 1, curr);
-    }
-
-    void maintain(Node &fa, Node &lhs, Node &rhs) {
-        fa.val = lhs.val + rhs.val;
-    }
-
-    void addPoint(int pos, int val) {
-        totVer++;
-        ver[totVer] = update(ver[totVer - 1], pos, val);
-    }
-
-    int update(int curpos, int pos, int val) {
-        int t = ++num;
-        segt[t] = segt[curpos];
-        if (segt[t].l == segt[t].r)
-            segt[t].val += val;
-        else {
-            int mid = segt[curpos].l + segt[curpos].r >> 1;
-            if (pos <= mid) segt[t].lc = update(segt[t].lc, pos, val);
-            else segt[t].rc = update(segt[t].rc, pos, val);
-            maintain(segt[t], segt[segt[t].lc], segt[segt[t].rc]);
-        }
-        return t;
-    }
-
-    int query(int curpos1, int curpos2, int l, int r) {
-        if (segt[curpos1].l == l && segt[curpos1].r == r)
-            return segt[curpos2].val - segt[curpos1].val;
-        int mid = segt[curpos1].l + segt[curpos1].r >> 1;
-        if (r <= mid) return query(segt[curpos1].lc, segt[curpos2].lc, l, r);
-        else if (l > mid) return query(segt[curpos1].rc, segt[curpos2].rc, l, r);
-        else return query(segt[curpos1].lc, segt[curpos2].lc, l, mid) + query(segt[curpos1].rc, segt[curpos2].rc, mid + 1, r);
-    }
-
-} segt;
+int query(int lRoot, int rRoot, int curl, int curr, int ql, int qr) {
+    if (ql <= curl && curr <= qr)
+        return segt[rRoot].sum - segt[lRoot].sum;
+    if (curl == curr) return 0;
+    int mid = curl + curr >> 1;
+    if (qr <= mid) return query(segt[lRoot].l, segt[rRoot].l, curl, mid, ql, qr);
+    else if (ql > mid) return query(segt[lRoot].r, segt[rRoot].r, mid + 1, curr, ql, qr);
+    else return query(segt[lRoot].l, segt[rRoot].l, curl, mid, ql, mid) + query(segt[lRoot].r, segt[rRoot].r, mid + 1, curr, mid + 1, qr);
+}
 
 int main() {
-    int caseNum;
-    scanf("%d", &caseNum);
-    while (caseNum--) {
-        int n, m; scanf("%d%d", &n, &m);
-        for (int i = 0; i < n; ++i) {
-            scanf("%d", &a[i]); b[i] = a[i];
+    int t; scanf("%d", &t);
+    while (t--) {
+        cnt = 0;
+        int n, q, maxx; scanf("%d%d", &n, &q);
+        for (int i = 1; i <= n; i++) {
+            scanf("%d", &a[i]);
+            maxx = max(maxx, a[i]);
         }
-        sort(b, b + n);
-        int _size = unique(b, b + n) - b; // 离散化
-        segt.buildTree(0, _size - 1);
-        for (int i = 0; i < n; ++i) {
-            int rank = lower_bound(b, b + _size, a[i]) - b;
-            segt.addPoint(rank, 1);
-        }
-        int ans = 0;
-        for (int i = 0; i < m; ++i) {
-            int l, r, p, k;
-            scanf("%d%d%d%d", &l, &r, &p, &k);
-            l ^= ans; r ^= ans; p ^= ans; k ^= ans;
-            int _l = -1, _r = max(abs(p - b[0]), abs(p - b[_size - 1])) + 1;
-            while (_l + 1 < _r) {
-                int mid = _l + _r >> 1, s;
-                int lInv = lower_bound(b, b + _size, p - mid) - b;
-                int rInv = upper_bound(b, b + _size, p + mid) - b - 1;
-                if (lInv <= rInv) s = segt.query(segt.ver[l - 1], segt.ver[r], lInv, rInv);
-                else s = 0;
-                if (s >= k) _r = mid;
-                else _l = mid;
+        for (int i = 1; i <= n; i++)
+            update(a[i], 1, maxx, root[i], root[i - 1]);
+        int lastAns = 0;
+        while (q--) {
+            int l, r, p, k; scanf("%d%d%d%d", &l, &r, &p, &k);
+            l ^= lastAns, r ^= lastAns, p ^= lastAns, k ^= lastAns;
+            int upBound = maxx, lowBound = 0, ans = maxx;
+            while (lowBound <= upBound) {
+                int mid = lowBound + upBound >> 1;
+                if (query(root[l - 1], root[r], 1, maxx, p - mid, p + mid) >= k) {
+                    ans = mid;
+                    upBound = mid - 1;
+                } else lowBound = mid + 1;
             }
-            ans = _r;
+            lastAns = ans;
             printf("%d\n", ans);
         }
     }

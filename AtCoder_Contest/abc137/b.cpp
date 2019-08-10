@@ -17,19 +17,15 @@
 using namespace std;
 /* header end */
 
-const int maxn = 20;
+const int lim = 1e6;
+int k, x;
 
 int main() {
-    int t; scanf("%d", &t);
-    while (t--) {
-        int ans = 0, a[maxn];
-        rep0(i, 0, 16) {
-            scanf("%d", &a[i]);
-            if (!a[i]) ans += i / 4 + 1 + i % 4 + 1, a[i] = 16;
-            rep1(j, 0, i) if (a[j] > a[i]) ans++;
-        }
-        if (ans & 1) puts("No");
-        else puts("Yes");
+    cin >> k >> x;
+    for (int i = x - k + 1; i <= x + k - 1; i++) {
+        if (i < -lim || i > lim) continue;
+        cout << i << " ";
     }
+    puts("");
     return 0;
 }

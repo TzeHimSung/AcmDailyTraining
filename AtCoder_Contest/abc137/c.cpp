@@ -17,19 +17,27 @@
 using namespace std;
 /* header end */
 
-const int maxn = 20;
+const int maxn = 1e5 + 10;
+int n;
+string s[maxn];
+ll ans = 0;
 
 int main() {
-    int t; scanf("%d", &t);
-    while (t--) {
-        int ans = 0, a[maxn];
-        rep0(i, 0, 16) {
-            scanf("%d", &a[i]);
-            if (!a[i]) ans += i / 4 + 1 + i % 4 + 1, a[i] = 16;
-            rep1(j, 0, i) if (a[j] > a[i]) ans++;
-        }
-        if (ans & 1) puts("No");
-        else puts("Yes");
+    scanf("%d", &n);
+    rep1(i, 1, n) {
+        cin >> s[i];
+        sort(s[i].begin(), s[i].end());
     }
+    sort(s + 1, s + 1 + n);
+    int cnt = 1;
+    rep1(i, 2, n) {
+        if (s[i] == s[i - 1]) cnt++;
+        else {
+            ans += (ll)cnt * (cnt - 1) / 2;
+            cnt = 1;
+        }
+    }
+    ans += (ll)cnt * (cnt - 1) / 2;
+    printf("%lld\n", ans);
     return 0;
 }
