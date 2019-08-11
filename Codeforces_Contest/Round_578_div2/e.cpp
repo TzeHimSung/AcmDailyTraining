@@ -17,27 +17,38 @@
 using namespace std;
 /* header end */
 
-const int mod = 1e9 + 7;
+const int maxn = 1e5 + 10;
+int n;
+string ans;
 
-int _hash(string &a, string &b) {
-    int lena = a.size(), lenb = b.size(), ret = 0;
-    ll hashA = 0, hashB = 0, t = 1;
-    for (int i = 1; i <= min(lena, lenb); i++) {
-        hashA = hashA + a[lena - i] * t;
-        hashB = hashB * mod + b[i - 1];
-        if (hashA == hashB) ret = i;
-        t *= mod;
+int kmp(string s) {
+    vector<int> tmp(s.size());
+    for (int i = 1; i < s.size(); i++) {
+        int k = tmp[i - 1];
+        while (s[k] != s[i]) {
+            if (!k) {
+                k = -1; break;
+            }
+            k = tmp[k - 1];
+        }
+        tmp[i] = k + 1;
     }
-    return ret;
+    return tmp.back();
 }
 
 int main() {
-    int n; cin >> n;
-    string ans; cin >> ans;
-    for (int i = 1; i < n; i++) {
-        string cur; cin >> cur;
-        int dup = _hash(ans, cur);
-        ans += cur.substr(dup, cur.size() - dup);
+    cin >> n;
+    for (int i = 0; i < n; i++) {
+        if (!i) {
+            cin >> ans;
+            continue;
+        }
+        string s; cin >> s; string t = s + '#';
+        int a = min((int)ans.size(), (int)s.size());
+        t.insert(t.end(), ans.end() - a, ans.end());
+        int x = kmp(t);
+        while (x--) ans.pop_back();
+        ans.insert(ans.end(), s.begin(), s.end());
     }
     cout << ans << endl;
     return 0;
