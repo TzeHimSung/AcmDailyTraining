@@ -1,85 +1,82 @@
-/* basic header */
-#include <bits/stdc++.h>
-/* define */
+#include<bits/stdc++.h>
+#define fo(i,a,b) for(i=a;i<=b;i++)
+#define fd(i,a,b) for(i=a;i>=b;i--)
+#define MOD 1000000007
+#define N 2005
 #define ll long long
-#define dou double
-#define pb emplace_back
-#define mp make_pair
-#define sot(a,b) sort(a+1,a+1+b)
-#define rep1(i,a,b) for(int i=a;i<=b;++i)
-#define rep0(i,a,b) for(int i=a;i<b;++i)
-#define eps 1e-8
-#define int_inf 0x3f3f3f3f
-#define ll_inf 0x7f7f7f7f7f7f7f7f
-#define lson (curpos<<1)
-#define rson (curpos<<1|1)
-/* namespace */
 using namespace std;
-/* header end */
-
-const int maxn = 2e3 + 10, maxm = 4e3 + 10;
-struct Point {
-    int x, y, weight;
-    bool operator<(const Point &rhs) const {
-        return x < rhs.x;
-    }
-} e[maxn];
-
-struct Node {
-    int pre, suf, s, v;
-} segt[maxm];
-
-int pos[maxn];
-
-void build(int curpos, int curl, int curr) {
-    segt[curpos].pre = segt[curpos].suf = segt[curpos].s = segt[curpos].v = 0;
-    if (curl == curr) {
-        pos[curl] = curpos;
+ll sum[N * 4], maxv[N * 4], Prev[N * 4], sufv[N * 4];
+void pushup(int rt) {
+    sum[rt] = sum[rt << 1] + sum[rt << 1 | 1];
+    maxv[rt] = max(maxv[rt << 1], maxv[rt << 1 | 1]);
+    maxv[rt] = max(maxv[rt], sufv[rt << 1] + Prev[rt << 1 | 1]);
+    Prev[rt] = max(Prev[rt << 1], sum[rt << 1] + Prev[rt << 1 | 1]);
+    sufv[rt] = max(sufv[rt << 1 | 1], sum[rt << 1 | 1] + sufv[rt << 1]);
+}
+void build(int rt, int l, int r) {
+    if (l == r) {
+        maxv[rt] = Prev[rt] = sufv[rt] = sum[rt] = 0;
         return;
     }
-    int mid = curl + curr >> 1;
-    build(lson, curl, mid); build(rson, mid + 1, curr);
+    int mid = (l + r) >> 1;
+    build(rt << 1, l, mid); build(rt << 1 | 1, mid + 1, r);
+    pushup(rt);
 }
-
-void change(int curpos, int p) {
-    curpos = pos[curpos];
-    segt[curpos].s += p;
-    if (segt[curpos].s > 0)
-        segt[curpos].pre = segt[curpos].suf = segt[curpos].v = segt[curpos].s;
-    else
-        segt[curpos].pre = segt[curpos].suf = segt[curpos].v = 0;
-    for (curpos >>= 1; curpos; curpos >>= 1) {
-        segt[curpos].pre = max(segt[lson].pre, segt[lson].s + segt[rson].pre);
-        segt[curpos].suf = max(segt[rson].suf, segt[rson].s + segt[lson].suf);
-        segt[curpos].s = segt[lson].s + segt[rson].s;
-        segt[curpos].v = max(max(segt[lson].v, segt[rson].v), segt[lson].suf + segt[rson].pre);
+void update(int rt, int l, int r, int pos, ll v) {
+    if (l == r) {
+        sum[rt] += v;
+        maxv[rt] = Prev[rt] = sufv[rt] = max(0ll, sum[rt]);
+        return;
     }
+    int mid = (l + r) >> 1;
+    if (pos <= mid) update(rt << 1, l, mid, pos, v);    else update(rt << 1 | 1, mid + 1, r, pos, v);
+    pushup(rt);
 }
-
+ll query() {
+    return maxv[1];
+}
+struct node {
+    int x, y, c;
+    bool operator < (const node &rhs) const {
+        return x < rhs.x || (x == rhs.x && y < rhs.y);
+    }
+} p[N];
 int main() {
-    int casenum; scanf("%d", &casenum);
-    while (casenum--) {
-        int n, tot = 0, tot2 = 0, b[maxn];
-        ll ans = 0;
+    int t, n;
+    scanf("%d", &t);
+    while (t--) {
+        vector <int> keyx;
+        vector <int> keyy;
         scanf("%d", &n);
-        rep1(i, 1, n) {
-            scanf("%d%d%d", &e[i].x, &e[i].y, &e[i].weight);
-            b[++tot] = e[i].y;
+        for (int i = 0; i < n; i++) {
+            scanf("%d%d%d", &p[i].x, &p[i].y, &p[i].c);
+            keyx.push_back(p[i].x);
+            keyy.push_back(p[i].y);
         }
-        sot(b, tot);
-        for (int i = 1; i <= tot; i++)
-            if (i == 1 || b[i] != b[tot2]) b[++tot2] = b[i];
-        sot(e, n);
-        rep1(i, 1, n) e[i].y = lower_bound(b + 1, b + 1 + tot2, e[i].y) - b;
-        int j, k;
-        for (int i = 1; i <= n; i++)
-            if (i == 1 || e[i].x != e[i - 1].x) {
-                build(1, 1, tot2);
-                for (j = i; j <= n; j = k) {
-                    for (k = j; k <= n && e[j].x == e[k].x; k++) change(e[k].y, e[k].weight);
-                    if (ans < segt[1].v) ans = segt[1].v;
+        sort(keyx.begin(), keyx.end());
+        sort(keyy.begin(), keyy.end());
+        int pp = unique(keyx.begin(), keyx.end()) - keyx.begin();
+        int qq = unique(keyy.begin(), keyy.end()) - keyy.begin();
+        for (int i = 0; i < n; i++) {
+            p[i].x = lower_bound(keyx.begin(), keyx.begin() + pp, p[i].x) - keyx.begin() + 1;
+            p[i].y = lower_bound(keyy.begin(), keyy.begin() + qq, p[i].y) - keyy.begin() + 1;
+        }
+        sort(p, p + n);
+        ll ans = 0;
+        for (int i = 0; i < pp; i++) {
+            int x = i + 1;
+            int tmp = 0;
+            while (tmp < n && p[tmp].x < x) tmp++;
+            build(1, 1, qq);
+            while (tmp < n) {
+                int curx = p[tmp].x;
+                while (tmp < n && p[tmp].x == curx) {
+                    update(1, 1, qq, p[tmp].y, p[tmp].c);
+                    tmp++;
                 }
+                ans = max(ans, query());
             }
+        }
         printf("%lld\n", ans);
     }
     return 0;
