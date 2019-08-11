@@ -10,7 +10,7 @@
 #define ll long long
 #define dou double
 #define pb emplace_back
-#define mp make_pair
+#define ans make_pair
 #define sot(a,b) sort(a+1,a+1+b)
 #define rep1(i,a,b) for(int i=a;i<=b;++i)
 #define rep0(i,a,b) for(int i=a;i<b;++i)
@@ -32,16 +32,16 @@ int main() {
             continue;
         }
         puts("yes");
-        int x = k, y = n / k, mp[x + 5][y + 5];
+        int x = k, y = n / k, ans[x + 5][y + 5];
         if (y & 1) {
-            for (int i = 1; i <= x; i++) mp[i][1] = i;
-            mp[k / 2 + 1][2] = 2 * k;
-            for (int i = k / 2 + 2; i <= x; i++) mp[i][2] = i - k / 2 - 1 + k;
-            for (int i = 1; i <= k / 2; i++) mp[i][2] = k + k / 2 + i;
-            for (int i = 1; i <= x; i++) mp[i][3] = 4 * k + k / 2 + 2 - mp[i][1] - mp[i][2];
+            for (int i = 1; i <= x; i++) ans[i][1] = i;
+            ans[k / 2 + 1][2] = 2 * k;
+            for (int i = k / 2 + 2; i <= x; i++) ans[i][2] = i - k / 2 - 1 + k;
+            for (int i = 1; i <= k / 2; i++) ans[i][2] = k + k / 2 + i;
+            for (int i = 1; i <= x; i++) ans[i][3] = 4 * k + k / 2 + 2 - ans[i][1] - ans[i][2];
             int nx = 1, ny = 4;
             for (int i = 3 * k + 1; i <= n; i++) {
-                mp[nx][ny] = i;
+                ans[nx][ny] = i;
                 if (!(ny % 2)) {
                     if (nx == x) ny++;
                     else nx++;
@@ -53,7 +53,7 @@ int main() {
         } else {
             int nx = 1, ny = 1;
             for (int i = 1; i <= n; i++) {
-                mp[nx][ny] = i;
+                ans[nx][ny] = i;
                 if (ny % 2 == 1) {
                     if (nx == x) ny++;
                     else nx++;
@@ -65,7 +65,7 @@ int main() {
         }
         for (int i = 1; i <= x; i++)
             for (int j = 1; j <= y; j++)
-                printf("%d%c", mp[i][j], j == y ? '\n' : ' ');
+                printf("%d%c", ans[i][j], j == y ? '\n' : ' ');
     }
     return 0;
 }
