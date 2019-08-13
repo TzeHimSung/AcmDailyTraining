@@ -21,6 +21,7 @@ int main() {
     int t; scanf("%d", &t);
     while (t--) {
         ll n, m, k; scanf("%lld%lld%lld", &n, &m, &k);
+        // m/(n-k+1)+1是前k-1题复习时间，m+1是第k题复习时间
         printf("%lld\n", (m / (n - k + 1) + 1) * (k - 1) + m + 1);
     }
     return 0;
