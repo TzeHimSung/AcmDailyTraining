@@ -24,7 +24,7 @@ struct node {
     int x, y;
 };
 
-struct rect {
+struct Rectangle {
     int x1, y1, x2, y2;
     void fill(void) {
         for (int x = x1; x <= x2; x++) {
@@ -35,10 +35,6 @@ struct rect {
         }
     }
 };
-
-void init(void) {
-    memset(board, 0, sizeof(board));
-}
 
 int calc(void) {
     int ans = 0;
@@ -86,9 +82,9 @@ int main(void) {
             mp[e] = cur;
             cur += 2;
         }
-        rect A = {mp[vec[0]], mp[vec[1]], mp[vec[2]], mp[vec[3]]};
-        rect B = {mp[vec[4]], mp[vec[5]], mp[vec[6]], mp[vec[7]]};
-        init();
+        Rectangle A = {mp[vec[0]], mp[vec[1]], mp[vec[2]], mp[vec[3]]};
+        Rectangle B = {mp[vec[4]], mp[vec[5]], mp[vec[6]], mp[vec[7]]};
+        memset(board, 0, sizeof(board));
         A.fill();
         B.fill();
         cout << calc() << endl;

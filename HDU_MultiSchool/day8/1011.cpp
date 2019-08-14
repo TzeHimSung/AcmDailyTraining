@@ -12,15 +12,8 @@
 
 using namespace std;
 
-struct info {
-    int p, m;
-};
-
-struct pnum {
-    int id, num;
-    bool operator < (const pnum &p) const {
-        return id < p.id;
-    }
+struct _Class {
+    int num, tea;
 };
 
 int main(void) {
@@ -31,12 +24,12 @@ int main(void) {
     while (T--) {
         int n;
         cin >> n;
-        vector <info> mise(n);
+        vector <_Class> _class(n);
         for (int i = 0; i < n; i++) {
-            cin >> mise[i].p >> mise[i].m;
+            cin >> _class[i].num >> _class[i].tea;
         }
-        sort(mise.begin(), mise.end(), [](info & a, info & b) {
-            return a.m == b.m ? a.p > b.p : a.m > b.m;
+        sort(_class.begin(), _class.end(), [](_Class & a, _Class & b) {
+            return a.tea == b.tea ? a.num > b.num : a.tea > b.tea;
         });
         long long int ans = 0;
         vector <int> jump(n);
@@ -47,29 +40,18 @@ int main(void) {
         for (int i = 0; i < n; i++) {
             int nxt = i;
             long long int cnt = 0, round = 0;
-            while (mise[i].p) {
+            while (_class[i].num) {
                 round++;
-                int last = nxt;
-                nxt = jump[nxt];
-                if (nxt == i) {
-                    break;
-                }
-                if (mise[nxt].m) {
-                    int drink = min(mise[nxt].m, mise[i].p);
-                    mise[i].p -= drink;
-                    mise[nxt].m -= drink;
-                    ans += drink;
-                    cnt += drink;
-                } else {
-                    jump[last] = jump[nxt];
-                }
-                if (round > n) {
-                    break;
-                }
+                int last = nxt; nxt = jump[nxt];
+                if (nxt == i) break;
+                if (_class[nxt].tea) {
+                    int drink = min(_class[nxt].tea, _class[i].num);
+                    _class[i].num -= drink, _class[nxt].tea -= drink;
+                    ans += drink, cnt += drink;
+                } else jump[last] = jump[nxt];
+                if (round > n) break;
             }
-            if (!cnt && mise[i].p) {
-                break;
-            }
+            if (!cnt && _class[i].num) break;
         }
         cout << ans << endl;
     }
