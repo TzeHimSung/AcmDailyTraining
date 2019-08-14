@@ -13,13 +13,13 @@
 using namespace std;
 
 struct info {
-    int num, tea;
+    int p, m;
 };
 
 struct pnum {
     int id, num;
-    bool operator < (const pnum &num) const {
-        return id < num.id;
+    bool operator < (const pnum &p) const {
+        return id < p.id;
     }
 };
 
@@ -31,14 +31,14 @@ int main(void) {
     while (T--) {
         int n;
         cin >> n;
-        vector <info> _class(n);
+        vector <info> mise(n);
         for (int i = 0; i < n; i++) {
-            cin >> _class[i].num >> _class[i].tea;
+            cin >> mise[i].p >> mise[i].m;
         }
-        sort(_class.begin(), _class.end(), [](info & a, info & b) {
-            return a.tea == b.tea ? a.num > b.num : a.tea > b.tea;
+        sort(mise.begin(), mise.end(), [](info & a, info & b) {
+            return a.m == b.m ? a.p > b.p : a.m > b.m;
         });
-        int ans = 0;
+        long long int ans = 0;
         vector <int> jump(n);
         for (int i = 0; i < n - 1; i++) {
             jump[i] = i + 1;
@@ -46,26 +46,30 @@ int main(void) {
         jump[n - 1] = 0;
         for (int i = 0; i < n; i++) {
             int nxt = i;
-            int sign = 0, round = 0;
-            while (_class[i].num) {
+            long long int cnt = 0, round = 0;
+            while (mise[i].p) {
                 round++;
                 int last = nxt;
                 nxt = jump[nxt];
                 if (nxt == i) {
                     break;
                 }
-                if (_class[nxt].tea) {
-                    int drink = min(_class[nxt].tea, _class[i].num);
-                    _class[i].num -= drink;
-                    _class[nxt].tea -= drink;
+                if (mise[nxt].m) {
+                    int drink = min(mise[nxt].m, mise[i].p);
+                    mise[i].p -= drink;
+                    mise[nxt].m -= drink;
                     ans += drink;
-                    sign += drink;
+                    cnt += drink;
                 } else {
                     jump[last] = jump[nxt];
                 }
-                if (round > n) break;
+                if (round > n) {
+                    break;
+                }
             }
-            if (!sign && _class[i].num) break;
+            if (!cnt && mise[i].p) {
+                break;
+            }
         }
         cout << ans << endl;
     }
