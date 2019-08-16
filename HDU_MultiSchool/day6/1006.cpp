@@ -60,7 +60,6 @@ int main() {
             int tt = 0;
             while (tt * m[1] + a[1] <= m) {
                 int curr = tt * m[1] + a[1];
-
                 tt++;
             }
         } else puts("0");
