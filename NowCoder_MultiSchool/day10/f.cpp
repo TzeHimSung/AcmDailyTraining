@@ -24,7 +24,7 @@ struct Point {
     bool operator<(const Point &rhs)const {
         return x > rhs.x;
     }
-} a[maxn], sum[maxn];
+} a[maxn], sum[maxn]; // sum[i].y is position
 
 int main() {
     scanf("%d%d", &n, &r);
