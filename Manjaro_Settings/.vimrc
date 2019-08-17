@@ -26,5 +26,6 @@ func! BuildAndRun()
     if &filetype == 'cpp'
         exec "!g++ -g % -o %<.out -std=c++14 -O2 -Wall"
         exec "! ./%<.out"
+        exec "!rm %<.out"
     endif
 endfunc
