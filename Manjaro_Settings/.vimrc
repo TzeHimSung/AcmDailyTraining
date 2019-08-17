@@ -1,4 +1,6 @@
 syntax on
+set nocompatible
+set backspace=indent,eol,start
 set number
 set cursorline
 set mouse=a
@@ -9,7 +11,10 @@ set shiftwidth=4
 imap ( ()<left>
 imap [ []<left>
 imap " ""<left>
+imap < <><left>
 imap {<CR> {<CR>}<c-o>O<left><right>
+imap (<CR> (<CR>)<c-o>O<left><right>
+imap [<CR> [<CR>]<c-o>O<left><right>
 
 map <F2> :call FormatCode()<CR>
 func! FormatCode()
@@ -22,10 +27,10 @@ endfunc
 
 map <F5> :call BuildAndRun()<CR>
 func! BuildAndRun()
-    exec "w"
     if &filetype == 'cpp'
         exec "!g++ -g % -o %<.out -std=c++14 -O2 -Wall"
         exec "! ./%<.out"
-        exec "!rm %<.out"
     endif
 endfunc
+
+a

@@ -18,34 +18,34 @@ using namespace std;
 /* header end */
 
 const int maxn = 1e5 + 10;
-int n, r, fx[maxn * 3], fy[maxn * 3], res;
-struct Node {
+int n, r, cntX[maxn * 3], cntY[maxn * 3], res;
+struct Point {
     int x, y;
-    bool operator<(const Node &rhs)const {
+    bool operator<(const Point &rhs)const {
         return x > rhs.x;
     }
-} a[maxn], w[maxn];
+} a[maxn], sum[maxn];
 
 int main() {
     scanf("%d%d", &n, &r);
     for (int i = 0; i < n; i++) {
         scanf("%d%d", &a[i].x, &a[i].y);
-        fx[a[i].x]++;
+        cntX[a[i].x]++;
     }
     for (int i = 0; i < maxn; i++) {
-        w[i].x = fx[i] + fx[i + r] + fx[i + r * 2];
-        w[i].y = i;
+        sum[i].x = cntX[i] + cntX[i + r] + cntX[i + r * 2];
+        sum[i].y = i;
     }
-    sort(w, w + maxn);
+    sort(sum, sum + maxn);
     for (int i = 0; i < 100; i++) {
-        memset(fy, 0, sizeof(fy));
+        memset(cntY, 0, sizeof(cntY));
         for (int j = 0; j < n; j++)
-            if (a[j].x != w[i].y && a[j].x != w[i].y + r && a[j].x != w[i].y + r * 2)
-                fy[a[j].y]++;
+            if (a[j].x != sum[i].y && a[j].x != sum[i].y + r && a[j].x != sum[i].y + r * 2)
+                cntY[a[j].y]++;
         int my = 0;
         for (int j = 0; j < maxn; j++)
-            my = max(my, fy[j] + fy[j + r] + fy[j + r * 2]);
-        res = max(res, my + w[i].x);
+            my = max(my, cntY[j] + cntY[j + r] + cntY[j + r * 2]);
+        res = max(res, my + sum[i].x);
     }
     printf("%d\n", res);
     return 0;
