@@ -18,12 +18,35 @@ using namespace std;
 /* header end */
 
 const int maxn = 1e5 + 10;
-int cntX[maxn],cntY[maxn],n,r;
+int n, r, fx[maxn * 3], fy[maxn * 3], res;
+struct Node {
+    int x, y;
+    bool operator<(const Node &rhs)const {
+        return x > rhs.x;
+    }
+} a[maxn], w[maxn];
 
-int main(){
-	scanf("%d%d",&n,&r);
-	for (int i=1;i<=n;i++){
-
-	}
-	return 0;
+int main() {
+    scanf("%d%d", &n, &r);
+    for (int i = 0; i < n; i++) {
+        scanf("%d%d", &a[i].x, &a[i].y);
+        fx[a[i].x]++;
+    }
+    for (int i = 0; i < maxn; i++) {
+        w[i].x = fx[i] + fx[i + r] + fx[i + r * 2];
+        w[i].y = i;
+    }
+    sort(w, w + maxn);
+    for (int i = 0; i < 100; i++) {
+        memset(fy, 0, sizeof(fy));
+        for (int j = 0; j < n; j++)
+            if (a[j].x != w[i].y && a[j].x != w[i].y + r && a[j].x != w[i].y + r * 2)
+                fy[a[j].y]++;
+        int my = 0;
+        for (int j = 0; j < maxn; j++)
+            my = max(my, fy[j] + fy[j + r] + fy[j + r * 2]);
+        res = max(res, my + w[i].x);
+    }
+    printf("%d\n", res);
+    return 0;
 }
