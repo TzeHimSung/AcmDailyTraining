@@ -39,7 +39,6 @@ int main() {
             int pos;
             for (pos = 1; pos < 7; pos++)
                 if (d[pos] == 3) break;
-            // sort(a[pos].begin(), a[pos].end());
             if (d[a[pos][0]] + d[a[pos][1]] + d[a[pos][2]] == 4) puts("2-methylpentane");
             else if (d[a[pos][0]] + d[a[pos][1]] + d[a[pos][2]] == 5) puts("3-methylpentane");
         }
