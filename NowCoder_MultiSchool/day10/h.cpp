@@ -32,9 +32,9 @@ int main() {
             a[x].pb(y), a[y].pb(x);
         }
         sort(d2 + 1, d2 + 7);
-        if (d2[6] == 2) puts("n-hexane"); //
-        else if (d2[6] == 4) puts("2,2-dimethylbutane"); //
-        else if (d2[4] == 1) puts("2,3-dimethylbutane"); //
+        if (d2[6] == 2) puts("n-hexane"); 
+        else if (d2[6] == 4) puts("2,2-dimethylbutane"); 
+        else if (d2[4] == 1) puts("2,3-dimethylbutane"); 
         else {
             int pos;
             for (pos = 1; pos < 7; pos++)
