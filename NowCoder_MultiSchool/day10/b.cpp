@@ -16,7 +16,6 @@ const string A("COFFEE"), B("CHICKEN");
 vector <long long int> len(70);
 
 char solve(int index, long long int pos) {
-    // cout << index << "; " << pos << endl;
     assert(1 <= index && 1 <= pos);
     if (index == 1) {
         if (pos <= 6) {
