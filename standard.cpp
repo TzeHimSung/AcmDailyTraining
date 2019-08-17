@@ -17,9 +17,9 @@
 using namespace std;
 /* header end */
 
-/* variable and function */
+
 
 int main() {
-    /* main */
+
     return 0;
 }
