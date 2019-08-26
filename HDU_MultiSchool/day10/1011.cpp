@@ -11,95 +11,90 @@
 #define eps 1e-8
 #define int_inf 0x3f3f3f3f
 #define ll_inf 0x7f7f7f7f7f7f7f7f
+#define lson (curpos<<1)
+#define rson (curpos<<1|1)
 /* namespace */
 using namespace std;
 /* header end */
 
-
 const int maxn = 3e5 + 10;
-int num[maxn], n, k;
 
-struct Treap {
-    int tot1, tot2, s[maxn], ch[maxn][2], key[maxn], size[maxn], sum0[maxn], sum1[maxn];
+struct Node {
+    int maxx, pos;
+} segt[maxn << 2];
+int n, k, a[maxn], vis[maxn], pre[maxn], suf[maxn];
 
-    void init() {
-        tot1 = tot2 = 0;
-        size[0] = 0;
-        ch[0][0] = ch[0][1] = 0;
-        sum0[0] = sum1[0] = 0;
+void maintain(int curpos) {
+    segt[curpos].maxx = max(segt[lson].maxx, segt[rson].maxx);
+    segt[curpos].pos = segt[lson].maxx > segt[rson].maxx ? segt[lson].pos : segt[rson].pos;
+}
+
+void build(int curpos, int curl, int curr) {
+    if (curl == curr) {
+        segt[curpos].maxx = a[curl];
+        segt[curpos].pos = curl;
+        return;
     }
+    int mid = curl + curr >> 1;
+    build(lson, curl, mid); build(rson, mid + 1, curr);
+    maintain(curpos);
+}
 
-    bool random(double p) {
-        return (double)rand() / RAND_MAX < p;
-    }
+int query(int curpos, int curl, int curr, int ql, int qr) {
+    if (ql <= curl && curr <= qr)
+        return segt[curpos].pos;
+    int mid = curl + curr >> 1, lpos = -1, rpos = -1;
+    if (ql <= mid) lpos = query(lson, curl, mid, ql, qr);
+    if (mid < qr) rpos = query(rson, mid + 1, curr, ql, qr);
+    if (lpos == -1) return rpos;
+    else if (rpos == -1) return lpos;
+    else return a[lpos] > a[rpos] ? lpos : rpos;
+}
 
-    int newnode(int val) {
-        int r;
-        if (tot2) r = s[tot2--];
-        else r = ++tot1;
-        size[r] = 1;
-        key[r] = val;
-        ch[r][0] = ch[r][1] = 0;
-        sum0[r] = sum1[r] = 0;
-    }
-
-    void del(int r) {
-        if (!r) return;
-        s[++tot2] = r;
-        del(ch[r][0]); del(ch[r][1]);
-    }
-
-    void push_up(int r) {
-        int lson = ch[r][0], rson = ch[r][1];
-        size[r] = size[lson] + size[rson] + 1;
-        sum0[r] = __gcd(sum0[lson], sum0[rson]);
-        sum1[r] = __gcd(sum1[lson], sum1[rson]);
-    }
-
-    void merge(int &p, int x, int y) {
-        if (!x || !y) p = x | y;
-        else if (random((double)size[x] / (size[x] + size[y]))) {
-            merge(ch[x][0], ch[x][1], y);
-            push_up(p = x);
-        } else {
-            merge(ch[y][0], x, ch[y][0]);
-            push_up(p = y);
+void dfs(int l, int r, ll &ans) {
+    if (l > r) return;
+    int mid = query(1, 1, n, l, r), len = max(1, a[mid] - k); // mid是区间[l,r]最大值的位置，len是最小长度
+    if (mid - l <= r - mid) { // 最大值位置更靠左时，枚举最大值左侧元素作为区间左端点并维护答案
+        for (int i = l; i <= mid; i++) {
+            int L = max(mid, i + len - 1), R = min(pre[i], r);
+            ans += max(0, R - L + 1);
+        }
+    } else {
+        for (int i = mid; i <= r; i++) {
+            int L = max(suf[i], l), R = min(mid, i - len + 1);
+            ans += max(0, R - L + 1);
         }
     }
-
-    void split(int p, int &x, int &y, int k) {
-        if (!k) {
-            x = 0, y = p;
-            return;
-        }
-        if (size[ch[p][0]] >= k) {
-            y = p;
-            split(ch[p][0], x, ch[y][0], k);
-            push_up(y);
-        } else {
-            x = p;
-            split(ch[p][1], ch[x][1], y, k - size[ch[p][0]] - 1);
-            push_up(x);
-        }
-    }
-
-    void build(int &p, int l, int r) {
-        if (l > r) return;
-        int mid = l + r >> 1;
-        p = newnode(num[mid]);
-        build(ch[p][0], l, mid - 1); build(ch[p][1], mid + 1, r);
-        push_up(p);
-    }
-} tr;
+    dfs(l, mid - 1, ans); dfs(mid + 1, r, ans);
+}
 
 int main() {
     int t; scanf("%d", &t);
     while (t--) {
-        tr.init();
         scanf("%d%d", &n, &k);
         for (int i = 1; i <= n; i++) scanf("%d", &a[i]);
-        tr.build(0, 1, n);
-
+        build(1, 1, n);
+        int pos = 0;
+        for (int i = 1; i <= n; i++) { // 计算从当前位置开始，向右延伸最远到什么位置，区间内的元素依然unique
+            while (pos < n && !vis[a[pos + 1]]) {
+                pos++;
+                vis[a[pos]] = true;
+            }
+            pre[i] = pos;
+            vis[a[i]] = false;
+        }
+        pos = n + 1;
+        for (int i = n; i >= 1; i--) {
+            while (pos > 1 && !vis[a[pos - 1]]) {
+                pos--;
+                vis[a[pos]] = true;
+            }
+            suf[i] = pos;
+            vis[a[i]] = false;
+        }
+        ll ans = 0;
+        dfs(1, n, ans);
+        printf("%lld\n", ans);
     }
     return 0;
 }
