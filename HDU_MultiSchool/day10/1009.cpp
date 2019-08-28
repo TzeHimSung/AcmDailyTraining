@@ -32,7 +32,6 @@ int solve(int x, int y) {
             if (!board[t.x][t.y]) {
                 continue;
             }
-
             ans++;
             board[t.x][t.y] = 0;
             for (int i = 0; i < 4; i++) {

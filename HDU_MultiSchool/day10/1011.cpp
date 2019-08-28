@@ -1,3 +1,4 @@
+// 数符合条件的区间个数，满足区间max-k<=区间长度
 /* basic header */
 #include <bits/stdc++.h>
 /* define */
@@ -51,11 +52,11 @@ int query(int curpos, int curl, int curr, int ql, int qr) {
     else return a[lpos] > a[rpos] ? lpos : rpos;
 }
 
-void dfs(int l, int r, ll &ans) {
+void query(int l, int r, ll &ans) {
     if (l > r) return;
     int mid = query(1, 1, n, l, r), len = max(1, a[mid] - k); // mid是区间[l,r]最大值的位置，len是最小长度
-    if (mid - l <= r - mid) { // 最大值位置更靠左时，枚举最大值左侧元素作为区间左端点并维护答案
-        for (int i = l; i <= mid; i++) {
+    if (mid - l <= r - mid) { // 最大值位置更靠左时，枚举最大值左侧元素作为区间左端点
+        for (int i = l; i <= mid; i++) { // 枚举左端点到mid的每个位置，暴力计算对右区间的贡献
             int L = max(mid, i + len - 1), R = min(pre[i], r);
             ans += max(0, R - L + 1);
         }
@@ -65,7 +66,7 @@ void dfs(int l, int r, ll &ans) {
             ans += max(0, R - L + 1);
         }
     }
-    dfs(l, mid - 1, ans); dfs(mid + 1, r, ans);
+    query(l, mid - 1, ans); query(mid + 1, r, ans);
 }
 
 int main() {
@@ -76,7 +77,7 @@ int main() {
         build(1, 1, n);
         int pos = 0;
         for (int i = 1; i <= n; i++) { // 计算从当前位置开始，向右延伸最远到什么位置，区间内的元素依然unique
-            while (pos < n && !vis[a[pos + 1]]) {
+            while (pos < n && !vis[a[pos + 1]]) { // 不用set可以少一个log
                 pos++;
                 vis[a[pos]] = true;
             }
@@ -93,7 +94,7 @@ int main() {
             vis[a[i]] = false;
         }
         ll ans = 0;
-        dfs(1, n, ans);
+        query(1, n, ans);
         printf("%lld\n", ans);
     }
     return 0;

@@ -20,13 +20,12 @@ int main(void) {
         int n;
         scanf("%d", &n);
         vector <double> p(n);
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < n; i++)
             scanf("%lf", &p[i]);
-        }
         sort(p.begin(), p.end(), greater <double> ());
         double a = 1.0, b = 0.0, c = 0.0;
         for (int i = 0; i < n; i++) {
-            double nxt = b * (1 - p[i]) + a * p[i];
+            double nxt = b * (1 - p[i]) + a * p[i]; // P of pick current gift
             if (nxt - b > eps) {
                 a = a * (1 - p[i]);
                 b = nxt;

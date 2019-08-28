@@ -24,34 +24,34 @@ int main(void) {
         int n;
         scanf("%d", &n);
         vector <info> data(n);
-        map <long long int, int> cnt;
-        set <long long int> choice;
+        map <long long int, int> cnt; // counter of y
+        set <long long int> usedY;
         for (int i = 0; i < n; i++) {
             scanf("%lld %lld", &data[i].x, &data[i].y);
             cnt[data[i].y]++;
         }
         sort(data.begin(), data.end(), [](info & a, info & b) -> bool {
-            return a.x < b.x;
+            return a.x < b.x; // sort by x
         });
         long long int ans = LONG_LONG_MAX;
-        for (int i = 0; i < n; i++) {
-            if (!(--cnt[data[i].y])) {
+        for (int i = 0; i < n; i++) { // enum each number pair
+            if (!(--cnt[data[i].y])) { // if y remain one time
                 cnt.erase(data[i].y);
             }
             long long int top = 0;
-            if (!cnt.empty()) {
+            if (!cnt.empty()) { // top is the largest y
                 top = cnt.rbegin()->first;
-                ans = min(ans, abs(top - data[i].x));
+                ans = min(ans, abs(top - data[i].x)); // ans up limit
             }
-            auto it = choice.lower_bound(data[i].x);
-            if (it != choice.end()) {
+            auto it = usedY.lower_bound(data[i].x);
+            if (it != usedY.end()) {
                 ans = min(ans, abs(max(top, *it) - data[i].x));
             }
-            if (it != choice.begin()) {
+            if (it != usedY.begin()) {
                 advance(it, -1);
                 ans = min(ans, abs(max(top, *it) - data[i].x));
             }
-            choice.insert(data[i].y);
+            usedY.insert(data[i].y);
         }
         printf("%lld\n", ans);
     }

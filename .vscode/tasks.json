@@ -33,6 +33,22 @@
                 "-Wall"
             ],
             "group": "build"
+        },
+        {
+            "label": "codeforces test",
+            "type": "shell",
+            "command": "cf",
+            "args": [
+                "test"
+            ]
+        },
+        {
+            "label": "codeforces submit",
+            "type": "shell",
+            "command": "cf",
+            "args": [
+                "submit"
+            ]
         }
     ]
 }
