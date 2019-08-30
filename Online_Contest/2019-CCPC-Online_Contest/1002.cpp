@@ -17,20 +17,30 @@
 using namespace std;
 /* header end */
 
-const int maxn = 1e5 + 10, add = 1e7;
-struct Node {
-    int minn, pos;
-} segt[maxn << 2];
-int a[maxn],cnt[maxn];
+int read() {
+    int ret = 0;
+    char ch = getchar();
+    while (ch < '0' || ch > '9') ch = getchar();
+    while (ch >= '0' && ch <= '9') {
+        ret = (ret << 1) + (ret << 3) + ch - '0';
+        ch = getchar();
+    }
+    return ret;
+}
 
-void maintain(int curpos) {
-    segt[curpos].minn = min(segt[lson].minn, segt[rson].minn);
-    segt[curpos].pos = segt[lson].pos + segt[rson].pos;
+const int maxn = 1e5 + 10;
+int n, m, a[maxn], id[maxn];
+struct Node {
+    int maxx;
+} segt[maxn << 2];
+
+inline void maintain(int curpos) {
+    segt[curpos].maxx = max(segt[lson].maxx, segt[rson].maxx);
 }
 
 void build(int curpos, int curl, int curr) {
     if (curl == curr) {
-        segt[curpos].minn = cnt[curl];
+        segt[curpos].maxx = id[curl];
         return;
     }
     int mid = curl + curr >> 1;
@@ -40,7 +50,7 @@ void build(int curpos, int curl, int curr) {
 
 void update(int curpos, int pos, int curl, int curr) {
     if (curl == curr) {
-        segt[curpos].minn += add;
+        segt[curpos].maxx = int_inf;
         return;
     }
     int mid = curl + curr >> 1;
@@ -49,48 +59,53 @@ void update(int curpos, int pos, int curl, int curr) {
     maintain(curpos);
 }
 
-int queryKth(int curpos, int curl, int curr, int k) {
-    if (curl == curr)
-        return segt[curpos].pos;
+int query(int curpos, int curl, int curr, int ql, int qr) {
+    if (ql <= curl && curr <= qr)
+        return segt[curpos].maxx;
     int mid = curl + curr >> 1;
-    if (segt[lson].minn >= k)
-        return queryKth(lson, curl, mid, k);
-    else
-        return queryKth(rson, mid + 1, curr, k - segt[lson].minn);
+    if (qr <= mid) return query(lson, curl, mid, ql, qr);
+    else if (ql > mid) return query(rson, mid + 1, curr, ql, qr);
+    return max(query(lson, curl, mid, ql, mid), query(rson, mid + 1, curr, mid + 1, qr));
 }
 
-int query(int curpos,int curl,int curr,int ql,int qr){
-	if (ql<=curl && curr<=qr){
-		return segt[curpos].minn;
-	}
-	int mid=curl+curr>>1;
-	if (ql<=mid) return query(lson,curl,mid,ql,qr);
-	else if (mid<qr) return query(rson,mid+1,curr,ql,qr);
-
+int solve(int R, int k) {
+    int LL = k, RR = n + 1, ans = n + 1;
+    while (LL <= RR) {
+        int mid = LL + RR >> 1;
+        if (query(1, 1, n + 1, k, mid) > R) {
+            ans = mid;
+            RR = mid - 1;
+        } else {
+            LL = mid + 1;
+        }
+    }
+    return ans;
 }
 
 int main() {
-    int t; scanf("%d", &t);
+    int t = read();
     while (t--) {
-		for (int i=0;i<maxn;i++) cnt[i]=0;
-        int n, m, lastAns = 0; scanf("%d%d", &n, &m);
-        for (int i = 1; i <= n; i++){
-			scanf("%d", &a[i]);
-			cnt[a[i]]++;
-		}
-        build(1, 1, n);
+        int lastAns = 0;
+        n = read(), m = read();
+        for (int i = 1; i <= n; i++) {
+            a[i] = read();
+            id[a[i]] = i;
+        }
+        id[n + 1] = int_inf;
+        build(1, 1, n + 1);
         while (m--) {
-            int op; scanf("%d", &op);
+            int op = read();
             if (op == 1) {
-                int pos; scanf("%d", &pos);
+                int pos = read();
                 pos ^= lastAns;
-                update(1, pos, 1, n);
+                update(1, a[pos], 1, n + 1);
             } else {
-                int ql, qr; scanf("%d%d", &ql, &qr);
-                ql ^= lastAns, qr ^= lastAns;
+                int r = read(), k = read();
+                r ^= lastAns, k ^= lastAns;
+                lastAns = solve(r, k);
+                printf("%d\n", lastAns);
             }
         }
     }
     return 0;
 }
-

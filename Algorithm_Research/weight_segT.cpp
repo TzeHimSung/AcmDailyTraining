@@ -39,31 +39,26 @@ using namespace std;
 
 const int maxn = 1e5 + 10;
 
-inline int read()
-{
+inline int read() {
     int ret = 0; char c;
     c = getchar();
     while (c < '0' || c > '9') c = getchar();
-    while (c >= '0' && c <= '9')
-    {
+    while (c >= '0' && c <= '9') {
         ret = ret * 10 + c - '0';
         c = getchar();
     }
     return ret;
 }
 
-struct Node
-{
+struct Node {
     int val = -1;
 };
 
 Node segT[maxn << 2];
 int n, cnt[maxn];
 
-void build(int *a, int curPos, int curL, int curR)
-{
-    if (curL == curR)
-    {
+void build(int *a, int curPos, int curL, int curR) {
+    if (curL == curR) {
         segT[curPos].val = a[curL];
         return;
     }
@@ -72,12 +67,9 @@ void build(int *a, int curPos, int curL, int curR)
     segT[curPos].val = segT[lson].val + segT[rson].val;
 }
 
-int query(int curPos, int k, int curL, int curR)
-{
+int query(int curPos, int k, int curL, int curR) {
     if (curL == curR)
-    {
         return curL;
-    }
     int mid = (curL + curR) >> 1;
     if (k <= segT[lson].val)
         return query(lson, k, curL, mid);
@@ -85,17 +77,14 @@ int query(int curPos, int k, int curL, int curR)
         return query(rson, k - segT[lson].val, mid + 1, curR);
 }
 
-int main()
-{
+int main() {
     scanf("%d", &n);
-    rep1(i, 1, n)
-    {
+    rep1(i, 1, n) {
         int x; scanf("%d", &x); cnt[x]++;
     }
     build(cnt, 1, 1, n);
     int q; scanf("%d", &q);
-    while (q--)
-    {
+    while (q--) {
         int k;
         scanf("%d", &k);
         printf("%d\n", query(1, k, 1, n));
