@@ -11,15 +11,15 @@ set shiftwidth=4
 inoremap ( ()<left>
 inoremap [ []<left>
 inoremap " ""<left>
-inoremap < <><left>
-inoremap {<CR> {<CR>}<c-o>O<left><right>
+inoremap ' ''<left>
+inoremap {<CR> {<CR>}<c-o>O<left><right><TAB>
 inoremap (<CR> (<CR>)<c-o>O<left><right>
 inoremap [<CR> [<CR>]<c-o>O<left><right>
 
 map <F2> :call FormatCode()<CR>
 func! FormatCode()
     exec "w"
-    if &filetype == 'cpp' || &filetype == 'java'
+    if &filetype == 'cpp' || &filetype == 'java' || &filetype == 'kt'
         exec "!astyle --options=$HOME/.astylerc %"
         return
     endif
@@ -34,12 +34,18 @@ func! BuildAndRun()
     endif
 endfunc
 
+map <F9> :call TestProblem()<CR>
+func! TestProblem()
+	exec "w"
+	exec "!cf test"
+endfunc
+
 map <F10> :call SubmitProblem()<CR>
 func! SubmitProblem()
 	exec "w"
-	if &filetype == 'cpp'
-		exec "!cf submit"
-	endif
+	exec "!cf submit"
 endfunc
+
+let g:ycm_global_ycm_extra_conf='~/.ycm_extra_conf.py'
 
 autocmd BufNewFile *.cpp 0r ~/Code/DailyTraining/standard.cpp
