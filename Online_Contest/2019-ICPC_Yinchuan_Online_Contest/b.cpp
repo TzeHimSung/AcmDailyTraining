@@ -1,190 +1,59 @@
+/* basic header */
 #include <bits/stdc++.h>
-
+/* define */
+#define ll long long
+#define dou double
+#define pb emplace_back
+#define mp make_pair
+#define sot(a,b) sort(a+1,a+1+b)
+#define rep1(i,a,b) for(int i=a;i<=b;++i)
+#define rep0(i,a,b) for(int i=a;i<b;++i)
+#define eps 1e-8
+#define int_inf 0x3f3f3f3f
+#define ll_inf 0x7f7f7f7f7f7f7f7f
+#define lson (curpos<<1)
+#define rson (curpos<<1|1)
+/* namespace */
 using namespace std;
+/* header end */
 
-const double PI = acos(-1);
-struct Point
-{
-	double x,y;
-	double len;
+const double pi=acos(-1.0);
+
+struct Point{
+	double x,y,len;
 };
 
-double Distant(Point a,Point b)
-{
-	return sqrt(pow(a.x - b.x,2) + pow(a.y - b.y,2));
+double distant(Point a, Point b){
+	return sqrt(pow(a.x-b.x,2)+pow(a.y-b.y,2));
 }
-double ang(Point a,Point b)
-{
-	return acos((a.x * b.x + a.y * b.y)/(a.len*b.len));
+
+double getAngle(Point a,Point b){
+	return acos((a.x*b.x+a.y*b.y)/(a.len*b.len));
 }
-int main()
-{
-	int T;
-	cin >> T;
-	for(int kass = 1;kass <= T;kass++){
-		int n;
-		cin >> n;
-		vector<Point> A(n);
-		for(int i = 0;i <= n-1;i++){
-			cin >> A[i].x >> A[i].y;
+
+int main() {
+	int t; scanf("%d",&t);
+	for (int __=1;__<=t;__++){
+		int n; scanf("%d",&n);
+		vector<Point> a(n),v(n);
+		for (auto &i:a) scanf("%lf%lf",&i.x,&i.y);
+		for (int i=0;i<n-1;i++){
+			v[i].x=a[i+1].x-a[i].x;
+			v[i].y=a[i+1].y-a[i].y;
+			v[i].len=distant(a[i+1],a[i]);
 		}
-		vector<Point> Vec(n);
-		for(int i = 0;i <= n-2;i ++){
-			Vec[i].x = A[i+1].x - A[i].x;
-			Vec[i].y = A[i+1].y - A[i].y;
-			Vec[i].len = Distant(A[i+1],A[i]);
-			// cout << Vec[i].x << " "<< Vec[i].y << " "<< Vec[i].len << endl;
+		v[n-1].x=a[0].x-a[n-1].x;
+		v[n-1].y=a[0].y-a[n-1].y;
+		v[n-1].len=distant(a[0],a[n-1]);
+		Point g; scanf("%lf%lf",&g.x,&g.y);
+		double ans=0.0, r=distant(g,a[0]);
+		ans+=abs(getAngle(v[n-1],v[0])*r);
+		for (int i=0;i<n-1;i++){
+			double r=distant(g,a[i+1]);
+			ans+=abs(getAngle(v[i],v[i+1])*r);
 		}
-		// for(int i = 0;i <= n-1;i++){
-		// 	cout << Vec[i].x << " "<< Vec[i].y << " "<< Vec[i].len << endl;
-		// }
-		Vec[n-1].x = A[0].x - A[n-1].x;
-		Vec[n-1].y = A[0].y - A[n-1].y;
-		Vec[n-1].len = Distant(A[0],A[n-1]);
-		// for(int i = 0;i <= n-1;i++){
-		// 	cout << Vec[i].x << " "<< Vec[i].y << " "<< Vec[i].len << endl;
-		// }
-		Point G;
-		cin >>G.x >> G.y;
-		double ans = 0.0;
-		double r = Distant(G,A[0]);
-		// cout << "r = " << r << endl;
-		// cout << "ang = " << ang(Vec[0],Vec[n-1]) << endl;
-		ans += abs(ang(Vec[n-1],Vec[0])*r);
-		for(int i = 0;i <= n-2;i++){
-			double r = Distant(G,A[i+1]);
-			ans += abs(r * ang(Vec[i],Vec[i+1]));
-			// cout << "r = " << r << endl;
-			// cout << "ang = " << ang(Vec[i],Vec[i+1]) << endl;
-		}
-		printf("Case #%d: %.3lf\n",kass,ans);
+		printf("Case #%d: %.3f\n",__,ans);
 	}
-
-	return 0;
-}include<bits/stdc++.h>
-
-using namespace std;
-
-const double PI = acos(-1);
-struct Point
-{
-	double x,y;
-	double len;
-};
-
-double Distant(Point a,Point b)
-{
-	return sqrt(pow(a.x - b.x,2) + pow(a.y - b.y,2));
+    return 0;
 }
-double ang(Point a,Point b)
-{
-	return acos((a.x * b.x + a.y * b.y)/(a.len*b.len));
-}
-int main()
-{
-	int T;
-	cin >> T;
-	for(int kass = 1;kass <= T;kass++){
-		int n;
-		cin >> n;
-		vector<Point> A(n);
-		for(int i = 0;i <= n-1;i++){
-			cin >> A[i].x >> A[i].y;
-		}
-		vector<Point> Vec(n);
-		for(int i = 0;i <= n-2;i ++){
-			Vec[i].x = A[i+1].x - A[i].x;
-			Vec[i].y = A[i+1].y - A[i].y;
-			Vec[i].len = Distant(A[i+1],A[i]);
-			// cout << Vec[i].x << " "<< Vec[i].y << " "<< Vec[i].len << endl;
-		}
-		// for(int i = 0;i <= n-1;i++){
-		// 	cout << Vec[i].x << " "<< Vec[i].y << " "<< Vec[i].len << endl;
-		// }
-		Vec[n-1].x = A[0].x - A[n-1].x;
-		Vec[n-1].y = A[0].y - A[n-1].y;
-		Vec[n-1].len = Distant(A[0],A[n-1]);
-		// for(int i = 0;i <= n-1;i++){
-		// 	cout << Vec[i].x << " "<< Vec[i].y << " "<< Vec[i].len << endl;
-		// }
-		Point G;
-		cin >>G.x >> G.y;
-		double ans = 0.0;
-		double r = Distant(G,A[0]);
-		// cout << "r = " << r << endl;
-		// cout << "ang = " << ang(Vec[0],Vec[n-1]) << endl;
-		ans += abs(ang(Vec[n-1],Vec[0])*r);
-		for(int i = 0;i <= n-2;i++){
-			double r = Distant(G,A[i+1]);
-			ans += abs(r * ang(Vec[i],Vec[i+1]));
-			// cout << "r = " << r << endl;
-			// cout << "ang = " << ang(Vec[i],Vec[i+1]) << endl;
-		}
-		printf("Case #%d: %.3lf\n",kass,ans);
-	}
 
-	return 0;
-}nclude<bits/stdc++.h>
-
-using namespace std;
-
-const double PI = acos(-1);
-struct Point
-{
-	double x,y;
-	double len;
-};
-
-double Distant(Point a,Point b)
-{
-	return sqrt(pow(a.x - b.x,2) + pow(a.y - b.y,2));
-}
-double ang(Point a,Point b)
-{
-	return acos((a.x * b.x + a.y * b.y)/(a.len*b.len));
-}
-int main()
-{
-	int T;
-	cin >> T;
-	for(int kass = 1;kass <= T;kass++){
-		int n;
-		cin >> n;
-		vector<Point> A(n);
-		for(int i = 0;i <= n-1;i++){
-			cin >> A[i].x >> A[i].y;
-		}
-		vector<Point> Vec(n);
-		for(int i = 0;i <= n-2;i ++){
-			Vec[i].x = A[i+1].x - A[i].x;
-			Vec[i].y = A[i+1].y - A[i].y;
-			Vec[i].len = Distant(A[i+1],A[i]);
-			// cout << Vec[i].x << " "<< Vec[i].y << " "<< Vec[i].len << endl;
-		}
-		// for(int i = 0;i <= n-1;i++){
-		// 	cout << Vec[i].x << " "<< Vec[i].y << " "<< Vec[i].len << endl;
-		// }
-		Vec[n-1].x = A[0].x - A[n-1].x;
-		Vec[n-1].y = A[0].y - A[n-1].y;
-		Vec[n-1].len = Distant(A[0],A[n-1]);
-		// for(int i = 0;i <= n-1;i++){
-		// 	cout << Vec[i].x << " "<< Vec[i].y << " "<< Vec[i].len << endl;
-		// }
-		Point G;
-		cin >>G.x >> G.y;
-		double ans = 0.0;
-		double r = Distant(G,A[0]);
-		// cout << "r = " << r << endl;
-		// cout << "ang = " << ang(Vec[0],Vec[n-1]) << endl;
-		ans += abs(ang(Vec[n-1],Vec[0])*r);
-		for(int i = 0;i <= n-2;i++){
-			double r = Distant(G,A[i+1]);
-			ans += abs(r * ang(Vec[i],Vec[i+1]));
-			// cout << "r = " << r << endl;
-			// cout << "ang = " << ang(Vec[i],Vec[i+1]) << endl;
-		}
-		printf("Case #%d: %.3lf\n",kass,ans);
-	}
-
-	return 0;
-}
