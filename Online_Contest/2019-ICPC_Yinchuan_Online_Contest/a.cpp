@@ -32,6 +32,7 @@ unsigned int rng61() {
     SC ^= t ^ SA;
     return SC;
 }
+
 void gen() {
     scanf("%d%d%d%d%u%u%u", &n, &p, &q, &m, &SA, &SB, &SC);
     for (int i = 1; i <= n; i++) {
