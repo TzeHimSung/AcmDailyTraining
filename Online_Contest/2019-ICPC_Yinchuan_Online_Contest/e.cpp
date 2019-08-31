@@ -29,55 +29,55 @@ struct Node {
         deg.clear(), chd.clear();
         deg.pb(curr);
     }
-} bat[maxn];
+} balt[maxn];
 
 void insert(int pos, int curr) {
-    if ((int)bat[pos].deg.size() == 3) {
-        int fa = bat[pos].fa;
+    if ((int)balt[pos].deg.size() == 3) { // need to split
+        int currfa = balt[pos].fa;
         vector<int>vd, vch;
-        vd.swap(bat[pos].deg), vch.swap(bat[pos].chd);
+        vd.swap(balt[pos].deg), vch.swap(balt[pos].chd);
         if (pos == root) {
             root = ++cnt;
-            bat[root].init(0, vd[1]);
-            bat[++cnt].init(root, vd[0]);
-            bat[pos].init(root, vd[2]);
-            bat[root].chd.pb(cnt), bat[root].chd.pb(pos);
-            if (vch.size()) {
-                bat[cnt].chd.pb(vch[0]), bat[vch[0]].fa = cnt;
-                bat[cnt].chd.pb(vch[1]), bat[vch[1]].fa = cnt;
-                bat[pos].chd.pb(vch[2]), bat[vch[2]].fa = pos;
-                bat[pos].chd.pb(vch[3]), bat[vch[3]].fa = pos;
+            balt[root].init(0, vd[1]);
+            balt[++cnt].init(root, vd[0]);
+            balt[pos].init(root, vd[2]);
+            balt[root].chd.pb(cnt), balt[root].chd.pb(pos);
+            if ((int)vch.size()) {
+                balt[cnt].chd.pb(vch[0]), balt[vch[0]].fa = cnt;
+                balt[cnt].chd.pb(vch[1]), balt[vch[1]].fa = cnt;
+                balt[pos].chd.pb(vch[2]), balt[vch[2]].fa = pos;
+                balt[pos].chd.pb(vch[3]), balt[vch[3]].fa = pos;
             }
             pos = root;
-        } else {
-            bat[pos].init(fa, vd[0]);
-            bat[++cnt].init(fa, vd[2]);
-            bat[fa].deg.pb(vd[1]);
-            sort(bat[fa].deg.begin(), bat[fa].deg.end());
-            bat[fa].chd.pb(cnt);
-            for (int i = bat[fa].chd.size() - 1; i > 1; i--) {
-                if (bat[fa].chd[i - 1] != pos) swap(bat[fa].chd[i - 1], bat[fa].chd[i]);
+        } else { // no need to split, but have father
+            balt[pos].init(currfa, vd[0]);
+            balt[++cnt].init(currfa, vd[2]);
+            balt[currfa].deg.pb(vd[1]);
+            sort(balt[currfa].deg.begin(), balt[currfa].deg.end());
+            balt[currfa].chd.pb(cnt);
+            for (int i = (int)balt[currfa].chd.size() - 1; i > 1; i--) {
+                if (balt[currfa].chd[i - 1] != pos) swap(balt[currfa].chd[i - 1], balt[fa].chd[i]);
                 else break;
             }
-            if (vch.size()) {
-                bat[pos].chd.pb(vch[0]), bat[vch[0]].fa = pos;
-                bat[pos].chd.pb(vch[1]), bat[vch[1]].fa = pos;
-                bat[cnt].chd.pb((vch[2])), bat[vch[2]].fa = cnt;
-                bat[cnt].chd.pb(vch[3]), bat[vch[3]].fa = cnt;
+            if ((int)vch.size()) {
+                balt[pos].chd.pb(vch[0]), balt[vch[0]].fa = pos;
+                balt[pos].chd.pb(vch[1]), balt[vch[1]].fa = pos;
+                balt[cnt].chd.pb((vch[2])), balt[vch[2]].fa = cnt;
+                balt[cnt].chd.pb(vch[3]), balt[vch[3]].fa = cnt;
             }
-            pos = fa;
+            pos = currfa;
         }
     }
-    if (!(int)bat[pos].chd.size()) {
-        bat[pos].deg.pb(curr);
-        sort(bat[pos].deg.begin(), bat[pos].deg.end());
-    } else {
-        if (curr < bat[pos].deg[0]) insert(bat[pos].chd[0], curr);
-        else if (curr > bat[pos].deg[(int)bat[pos].deg.size() - 1]) insert(bat[pos].chd[(int)bat[pos].chd.size() - 1], curr);
+    if (!(int)balt[pos].chd.size()) { // have no child, no need to compare
+        balt[pos].deg.pb(curr);
+        sort(balt[pos].deg.begin(), balt[pos].deg.end());
+    } else { // need to compare
+        if (curr < balt[pos].deg[0]) insert(balt[pos].chd[0], curr);
+        else if (curr > balt[pos].deg[(int)balt[pos].deg.size() - 1]) insert(balt[pos].chd[(int)balt[pos].chd.size() - 1], curr);
         else {
-            for (int i = 1; i < (int)bat[pos].deg.size(); i++)
-                if (curr < bat[pos].deg[i]) {
-                    insert(bat[pos].chd[i], curr);
+            for (int i = 1; i < (int)balt[pos].deg.size(); i++)
+                if (curr < balt[pos].deg[i]) {
+                    insert(balt[pos].chd[i], curr);
                     break;
                 }
         }
@@ -85,9 +85,9 @@ void insert(int pos, int curr) {
 }
 
 void dfs(int pos) {
-    for (int i = 0; i < (int)bat[pos].deg.size(); i++)
-        printf("%d%c", bat[pos].deg[i], i == (int)bat[pos].deg.size() - 1 ? '\n' : ' ');
-    for (int i = 0; i < (int)bat[pos].chd.size(); i++) dfs(bat[pos].chd[i]);
+    for (int i = 0; i < (int)balt[pos].deg.size(); i++)
+        printf("%d%c", balt[pos].deg[i], i == (int)balt[pos].deg.size() - 1 ? '\n' : ' ');
+    for (int i = 0; i < (int)balt[pos].chd.size(); i++) dfs(balt[pos].chd[i]);
 }
 
 int main() {
@@ -95,7 +95,7 @@ int main() {
     for (int __ = 1; __ <= t; __++) {
         int n; scanf("%d", &n);
         for (int i = 1; i <= n; i++) scanf("%d", &a[i]);
-        cnt = root = 1, bat[root].init(0, a[1]);
+        cnt = root = 1, balt[root].init(0, a[1]);
         for (int i = 2; i <= n; i++) insert(root, a[i]);
         printf("Case #%d:\n", __);
         dfs(root);

@@ -23,20 +23,20 @@ map<int, int>last;
 pair<int, int> x[maxn], y[maxn];
 
 struct Node {
-    ll min, t, lazy;
+    ll minn, t, lazy;
     Node() {}
-    Node(int a, int b, int c): min(a), t(b), lazy(c) {}
+    Node(int a, int b, int c): minn(a), t(b), lazy(c) {}
 } segt[maxn << 2];
 
 void maintain(int curpos) {
-    segt[curpos].min = min(segt[lson].min, segt[rson].min);
+    segt[curpos].minn = min(segt[lson].minn, segt[rson].minn);
 }
 
 void pushdown(int curpos) {
     segt[lson].lazy += segt[curpos].lazy;
     segt[rson].lazy += segt[curpos].lazy;
-    segt[lson].min += segt[curpos].lazy;
-    segt[rson].min += segt[curpos].lazy;
+    segt[lson].minn += segt[curpos].lazy;
+    segt[rson].minn += segt[curpos].lazy;
     segt[curpos].lazy = 0;
 }
 
@@ -53,7 +53,7 @@ void build(int curpos, int curl, int curr) {
 void update(int curpos, int curl, int curr, int ql, int qr, ll val) {
     if (ql == curl && curr == qr) {
         segt[curpos].lazy += val;
-        segt[curpos].min += val;
+        segt[curpos].minn += val;
         return;
     }
     if (segt[curpos].lazy) pushdown(curpos);
@@ -65,17 +65,17 @@ void update(int curpos, int curl, int curr, int ql, int qr, ll val) {
         update(rson, mid + 1, curr, mid + 1, qr, val);
     }
     maintain(curpos);
-    if (segt[lson].min == segt[rson].min)
+    if (segt[lson].minn == segt[rson].minn)
         segt[curpos].t = segt[lson].t + segt[rson].t;
-    else if (segt[rson].min == segt[curpos].min)
+    else if (segt[rson].minn == segt[curpos].minn)
         segt[curpos].t = segt[rson].t;
-    else if (segt[lson].min == segt[curpos].min)
+    else if (segt[lson].minn == segt[curpos].minn)
         segt[curpos].t = segt[lson].t;
 }
 
 pair<int, int> solve(int curpos, int curl, int curr, int ql, int qr) {
     if (ql == curl && qr == curr)
-        return mp(segt[curpos].min, segt[curpos].t);
+        return mp(segt[curpos].minn, segt[curpos].t);
     if (segt[curpos].lazy) pushdown(curpos);
     int mid = curl + curr >> 1;
     if (qr <= mid) return solve(lson, curl, mid, ql, qr);
@@ -97,18 +97,18 @@ int main() {
         scanf("%d", &n);
         build(1, 1, n);
         for (int i = 1; i <= n; i++) scanf("%d", &a[i]);
-        int t1 = 0, t2 = 0;
+        int p1 = 0, p2 = 0;
         for (int i = 1; i <= n; i++) {
-            while (t1 && a[i] > x[t1].first) {
-                update(1, 1, n, x[t1 - 1].second + 1, x[t1].second, a[i] - x[t1].first);
-                t1--;
+            while (p1 && a[i] > x[p1].first) {
+                update(1, 1, n, x[p1 - 1].second + 1, x[p1].second, a[i] - x[p1].first);
+                p1--;
             }
-            x[++t1] = mp(a[i], i);
-            while (t2 && a[i] < y[t2].first) {
-                update(1, 1, n, y[t2 - 1].second + 1, y[t2].second, y[t2].first - a[i]);
-                t2--;
+            x[++p1] = mp(a[i], i);
+            while (p2 && a[i] < y[p2].first) {
+                update(1, 1, n, y[p2 - 1].second + 1, y[p2].second, y[p2].first - a[i]);
+                p2--;
             }
-            y[++t2] = mp(a[i], i);
+            y[++p2] = mp(a[i], i);
             update(1, 1, n, last[a[i]] + 1, i, -1);
             last[a[i]] = i;
             pair<int, int> curr = solve(1, 1, n, 1, i);

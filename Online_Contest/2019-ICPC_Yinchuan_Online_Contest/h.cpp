@@ -1,45 +1,53 @@
-#include<bits/stdc++.h>
+/* basic header */
+#include <bits/stdc++.h>
+/* define */
 #define ll long long
-
+#define dou double
+#define pb emplace_back
+#define mp make_pair
+#define sot(a,b) sort(a+1,a+1+b)
+#define rep1(i,a,b) for(int i=a;i<=b;++i)
+#define rep0(i,a,b) for(int i=a;i<b;++i)
+#define eps 1e-8
+#define int_inf 0x3f3f3f3f
+#define ll_inf 0x7f7f7f7f7f7f7f7f
+#define lson (curpos<<1)
+#define rson (curpos<<1|1)
+/* namespace */
 using namespace std;
-struct Info {
-    ll Hp, Atk;
-    ll t;
-    double val;
-};
-const int maxn = 1e6;
-bool dcmp(double a, double b) {
-    if (abs(a - b) < 1e-5) {
-        return true;
-    } return false;
-}
+/* header end */
 
-ll f[maxn];
-int main() {
-    for (int i = 1; i <= 10000; i++) {
-        f[i] = i * (i + 1) / 2;
+const int maxn = 1e5 + 10;
+struct Monster {
+    int hp, atk;
+    Monster() {}
+
+    bool operator<(const Monster &rhs)const {
+        ll x = ceil((sqrt(1.0 + 8.0 * hp) - 1) / 2.0);
+        ll y = ceil((sqrt(1.0 + 8.0 * rhs.hp) - 1) / 2.0);
+        if ((ll)atk * y == (ll)rhs.atk * x)
+            return atk > rhs.atk;
+        return atk * y > rhs.atk * x;
     }
-    int T;
-    scanf("%d", &T);
-    for (int kass = 1; kass <= T; kass ++) {
-        int n;
-        scanf("%d", &n);
-        vector<Info> vct(n);
+} m[maxn];
+ll sum[maxn];
+
+int main() {
+    int t; scanf("%d", &t);
+    for (int __ = 1; __ <= t; __++) {
+        ll ans = 0, turn = 0;
+        int n; scanf("%d", &n);
+        for (int i = 0; i < n; i++) scanf("%d%d", &m[i].hp, &m[i].atk);
+        sort(m, m + n);
+        for (int i = 0; i <= n + 1; i++) sum[i] = 0;
+        for (int i = n - 1; i >= 0; i--)
+            sum[i] += sum[i + 1] + m[i].atk;
         for (int i = 0; i < n; i++) {
-            scanf("%lld%lld", &vct[i].Hp, &vct[i].Atk);
-            ll t = lower_bound(f + 1, f + 1 + 10000, vct[i].Hp) - f - 1;
-            if ((t * t + 1) / 2 < vct[i].Hp) t++;
-            vct[i].t = t;
+            turn = (ll)ceil((sqrt(1.0 + 8.0 * m[i].hp) - 1) / 2.0);
+            ans += sum[i] * turn;
         }
-        sort(vct.begin(), vct.end(), [](Info a, Info b)->bool{
-            return a.Atk * b.t > b.Atk *a.t;
-        });
-        ll Sumt = 0, ans = 0;
-        for (int i = 0; i < n; i++) {
-            Sumt += vct[i].t;
-            ans += Sumt * vct[i].Atk;
-        }
-        printf("Case #%d: %lld\n", kass, ans);
+        printf("Case #%d: %lld\n", __, ans);
     }
     return 0;
 }
+
