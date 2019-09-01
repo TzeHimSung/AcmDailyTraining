@@ -10,6 +10,7 @@ using namespace __gnu_pbds;
 
 int arr[100005], ans[100005];
 
+// 这个读入挂写得毫无必要
 int read(void) {
     char ch;
     do {
@@ -34,26 +35,19 @@ int main(void) {
         for (int i = 0; i < n; i++) {
             arr[i] = read();
         }
-        //set <int> ruler;
+        // 奇葩pbds
         tree <int, null_type, less <int>, rb_tree_tag> ruler;
-        for (int i = 0; i < k; i++) {
-            ruler.insert(arr[i]);
-        }
+        for (int i = 0; i < k; i++) ruler.insert(arr[i]);
         vector <vector <int>> father(n + 1);
+        // O(nlogn)
         for (int i = 0; i < n; i++) {
-            if (i + k < n) {
-                ruler.insert(arr[i + k]);
-            }
-            if (i - k - 1 >= 0) {
-                ruler.erase(arr[i - k - 1]);
-            }
+            if (i + k < n) ruler.insert(arr[i + k]);
+            if (i - k - 1 >= 0) ruler.erase(arr[i - k - 1]);
             auto nxt = ruler.lower_bound(arr[i]);
             if (nxt != ruler.begin()) {
                 auto val = *--nxt;
                 father[val].emplace_back(arr[i]);
-            } else {
-                father[0].emplace_back(arr[i]);
-            }
+            } else father[0].emplace_back(arr[i]);
         }
         queue <pair <int, int>> q;
         q.emplace(make_pair(0, 0));
@@ -61,13 +55,9 @@ int main(void) {
             auto t = q.front();
             q.pop();
             ans[t.first] = t.second;
-            for (auto &e : father[t.first]) {
-                q.emplace(make_pair(e, t.second + 1));
-            }
+            for (auto &e : father[t.first]) q.emplace(make_pair(e, t.second + 1));
         }
-        for (int i = 1; i <= n; i++) {
-            printf("%d%c", ans[i], i < n ? ' ' : '\n');
-        }
+        for (int i = 1; i <= n; i++) printf("%d%c", ans[i], i < n ? ' ' : '\n');
     }
     return 0;
 }

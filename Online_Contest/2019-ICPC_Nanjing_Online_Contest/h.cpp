@@ -1,3 +1,5 @@
+// 直接跑6次bellman ford即可
+
 /* Contest nanjing_2019_online
  * Problem H
  * Team: Make One For Us
