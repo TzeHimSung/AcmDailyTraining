@@ -17,52 +17,29 @@
 using namespace std;
 /* header end */
 
-vector<pair<int, int>>v1, v2, v3, v4;
-// v1: up left
-// v2: up right
-// v3: down left
-// v4: down right
-
-struct Vector {
-    int x, y;
-}
+int n;
+vector<pair<ll, ll>> v;
 
 int main() {
-    int n; scanf("%d", &n);
-    double ans = 0.0, currX = 0, currY = 0;
+    scanf("%d", &n);
     for (int i = 1; i <= n; i++) {
-        int x, y; scanf("%d%d", &x, &y);
-        if (x < 0) {
-            if (y > 0) v1.pb(mp(x, y));
-            else if (y == 0) v1.pb(mp(x, y)), v3.pb(mp(x, y));
-            else v3.pb(mp(x, y));
-        } else if (x == 0) {
-            if (y > 0) v1.pb(mp(x, y)), v2.pb(mp(x, y));
-            else v3.pb(mp(x, y)), v4.pb(mp(x, y));
-        } else {
-            if (y > 0) v2.pb(mp(x, y));
-            else if (y == 0) v2.pb(mp(x, y)), v4.pb(mp(x, y));
-            else v4.pb(mp(x, y));
+        pair<ll, ll> p; scanf("%lld%lld", &p.first, &p.second);
+        if (p.first || p.second) v.pb(p);
+    }
+    n = (int)v.size();
+    sort(v.begin(), v.end(), [&](pair<ll, ll> a, pair<ll, ll> b) {
+        return atan2(a.second, a.first) < atan2(b.second, b.first);
+    });
+    ll ans = 0;
+    for (int i = 0; i < n; i++) {
+        int j = i; ll x = 0, y = 0;
+        for (int k = 0; k < n; k++) {
+            x += v[j].first; y += v[j].second;
+            ans = max(ans, x * x + y * y);
+            if (++j == n) j = 0;
         }
     }
-    for (auto i : v1) currX += i.first, currY += i.second;
-    ans = max(ans, sqrt(pow(currX, 2) + pow(currY, 2)));
-
-    //------------------------------------------------------
-    currX = 0, currY = 0;
-    for (auto i : v2) currX += i.first, currY += i.second;
-    ans = max(ans, sqrt(pow(currX, 2) + pow(currY, 2)));
-
-    //------------------------------------------------------
-    currX = 0, currY = 0;
-    for (auto i : v3) currX += i.first, currY += i.second;
-    ans = max(ans, sqrt(pow(currX, 2) + pow(currY, 2)));
-
-    //------------------------------------------------------
-    currX = 0, currY = 0;
-    for (auto i : v4) currX += i.first, currY += i.second;
-    ans = max(ans, sqrt(pow(currX, 2) + pow(currY, 2)));
-
-    printf("%.55f\n", ans);
+    printf("%.15f\n", sqrt(ans));
     return 0;
 }
+
