@@ -36,7 +36,7 @@ int main() {
     for (int i = 0; i < n; i++) { // enum each vector
         int j = i; ll x = 0, y = 0;
         for (int k = 0; k < n; k++) {
-            x += v[j].first; y += v[j].second; // just pick all vector and maintain ans
+            x += v[j].first; y += v[j].second; // just pick all vector and maintain ans directly
             ans = max(ans, x * x + y * y);
             if (++j == n) j = 0;
         }
