@@ -26,16 +26,11 @@ int read(void) {
 }
 
 int main(void) {
-    int T;
-    T = read();
+    int T; T = read();
     while (T--) {
-        int n, k;
-        n = read();
-        k = read();
-        for (int i = 0; i < n; i++) {
-            arr[i] = read();
-        }
-        // 奇葩pbds
+        int n = read(), k = read();
+        for (int i = 0; i < n; i++) arr[i] = read();
+        // 奇葩pbds, 比set还慢
         tree <int, null_type, less <int>, rb_tree_tag> ruler;
         for (int i = 0; i < k; i++) ruler.insert(arr[i]);
         vector <vector <int>> father(n + 1);
