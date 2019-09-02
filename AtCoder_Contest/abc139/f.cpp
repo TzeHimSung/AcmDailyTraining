@@ -20,6 +20,10 @@ using namespace std;
 int n;
 vector<pair<ll, ll>> v;
 
+bool cmp(pair<ll, ll> &a, pair<ll, ll> &b) {
+    return atan2(a.second, a.first) < atan2(b.second, b.first);
+}
+
 int main() {
     scanf("%d", &n);
     for (int i = 1; i <= n; i++) {
@@ -27,14 +31,12 @@ int main() {
         if (p.first || p.second) v.pb(p);
     }
     n = (int)v.size();
-    sort(v.begin(), v.end(), [&](pair<ll, ll> a, pair<ll, ll> b) {
-        return atan2(a.second, a.first) < atan2(b.second, b.first);
-    });
+    sort(v.begin(), v.end(), cmp);
     ll ans = 0;
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++) { // enum each vector
         int j = i; ll x = 0, y = 0;
         for (int k = 0; k < n; k++) {
-            x += v[j].first; y += v[j].second;
+            x += v[j].first; y += v[j].second; // just pick all vector and maintain ans
             ans = max(ans, x * x + y * y);
             if (++j == n) j = 0;
         }
