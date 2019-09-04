@@ -17,14 +17,9 @@
 using namespace std;
 /* header end */
 
-int b,g,n;
+/* value and function */
 
 int main() {
-	scanf("%d%d%d",&b,&g,&n);
-	ll ans=0;
-	for (int i=0;i<=b;i++){
-		if (n-i>=0 && n-i<=g) ans++;
-	}
-	printf("%lld\n",ans);
+    /* main body */
     return 0;
 }
