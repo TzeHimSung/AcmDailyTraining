@@ -1,66 +1,86 @@
-#include <algorithm>
-#include <cstdio>
+#include <bits/stdc++.h>
+using namespace std;
 
-const int N = 200005, inf = 1000000000;
-char s[N], c[5] = {'2', '0', '1', '7', '6'};
+const string good = "2017";
+const string bad = "2016";
 
-struct Node {
-    int f[5][5];
-    void init() {
-        for (int i = 0; i < 5; i++)
-            for (int j = 0; j < 5; j++) f[i][j] = inf;
+struct Data {
+    int cost[5][5];
+    Data() {
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                cost[i][j] = 1e9;
+            }
+        }
+        for (int i = 0; i < 5; i++) cost[i][i] = 0;
     }
-} tr[N << 2], ans;
-
-int find(char ch) { // 找字符ch在字符串c中出现的位置
-    for (int i = 0; i < 5; i++)
-        if (ch == c[i]) return i;
-    return -1;
-}
-
-Node merge(Node a, Node b) {
-    Node c; c.init();
-    for (int i = 0; i < 5; i++)
-        for (int j = i; j < 5; j++)
-            for (int k = i; k <= j; k++)
-                c.f[i][j] = std::min(c.f[i][j], a.f[i][k] + b.f[k][j]);
-    return c;
-}
-
-void build(int now, int l, int r) { // 二分整个字符串
-    tr[now].init();
-    if (l == r) {
-        int x = find(s[l]); //找到字符s[curl]在20176中出现的位置
-        for (int i = 0; i < 5; i++) tr[now].f[i][i] = 0; //对角线为0？
-        if (x >= 0 && x < 4) tr[now].f[x][x] = 1, tr[now].f[x][x + 1] = 0;
-        if (x == 4) tr[now].f[3][3] = tr[now].f[4][4] = 1;
-        return;
+    Data operator+(Data o) {
+        Data res;
+        for (int i = 0; i < 5; i++) res.cost[i][i] = 1e9;
+        for (int i = 0; i < 5; i++) {
+            for (int j = i; j < 5; j++) {
+                for (int k = j; k < 5; k++) {
+                    res.cost[i][k] = min(res.cost[i][k], cost[i][j] + o.cost[j][k]);
+                }
+            }
+        }
+        return res;
     }
-    int mid = (l + r) >> 1;
-    build(now << 1, l, mid);
-    build(now << 1 ^ 1, mid + 1, r);
-    tr[now] = merge(tr[now << 1], tr[now << 1 ^ 1]);
-}
+};
 
-void query(int now, int l, int r, int x, int y) {
-    if (x <= l && r <= y) {
-        if (x == l) ans = tr[now];
-        else ans = merge(ans, tr[now]);
-        return;
+char s[200013];
+
+class ST {
+private:
+    int size;
+    Data st[1 << 19];
+
+    void build(int w, int L, int R) {
+        if (L == R) {
+            if (s[L] == bad[3]) {
+                st[w].cost[3][3] = 1;
+                st[w].cost[4][4] = 1;
+            }
+            for (int i = 0; i < 4; i++) {
+                if (s[L] == good[i]) {
+                    st[w].cost[i][i + 1] = 0;
+                    st[w].cost[i][i] = 1;
+                }
+            }
+        } else {
+            build(w * 2, L, (L + R) / 2), build(w * 2 + 1, (L + R) / 2 + 1, R);
+            st[w] = st[w * 2] + st[w * 2 + 1];
+        }
     }
-    int mid = (l + r) >> 1;
-    if (x <= mid) query(now << 1, l, mid, x, y);
-    if (y > mid) query(now << 1 ^ 1, mid + 1, r, x, y);
-}
+    Data query(int w, int L, int R, int a, int b) {
+        if (b < L || R < a) return Data();
+        if (a <= L && R <= b) return st[w];
+        return query(w * 2, L, (L + R) / 2, a, b) + query(w * 2 + 1, (L + R) / 2 + 1, R, a, b);
+    }
+public:
+    void build(int n) {
+        size = n;
+        build(1, 1, size);
+    }
+    Data query(int a, int b) {
+        return query(1, 1, size, a, b);
+    }
+};
+
+int n, q;
+ST tree;
 
 int main() {
-    int n, q;
-    scanf("%d%d\n%s", &n, &q, s + 1); // 长度 查询次数 字符串
-    build(1, 1, n);
-    for (int i = 1; i <= q; i++) {
-        int x, y; scanf("%d%d\n", &x, &y);
-        query(1, 1, n, x, y);
-        if (ans.f[0][4] >= inf) printf("-1\n");
-        else printf("%d\n", ans.f[0][4]);
+    scanf("%d%d", &n, &q);
+    scanf(" %s", s + 1);
+    tree.build(n);
+    while (q--) {
+        int a, b;
+        scanf("%d%d", &a, &b);
+        int ans = tree.query(a, b).cost[0][4];
+        if (ans <= n) printf("%d\n", ans);
+        else printf("-1\n");
     }
+
+    return 0;
 }
