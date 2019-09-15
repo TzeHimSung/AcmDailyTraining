@@ -18,38 +18,39 @@ using namespace std;
 /* header end */
 
 const int maxn = 2e5 + 10;
-int n, ans[maxn], a[maxn];
+int n, vis[maxn];
+char s[maxn];
 
 int main() {
     int t; scanf("%d", &t);
     while (t--) {
+        int solved = 0;
         scanf("%d", &n);
-        rep1(i, 1, n) {
-            scanf("%1d", &a[i]);
-        }
-        ans[1] = 1;
-        rep1(i, 2, n) {
-            if (a[i] >= a[i - 1]) ans[i] = ans[i - 1];
-            else ans[i] = ans[i - 1] == 1 ? 2 : 1;
-        }
-        int flag = 1;
-        stack<int>at, b;
-        while (!at.empty()) at.pop();
-        while (!b.empty()) b.pop();
-        rep1(i, 1, n) {
-            if (ans[i] == 1) {
-                if (at.empty()) at.push(a[i]);
-                else if (at.top() <= a[i]) at.push(a[i]); else flag = 0;
-            } else {
-                if (b.empty()) b.push(a[i]);
-                else if (b.top() <= a[i]) b.push(a[i]); else flag = 0;
-            }
-        }
-        if (!flag) puts("-");
-        else {
-            for (int i = 1; i <= n; i++) printf("%d", ans[i]);
+        scanf("%s", s + 1);
+        for (int p = 0; p <= 9; p++) { // enum each number as start number
+            int cnt = 0, pre = p, noSolution = 0;
+            for (int i = 1; i <= n; i++) vis[i] = 0; // vis sign
+            for (int i = n; i >= 1; i--) // in decrease order
+                if (s[i] - '0' <= pre) cnt++, vis[i] = 1, pre = s[i] - '0'; // cnt is num of colored number
+                else if (s[i] - '0' < p) { // less then start number, illegel
+                    noSolution = 1;
+                    break;
+                }
+            if (noSolution) continue;
+            pre = p;
+            for (int i = 1; i <= n; i++) // in increasing order
+                if (s[i] - '0' >= pre && !vis[i]) cnt++, vis[i] = 2, pre = s[i] - '0';
+                else if (s[i] - '0' > p) { // p as 
+                    noSolution = 1;
+                    break;
+                }
+            if (noSolution || cnt != n) continue;
+            for (int i = 1; i <= n; i++) printf("%d", vis[i]);
             puts("");
+            solved = 1;
+            break;
         }
+        if (!solved) puts("-");
     }
     return 0;
 }
