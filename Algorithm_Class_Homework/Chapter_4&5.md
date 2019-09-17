@@ -1,36 +1,39 @@
-# Homework of algorithm analysis  
-软工一班 成子谦 201730681303
+# Homework of algorithm analysis
 
-## Chapter. 4
-We can solve this problem with divide and conquer.  
-Let team number as $4$, we can write it into a $4*1$ matrix.
+**软工一班 成子谦 201730681303**
+
+### Chapter. 4
+
+We can solve this program with divide and conquer.  
+
+Consider a simple situation, number of teams is $4$, we can write it into a $1*4$ matrix.
 $$
-    \left[
+\left[
         \begin{matrix}
             1 & 2 & 3 & 4 \\
         \end{matrix}
     \right] \tag{1}
 $$
-The situation of the first day is: 
+The situation of the first day is:
 $$
-    \left[
+\left[
         \begin{matrix}
             2 & 1 & 4 & 3
         \end{matrix}
     \right] \tag{2}
 $$
-The situation of day $2$ and day $3$ likes: 
+The situation of day $2$ and day $3$ likes:
 $$
-    \left[
+\left[
         \begin{matrix}
             3 & 4 & 1 & 2 \\
             4 & 3 & 2 & 1
         \end{matrix}
     \right] \tag{3}
 $$
-We can find the rules more easily by combining the matrix $(1)$、$(2)$、$(3)$ together: 
+We can find the rules by combining the matrix $(1)$, $(2)$, $(3)$ together:
 $$
-    \left[
+\left[
         \begin{matrix}
             1 & 2 & 3 & 4 \\
             2 & 1 & 4 & 3 \\
@@ -39,9 +42,9 @@ $$
         \end{matrix}
     \right] \tag{4}
 $$
-In this way, we can get a matrix for the situation of $n$ teams easily: 
+In this way, we can construct a matrix for the situation of $n$ teams easily:
 $$
-    \left[
+\left[
         \begin{matrix}
             1 & 2 & \cdots & n-1 & n \\
             2 & 1 & \cdots & n & n-1 \\
@@ -51,13 +54,15 @@ $$
         \end{matrix} \tag{5}
     \right]
 $$
-So the algorighm is: 
-- if current $n$ (current size of matrix) is not equal to $2$, divide the matrix into four parts (up-left, down-left, up-right, down-right) and deal with the up-left corner part and up-right corner part.
-- if current $n$ equals to $2$, let the down-right corner element equals to up-left corner element and down-left element equals to up-right corner element.  
+So the algorithm is:
+
+- if current $n$ (current size of matrix) is not equal to $2$, divide the matrix into four parts (up-left, down-left, up-right, down-right) and deal with up-left part and up-right part.
+- if current $n$ equals to $2$, let the down-right element equals to up-left element and down-left element equals to up-right element.
 - Since it's a procedure of finishing table, the time complexity of this algorithm is $O(n^2)$.
 
-Source code: 
-```
+Source code:
+
+```c++
 #include <iostream>
 
 using namespace std;
@@ -80,7 +85,9 @@ void solve(int a[][maxn], long long n, int x, int y) {
         a[x + 1][y] = a[x][y + 1];
         return;
     }
+    // divide
     solve(a, n / 2, x, y); solve(a, n / 2, x, y + n / 2);
+    // conquer
     for (int i = x; i < x + n / 2; i++)
         for (int j = y; j < y + n / 2; j++) {
             a[i + n / 2][j + n / 2] = a[i][j];
@@ -104,7 +111,8 @@ int main() {
 }
 ```
 
-And the answer is: 
+The result is:
+
 ```
 The k is: 3
 The n is: 8
@@ -118,9 +126,13 @@ Ball team: 1 2 3 4 5 6 7 8
     Day 7: 8 7 6 5 4 3 2 1
 ```
 
-## Chapter. 5
-Source code
-```
+### Chapter. 5
+
+Just solve problem with topological sort, dfs and bfs.
+
+Source code:
+
+```c++
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -237,9 +249,12 @@ int main() {
     return 0;
 }
 ```
-The result is: 
+
+The result is:
+
 ```
 The topological sort sequence is: a b d c f e 
 The DFS sequence is: a b d c e f 
 The BFS sequence is: a b c d e f
 ```
+
