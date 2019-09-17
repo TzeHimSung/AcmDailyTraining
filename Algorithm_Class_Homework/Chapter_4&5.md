@@ -1,12 +1,14 @@
 # Homework of algorithm analysis
 
-**软工一班 成子谦 201730681303**
+软工一班 成子谦 201730681303
+
+All codes have been tested under GNU G++ 9.1.0
 
 ### Chapter. 4
 
 We can solve this program with divide and conquer.  
 
-Consider a simple situation, number of teams is $4$, we can write it into a $1*4$ matrix.
+Consider a simple situation, there are $4$ teams to race. We can represent it with a $1*4$ matrix.
 $$
 \left[
         \begin{matrix}
@@ -14,7 +16,7 @@ $$
         \end{matrix}
     \right] \tag{1}
 $$
-The situation of the first day is:
+One of the feasible solution of first day is:
 $$
 \left[
         \begin{matrix}
@@ -22,7 +24,7 @@ $$
         \end{matrix}
     \right] \tag{2}
 $$
-The situation of day $2$ and day $3$ likes:
+And other feasible situation of day $2$ and day $3$ are:
 $$
 \left[
         \begin{matrix}
@@ -128,7 +130,7 @@ Ball team: 1 2 3 4 5 6 7 8
 
 ### Chapter. 5
 
-Just solve problem with topological sort, dfs and bfs.
+Just solve problem with topological sort, DFS and BFS.
 
 Source code:
 
