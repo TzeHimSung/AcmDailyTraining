@@ -23,12 +23,14 @@ int main() {
     return 0;
 }
 ```
-And the result is 19, which means $1000*N^2$ is smaller then $2^N$ when $N$ is equal or larger then 19.  
+And the result is 19, which means $1000*N^2$ is smaller then $2^N$ when $N$ is equal or larger then $19$.  
 
 ## Chapter. 2
+
 The time complexity of the first code is $O(NlogN)$, the second one is $O(N^3)$.
 
 ## Chapter. 3
+
 We can solve this problem by enumerate all possible positions of numbers.  
 
 Source code:
@@ -57,7 +59,7 @@ int main() {
     } while (next_permutation(a.begin(), a.end()));
     return 0;
 }
-```  
+```
 And the result is: 
 ```
 x = 138, y = 42, z = 5796

@@ -260,3 +260,46 @@ The DFS sequence is: a b d c e f
 The BFS sequence is: a b c d e f
 ```
 
+### Chapter. 6
+
+The initial state is: 
+$$
+\left[
+	\begin{matrix}
+		4 & 3 & 6 & 8 & 7 & 1 & 2 & 5 \\
+	\end{matrix}
+\right]
+$$
+We start the procedure from the $(\lfloor n/2 \rfloor-1)^{th}$ element, so swap $1$ and $6$.
+$$
+\left[
+	\begin{matrix}
+		4 & 3 & 1 & 8 & 7 & 6 & 2 & 5 \\
+	\end{matrix}
+\right]
+$$
+Now we need to adjust the heap, swap $1$ and $4$.
+$$
+\left[
+	\begin{matrix}
+		1 & 3 & 4 & 8 & 7 & 6 & 2 & 5 \\
+	\end{matrix}
+\right]
+$$
+Swap $4$ and $2.$
+$$
+\left[
+	\begin{matrix}
+		1 & 3 & 2 & 8 & 7 & 6 & 4 & 5 \\
+	\end{matrix}
+\right]
+$$
+Swap $8$ and $5$.
+$$
+\left[
+	\begin{matrix}
+		1 & 3 & 2 & 5 & 7 & 6 & 4 & 8 \\
+	\end{matrix}
+\right]
+$$
+Now the array satisfies the nature of small root heap.
