@@ -1,8 +1,9 @@
 #include <bits/stdc++.h>
-#define maxsize 1024
+
+const int maxn = 1024;
 
 typedef struct {
-    float data[maxsize];
+    float data[maxn];
     int top;
 } Stack1;
 
@@ -12,7 +13,7 @@ void Initstack1(Stack1 *S) {
 }
 
 int Push1(Stack1 *S, float ch) {
-    if (S->top == maxsize - 1)
+    if (S->top == maxn - 1)
         return 0;
     else {
         S->top++;
@@ -31,7 +32,7 @@ int Pop1(Stack1 *S, float ch) {
 }//出栈
 
 typedef struct {
-    char data[maxsize];
+    char data[maxn];
     int top;
 } Stack2;
 
@@ -41,7 +42,7 @@ void Initstack2(Stack2 *S) {
 }
 
 int Push2(Stack2 *S, char ch) {
-    if (S->top == maxsize - 1)
+    if (S->top == maxn - 1)
         return 0;
     else {
         S->top++;
@@ -246,8 +247,9 @@ void Quit() {
 
 int main() {
     char c;
-    char exp[maxsize];
-    char postexp[maxsize] = { 0 };
+    char exp[maxn];
+    char postexp[maxn] = { 0 };
+    menu();
     while (1) {
         scanf("%c", &c);
         switch (c) {
