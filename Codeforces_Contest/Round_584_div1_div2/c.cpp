@@ -49,6 +49,7 @@ int main() {
             puts("");
             solved = 1;
             break;
+            // this method is correct.
         }
         if (!solved) puts("-");
     }
