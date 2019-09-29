@@ -5,6 +5,7 @@
 All codes have been tested under GNU G++ 9.1.0
 
 ### Chapter. 7
+
 We can solve this problem by using Boyer-Moore algorithm.  
 
 Source code:
@@ -116,4 +117,8 @@ ababba  -1
     ba   2
      a   2
 ```
+
+
+
+### Chapter. 8
 
