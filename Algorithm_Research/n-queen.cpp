@@ -1,4 +1,6 @@
-// N-queen problem
+// Project: N-queen problem
+// Author: JHSeng
+// Date: 09/30/2019
 
 // headers
 
@@ -44,19 +46,18 @@ int convertStringToInt(string __str) {
 void solve(int __chessboardSize) {
     // chessboard init
     vector<vector<int>> __map(__chessboardSize + 1);
-    for (auto __i : __map) {
+    for (auto &__i : __map) {
         for (int __j = 0; __j <= __chessboardSize; __j++) {
-            __i.push_back(0);
+            __i.emplace_back(0);
         }
     }
 
-    printChessboard(__map);
 }
 
 // print current chessboard
 void printChessboard(vector<vector<int>> &__map) {
-    for (auto __i : __map) {
-        for (auto &__j : __i) {
+    for (auto &__i : __map) {
+        for (auto __j : __i) {
             cout << __j << " ";
         }
         cout << endl;
