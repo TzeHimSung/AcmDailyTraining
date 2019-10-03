@@ -16,12 +16,16 @@ using std::endl;
 using std::string;
 using std::vector;
 
+// global variables
+
+vector<vector<int>> __map;
+
 // function declaration
 
 bool isNumber           (string __str);
 int  convertStringToInt (string _str);
 void solve              (int __chessboardSize);
-void printChessboard    (vector<vector<int>> &__map);
+void printChessboard    ();
 
 // function achieve
 
@@ -45,17 +49,18 @@ int convertStringToInt(string __str) {
 // solve n-queen problem
 void solve(int __chessboardSize) {
     // chessboard init
-    vector<vector<int>> __map(__chessboardSize + 1);
+    __map.resize(__chessboardSize + 1);
     for (auto &__i : __map) {
         for (int __j = 0; __j <= __chessboardSize; __j++) {
             __i.emplace_back(0);
         }
     }
 
+    printChessboard();
 }
 
 // print current chessboard
-void printChessboard(vector<vector<int>> &__map) {
+void printChessboard() {
     for (auto &__i : __map) {
         for (auto __j : __i) {
             cout << __j << " ";
