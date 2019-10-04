@@ -33,6 +33,7 @@ void solve              ();
 void printChessboard    ();
 bool checkPosition      (int __curr_x, int __curr_y);
 void dfs                (int __filled);
+void fillVis            (int __curr_x, int __curr_y, int __val);
 
 // function achieve
 
@@ -66,7 +67,6 @@ void solve() {
     for (int __i = 1; __i <= __chessboardSize; __i++) {
         for (int __j = 1; __j <= __chessboardSize; __j++) {
             if (checkPosition(__i, __j)) {
-                __map[__i][__j] = 1;
                 fillVis(__i, __j, 1);
                 __queenPos.push_back(make_pair(__i, __j));
                 dfs(1);
@@ -87,10 +87,19 @@ void dfs(int __filled) {
     for (int __i = 1; __i <= __chessboardSize; __i++) {
         for (int __j = 1; __j <= __chessboardSize; __j++) {
             if (checkPosition(__i, __j)) {
-
+                fillVis(__i, __j, 1);
+                __queenPos.push_back(make_pair(__i, __j));
+                dfs(__filled + 1);
+                fillVis(__i, __j, 0);
+                __queenPos.pop_back();
             }
         }
     }
+}
+
+// fill map matrix
+void fillVis(int __curr_x, int __curr_y, int __val) {
+    
 }
 
 // print current chessboard
