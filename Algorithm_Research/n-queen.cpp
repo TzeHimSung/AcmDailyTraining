@@ -7,6 +7,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <utility>
 
 // using standard library
 
@@ -15,17 +16,23 @@ using std::cout;
 using std::endl;
 using std::string;
 using std::vector;
+using std::pair;
+using std::make_pair;
 
 // global variables
 
+int __chessboardSize;
 vector<vector<int>> __map;
+vector<pair<int, int>> __queenPos;
 
 // function declaration
 
 bool isNumber           (string __str);
 int  convertStringToInt (string _str);
-void solve              (int __chessboardSize);
+void solve              ();
 void printChessboard    ();
+bool checkPosition      (int __curr_x, int __curr_y);
+void dfs                (int __filled);
 
 // function achieve
 
@@ -47,7 +54,7 @@ int convertStringToInt(string __str) {
 }
 
 // solve n-queen problem
-void solve(int __chessboardSize) {
+void solve() {
     // chessboard init
     __map.resize(__chessboardSize + 1);
     for (auto &__i : __map) {
@@ -56,7 +63,34 @@ void solve(int __chessboardSize) {
         }
     }
 
-    printChessboard();
+    for (int __i = 1; __i <= __chessboardSize; __i++) {
+        for (int __j = 1; __j <= __chessboardSize; __j++) {
+            if (checkPosition(__i, __j)) {
+                __map[__i][__j] = 1;
+                fillVis(__i, __j, 1);
+                __queenPos.push_back(make_pair(__i, __j));
+                dfs(1);
+                fillVis(__i, __j, 0);
+                __queenPos.pop_back();
+            }
+        }
+    }
+}
+
+// dfs
+void dfs(int __filled) {
+    if (__filled == __chessboardSize + 1) {
+        printChessboard();
+        puts("");
+        return;
+    }
+    for (int __i = 1; __i <= __chessboardSize; __i++) {
+        for (int __j = 1; __j <= __chessboardSize; __j++) {
+            if (checkPosition(__i, __j)) {
+
+            }
+        }
+    }
 }
 
 // print current chessboard
@@ -69,11 +103,17 @@ void printChessboard() {
     }
 }
 
+// check current position is useable or not
+bool checkPosition(int __curr_x, int __curr_y) {
+    for (int i = 1;) {
+
+    }
+}
+
 int main() {
 
     // init chessboard size
     string inputString;
-    int chessboardSize = 0;
     cout << "Please input the number n, n should be smaller or equal then 10: ";
     cin >> inputString;
 
