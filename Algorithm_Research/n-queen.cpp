@@ -124,6 +124,36 @@ void fillVis(int __curr_x, int __curr_y, int __val) {
         __map[__tmp_x++][__tmp_y--] = __val;
 }
 
+bool checkPosition(int __curr_x, int __curr_y) {
+    bool __ret = true;
+
+    // current point
+    if (__map[__curr_x][__curr_y] == 1) __ret = false;
+
+    // total column
+    for (int __i = 1; __i <= __chessboardSize; __i++)
+        if (__map[__i][__curr_y] == 1) __ret = false;
+
+    // total row
+    for (int __j = 1; __j <= __chessboardSize; __j++)
+        if (__map[__curr_x][__j] == 1) __ret = false;
+
+    // diagonal
+    int __tmp_x = __curr_x, __tmp_y = __curr_y;
+    while (__tmp_x - 1 >= 1 && __tmp_y - 1 >= 1)
+        __tmp_x--, __tmp_y--;
+    while (__tmp_x <= __chessboardSize && __tmp_y <= __chessboardSize)
+        if (__map[__tmp_x++][__tmp_y++] == 1) __ret = false;
+
+    __tmp_x = __curr_x, __tmp_y = __curr_y;
+    while (__tmp_x - 1 >= 1 && __tmp_y + 1 <= __chessboardSize)
+        __tmp_x--, __tmp_y++;
+    while (__tmp_x <= __chessboardSize && __tmp_y >= 1)
+        if (__map[__tmp_x++][__tmp_y--] == 1) __ret = false;
+
+    return __ret;
+}
+
 // print current chessboard
 void printChessboard() {
     for (auto &__i : __map) {
