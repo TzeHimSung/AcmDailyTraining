@@ -99,7 +99,29 @@ void dfs(int __filled) {
 
 // fill map matrix
 void fillVis(int __curr_x, int __curr_y, int __val) {
-    
+    // current point
+    __map[__curr_x][__curr_y] = __val;
+
+    // total column
+    for (int __i = 1; __i <= __chessboardSize; __i++)
+        __map[__i][__curr_y] = __val;
+
+    // total row
+    for (int __j = 1; __j <= __chessboardSize; __j++)
+        __map[__curr_x][__j] = __val;
+
+    // diagonal
+    int __tmp_x = __curr_x, __tmp_y = __curr_y;
+    while (__tmp_x - 1 >= 1 && __tmp_y - 1 >= 1)
+        __tmp_x--, __tmp_y--;
+    while (__tmp_x <= __chessboardSize && __tmp_y <= __chessboardSize)
+        __map[__tmp_x++][__tmp_y++] = __val;
+
+    __tmp_x = __curr_x, __tmp_y = __curr_y;
+    while (__tmp_x - 1 >= 1 && __tmp_y + 1 <= __chessboardSize)
+        __tmp_x--, __tmp_y++;
+    while (__tmp_x <= __chessboardSize && __tmp_y >= 1)
+        __map[__tmp_x++][__tmp_y--] = __val;
 }
 
 // print current chessboard
