@@ -1,4 +1,4 @@
-// Project: N-queen problem
+// Project: N-queen problem without optimization
 // Author: JHSeng
 // Date: 09/30/2019
 
@@ -23,7 +23,7 @@ using std::make_pair;
 
 // global variables
 
-int __chessboardSize;
+int __chessboardSize, __numOfSolution;
 vector<vector<int>> __map;
 set<int> __ansSet;
 
@@ -60,6 +60,7 @@ int convertStringToInt(string __str) {
 void solve() {
     // chessboard init
     __ansSet.clear();
+    __numOfSolution = 0;
 
     __map.resize(__chessboardSize + 1);
     for (auto &__i : __map) {
@@ -83,7 +84,9 @@ void solve() {
 
 // dfs
 void dfs(int __filled) {
+    // ending condition
     if (__filled == __chessboardSize) {
+        // exclude duplicate answers
         int __currHash = getHash();
         if (!__ansSet.count(__currHash)) {
             __ansSet.insert(__currHash);
@@ -91,19 +94,19 @@ void dfs(int __filled) {
         }
         return;
     }
+    // search entire chessboard
     for (int __i = 1; __i <= __chessboardSize; __i++) {
         for (int __j = 1; __j <= __chessboardSize; __j++) {
             if (checkPosition(__i, __j)) {
                 __map[__i][__j] = 1;
-                // __queenPos.push_back(make_pair(__i, __j));
                 dfs(__filled + 1);
                 __map[__i][__j] = 0;
-                // __queenPos.pop_back();
             }
         }
     }
 }
 
+// check current position is usable or not
 bool checkPosition(int __curr_x, int __curr_y) {
     bool __ret = true;
 
@@ -125,6 +128,7 @@ bool checkPosition(int __curr_x, int __curr_y) {
     while (__tmp_x <= __chessboardSize && __tmp_y <= __chessboardSize)
         if (__map[__tmp_x++][__tmp_y++] == 1) __ret = false;
 
+    // another diagonal
     __tmp_x = __curr_x, __tmp_y = __curr_y;
     while (__tmp_x - 1 >= 1 && __tmp_y + 1 <= __chessboardSize)
         __tmp_x--, __tmp_y++;
@@ -136,15 +140,17 @@ bool checkPosition(int __curr_x, int __curr_y) {
 
 // print current chessboard
 void printChessboard() {
+    cout << "No. " << ++__numOfSolution << " solution:" << endl;
     for (int __i = 1; __i <= __chessboardSize; __i++) {
         for (int __j = 1; __j <= __chessboardSize; __j++) {
             cout << __map[__i][__j] << " ";
         }
         cout << endl;
     }
-    cout << "------------------------------------" << endl;
+    cout << endl;
 }
 
+// hash current chessboard
 int getHash() {
     int __ret = 0;
     for (int __i = 1; __i <= __chessboardSize; __i++) {
@@ -155,6 +161,7 @@ int getHash() {
     return __ret;
 }
 
+// main logic
 int main() {
 
     // init chessboard size
@@ -164,13 +171,30 @@ int main() {
 
     // check whether chessboard size is legal
     while (!isNumber(inputString)) {
-        cout << "This input is illegal, please input again";
+        cout << "This input is illegal, please input again: ";
         cin >> inputString;
     }
     __chessboardSize = convertStringToInt(inputString);
 
+    // check no solution
+    if (__chessboardSize < 4) {
+        cout << "The chessboard size is too small, no solution." << endl;
+        return 0;
+    }
+
+    if (__chessboardSize > 10) {
+        cout << "The chessboard size is too large!" << endl;
+        return 0;
+    }
+
+    if (__chessboardSize >= 7) {
+        cout << "The chessboard size is large, please wait for calculating." << endl;
+    }
+
     // solve problem
+    cout << "Solving the problem..." << endl << endl;
     solve();
+    cout << "All solution have been printed!" << endl;
 
     return 0;
 }
