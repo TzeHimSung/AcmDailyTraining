@@ -1,6 +1,7 @@
 // Project: N-queen problem without optimization
 // Author: JHSeng
 // Date: 09/30/2019
+// Compiler version: GNU G++ 9.1.0
 
 // headers
 
