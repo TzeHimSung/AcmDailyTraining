@@ -1,4 +1,4 @@
-// Project: N-queen problem without optimization
+// Project: N-queen problem without optimization (retrospective method)
 // Author: JHSeng
 // Date: 09/30/2019
 // Compiler version: GNU G++ 9.1.0
@@ -74,10 +74,8 @@ void solve() {
         for (int __j = 1; __j <= __chessboardSize; __j++) {
             if (checkPosition(__i, __j)) {
                 __map[__i][__j] = 1;
-                // __queenPos.push_back(make_pair(__i, __j));
                 dfs(1);
                 __map[__i][__j] = 0;
-                // __queenPos.pop_back();
             }
         }
     }
@@ -164,6 +162,8 @@ int getHash() {
 
 // main logic
 int main() {
+    // open read file
+    freopen("input.in", "r", stdin);
 
     // init chessboard size
     string inputString;
@@ -196,6 +196,9 @@ int main() {
     cout << "Solving the problem..." << endl << endl;
     solve();
     cout << "All solution have been printed!" << endl;
+
+    // close read file
+    fclose(stdin);
 
     return 0;
 }
