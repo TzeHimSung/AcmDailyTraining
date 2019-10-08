@@ -53,11 +53,45 @@ public:
 };
 
 class ChessboardChecker {
-private:
-
 public:
     static bool isAnswer() {
+        bool __ret = true;
+        // check row
+        for (int __i = 1; __i <= __chessboardSize; __i++) {
+            int __counter = 0;
+            for (int __j = 1; __j <= __chessboardSize; __j++) {
+                __counter += __map[__i][__j];
+            }
+            if (__counter >= 2) __ret = false;
+        }
+        // check column
+        for (int __j = 1; __j <= __chessboardSize; __j++) {
+            int __counter = 0;
+            for (int __i = 1; __i <= __chessboardSize; __i++) {
+                __counter += __map[__i][__j];
+            }
+            if (__counter >= 2) __ret = false;
+        }
+        // check diagram
+        for (int __i = 1; __i <= __chessboardSize; __i++) {
+            const int __curr_x = __i, __curr_y = __i;
+            int __tmp_x = __curr_x, __tmp_y = __curr_y;
+            while (__tmp_x - 1 >= 1 && __tmp_y - 1 >= 1)
+                __tmp_x--, __tmp_y--;
+            int __counter = 0;
+            while (__tmp_x <= __chessboardSize && __tmp_y <= __chessboardSize)
+                __counter += __map[__tmp_x++][__tmp_y++];
+            if (__counter >= 2) {
+                __ret = false;
+                break;
+            }
+        }
 
+        for (int __i = 1; __i <= __chessboardSize; __i++) {
+            const int __curr_x = __i, __curr_y = __chessboardSize - __i + 1;
+            int __tmp_x = __curr_x, __tmp_y = __curr_y;
+            while ()
+            }
     }
 };
 
