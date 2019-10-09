@@ -73,14 +73,14 @@ int main() {
     // generate bad symbol table
     auto badSymbolTable = generateBadSymbolTable();
     // print bad symbol table
-    cout << "Position | The bad symbol table is: " << endl;
-    cout << "         | ";
-    for (int i = 0; i < 26; i++) cout << setw(3) << char('a' + i);
+    cout << "The bad symbol table is: " << endl;
+    cout << "    ";
+    for (int i = 0; i < 26; i++) cout << setw(2) << char('a' + i);
     cout << endl;
     int cnt = 0;
     for (auto i : badSymbolTable) {
-        cout << setw(4) << cnt++ << "     | ";
-        for (auto &j : i) cout << setw(3) << j;
+        cout << setw(2) << cnt++ << "| ";
+        for (auto &j : i) cout << setw(2) << j;
         cout << endl;
     }
     // generate good suffix table
@@ -101,14 +101,14 @@ The result is:
 
 ```reStructuredText
 Please input pattern string: ababba
-Position | The bad symbol table is: 
-         |   a  b  c  d  e  f  g  h  i  j  k  l  m  n  o  p  q  r  s  t  u  v  w  x  y  z
-   0     |  -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
-   1     |   0 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
-   2     |   0  1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
-   3     |   2  1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
-   4     |   2  3 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
-   5     |   2  4 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+The bad symbol table is: 
+     a b c d e f g h i j k l m n o p q r s t u v w x y z
+ 0| -1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1
+ 1|  0-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1
+ 2|  0 1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1
+ 3|  2 1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1
+ 4|  2 3-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1
+ 5|  2 4-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1
 The good suffix table is: 
 ababba  -1
  babba  -1
@@ -202,7 +202,7 @@ int main() {
 
 The result is:
 
-```
+```reStructuredText
 The result of warshall algorithm is:
    1   1   1   1
    1   1   1   1

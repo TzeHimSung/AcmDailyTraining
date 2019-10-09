@@ -60,14 +60,14 @@ int main() {
     // generate bad symbol table
     auto badSymbolTable = generateBadSymbolTable();
     // print bad symbol table
-    cout << "Position | The bad symbol table is: " << endl;
-    cout << "         | ";
-    for (int i = 0; i < 26; i++) cout << setw(3) << char('a' + i);
+    cout << "The bad symbol table is: " << endl;
+    cout << "    ";
+    for (int i = 0; i < 26; i++) cout << setw(2) << char('a' + i);
     cout << endl;
     int cnt = 0;
     for (auto i : badSymbolTable) {
-        cout << setw(4) << cnt++ << "     | ";
-        for (auto &j : i) cout << setw(3) << j;
+        cout << setw(2) << cnt++ << "| ";
+        for (auto &j : i) cout << setw(2) << j;
         cout << endl;
     }
     // generate good suffix table
