@@ -13,7 +13,7 @@ using namespace std;
 
 // global variables
 
-int __chessboardSize;
+int __chessboardSize, __numOfSolution = 0;
 vector<int> __map;
 set<int> __ansSet;
 
@@ -53,62 +53,78 @@ public:
 };
 
 class ChessboardChecker {
+private:
+    static bool checkDiagram1(int __curr_x, int __curr_y) {
+        while (__curr_x - 1 >= 1 && __curr_y - 1 >= 1)
+            __curr_x--, __curr_y--;
+        int __counter = 0;
+        while (__curr_x <= __chessboardSize && __curr_y <= __chessboardSize) {
+            __counter += (__map[__curr_x] == __curr_y);
+            __curr_x++, __curr_y++;
+        }
+        if (__counter > 1) return false;
+        return true;
+    }
+
+    static bool checkDiagram2(int __curr_x, int __curr_y) {
+        while (__curr_x - 1 >= 1 && __curr_y + 1 <= __chessboardSize)
+            __curr_x--, __curr_y++;
+        int __counter = 0;
+        while (__curr_x <= __chessboardSize && __curr_y >= 1) {
+            __counter += (__map[__curr_x] == __curr_y);
+            __curr_x++, __curr_y--;
+        }
+        if (__counter > 1) return false;
+        return true;
+    }
 public:
     static bool isAnswer() {
-        bool __ret = true;
-        // check row
-        for (int __i = 1; __i <= __chessboardSize; __i++) {
-            int __counter = 0;
-            for (int __j = 1; __j <= __chessboardSize; __j++) {
-                __counter += __map[__i][__j];
-            }
-            if (__counter >= 2) __ret = false;
-        }
         // check column
-        for (int __j = 1; __j <= __chessboardSize; __j++) {
-            int __counter = 0;
-            for (int __i = 1; __i <= __chessboardSize; __i++) {
-                __counter += __map[__i][__j];
-            }
-            if (__counter >= 2) __ret = false;
-        }
+        set<int>__tmpSet;
+        __tmpSet.clear();
+        for (int __i = 1; __i <= __chessboardSize; __i++)
+            __tmpSet.insert(__map[__i]);
+        if ((int)__tmpSet.size() != __chessboardSize)
+            return false;
+
         // check diagram
         for (int __i = 1; __i <= __chessboardSize; __i++) {
-            const int __curr_x = __i, __curr_y = __i;
-            int __tmp_x = __curr_x, __tmp_y = __curr_y;
-            while (__tmp_x - 1 >= 1 && __tmp_y - 1 >= 1)
-                __tmp_x--, __tmp_y--;
-            int __counter = 0;
-            while (__tmp_x <= __chessboardSize && __tmp_y <= __chessboardSize)
-                __counter += __map[__tmp_x++][__tmp_y++];
-            if (__counter >= 2) {
-                __ret = false;
-                break;
-            }
+            if (!ChessboardChecker::checkDiagram1(__i, 1))
+                return false;
+            if (!ChessboardChecker::checkDiagram2(__i, __chessboardSize))
+                return false;
         }
-
-        for (int __i = 1; __i <= __chessboardSize; __i++) {
-            const int __curr_x = __i, __curr_y = __chessboardSize - __i + 1;
-            int __tmp_x = __curr_x, __tmp_y = __curr_y;
-            while (__tmp_x - 1 >= 1 && __tmp_y + 1 <= __chessboardSize)
-                __tmp_x--, __tmp_y++;
-            int __counter = 0;
-            while (__tmp_x <= __chessboardSize && __tmp_y >= 1)
-                __counter += __map[__tmp_x++][__tmp_y--];
-
+        for (int __j = 1; __j <= __chessboardSize; __j++) {
+            if (!ChessboardChecker::checkDiagram1(1, __j))
+                return false;
+            if (!ChessboardChecker::checkDiagram2(1, __j))
+                return false;
         }
+        return true;
     }
 };
 
 // print chessboard
 class ChessboardPrinter {
+private:
+    // hash current chessboard
+    static int getHash() {
+        int __ret = 0;
+        for (int __i = 1; __i <= __chessboardSize; __i++) {
+            for (int __j = 1; __j <= __chessboardSize; __j++) {
+                __ret += __i * __j * (__map[__i] == __j ? 1 : 0);
+            }
+        }
+        return __ret;
+    }
+
 public:
     static void init() {
         __ansSet.clear();
     }
 
     static void print() {
-        int __currHash = getHash();
+        int __currHash = ChessboardPrinter::getHash();
         if (!__ansSet.count(__currHash)) {
             __ansSet.insert(__currHash);
 
@@ -116,24 +132,13 @@ public:
             cout << "No. " << ++__numOfSolution << " solution:" << endl;
             for (int __i = 1; __i <= __chessboardSize; __i++) {
                 for (int __j = 1; __j <= __chessboardSize; __j++) {
-                    cout << __map[__i][__j] << " ";
+                    if (__map[__i] == __j) cout << "1 ";
+                    else cout << "0 ";
                 }
                 cout << endl;
             }
             cout << endl;
         }
-    }
-
-private:
-    // hash current chessboard
-    int getHash() {
-        int __ret = 0;
-        for (int __i = 1; __i <= __chessboardSize; __i++) {
-            for (int __j = 1; __j <= __chessboardSize; __j++) {
-                __ret += __i * __j * __map[__i][__j];
-            }
-        }
-        return __ret;
     }
 };
 
@@ -152,6 +157,8 @@ int main() {
         if (ChessboardChecker::isAnswer())
             ChessboardPrinter::print();
     }
+
+    fclose(stdin);
 
     return 0;
 }

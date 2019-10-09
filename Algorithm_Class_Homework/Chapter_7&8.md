@@ -163,7 +163,7 @@ void buildGraph() {
     // closure matrix init
     for (int i = 1; i <= 4; i++)
         for (int j = 1; j <= 4; j++)
-            closure[i][j] = (dis[i][j] != maxx || i == j) ? 1 : 0;
+            closure[i][j] = (dis[i][j] == maxx || i == j) ? 0 : 1;
 }
 
 void warshall() {
@@ -214,19 +214,19 @@ The result is:
 ```reStructuredText
 Start warshall algorithm.
 Initial state:
-   1   1   1   1
-   0   1   1   0
-   1   0   1   1
-   1   0   1   1
+   0   1   1   1
+   0   0   1   0
+   1   0   0   1
+   1   0   1   0
 i = 1: 
-   1   1   1   1
-   0   1   1   0
+   0   1   1   1
+   0   0   1   0
    1   1   1   1
    1   1   1   1
 
 i = 2: 
-   1   1   1   1
-   0   1   1   0
+   0   1   1   1
+   0   0   1   0
    1   1   1   1
    1   1   1   1
 
