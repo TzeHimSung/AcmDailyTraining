@@ -90,8 +90,13 @@ public:
         for (int __i = 1; __i <= __chessboardSize; __i++) {
             const int __curr_x = __i, __curr_y = __chessboardSize - __i + 1;
             int __tmp_x = __curr_x, __tmp_y = __curr_y;
-            while ()
-            }
+            while (__tmp_x - 1 >= 1 && __tmp_y + 1 <= __chessboardSize)
+                __tmp_x--, __tmp_y++;
+            int __counter = 0;
+            while (__tmp_x <= __chessboardSize && __tmp_y >= 1)
+                __counter += __map[__tmp_x++][__tmp_y--];
+
+        }
     }
 };
 
