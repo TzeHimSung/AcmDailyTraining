@@ -1,6 +1,6 @@
 // Project: N-queen problem (blackboard method)
 // Author: JHSeng
-// Date: 10/01/2019
+// Date: 10/02/2019
 // Compiler version: GNU G++ 9.1.0
 
 // headers
