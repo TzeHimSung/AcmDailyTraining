@@ -145,6 +145,7 @@ S\T  a  b  c  d  e  f  g
  e  14  7  5 14  0  8  9
  f  11 15 13  6  8  0 11
  g  22 16 14 17  9 11  0
+ 
 The length of mininum spanning tree is: 39
 The MST contains the following edges:
 From a to b
