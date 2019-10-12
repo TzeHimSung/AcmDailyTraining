@@ -2,7 +2,7 @@
 
 软工一班 成子谦 201730681303
 
-All codes have been tested under GNU G++ 9.1.0
+All codes have been tested under GNU G++ 9.2.0
 
 ### Chapter. 9
 
