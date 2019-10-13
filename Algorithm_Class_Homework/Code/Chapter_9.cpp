@@ -73,7 +73,6 @@ int prim() {
     m.clear();
     for (int i = 0; i < maxn; i++) mincost[i] = INF, vis[i] = 0;
     mincost[1] = 0;
-    m[1] = 1;
     int ret = 0;
     while (1) {
         int v = -1;
@@ -112,7 +111,6 @@ int main() {
          << "The MST contains the following edges:" << endl;
     // print MST path
     path.clear();
-    m.erase(m.begin());
     for (auto i : m)
         path.emplace_back(make_pair(min(i.first, i.second), max(i.first, i.second)));
     sort(path.begin(), path.end());
