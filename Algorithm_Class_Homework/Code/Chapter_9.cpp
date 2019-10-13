@@ -110,7 +110,7 @@ int main() {
     // prim
     cout << "The length of mininum spanning tree is: " << prim() << endl
          << "The MST contains the following edges:" << endl;
-    // print path
+    // print MST path
     path.clear();
     m.erase(m.begin());
     for (auto i : m)
