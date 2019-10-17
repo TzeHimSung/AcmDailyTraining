@@ -1,3 +1,4 @@
+// this makefile only for test
 SRC = $(wildcard *.c)
 OBJ = $(patsubst %.c, %.out, $(SRC))
  
