@@ -79,6 +79,7 @@ int dfs(int u, int flow) {
     return ret;
 }
 
+// main function of dinic
 int dinic() {
     int ans = 0;
     while (bfs()) {
