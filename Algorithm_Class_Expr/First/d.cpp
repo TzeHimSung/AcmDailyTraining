@@ -17,7 +17,7 @@
 using namespace std;
 /* header end */
 
-const int maxn = 2e5 + 10;
+const int maxn = 2e5 + 20;
 struct Point {
     int x, y;
     Point() {}
