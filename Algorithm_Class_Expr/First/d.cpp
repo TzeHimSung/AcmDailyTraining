@@ -36,15 +36,15 @@ void cdq_divition(int l, int r) {
     int now = l, stTop1 = 0, stTop2 = 0;
     for (int i = mid + 1; i <= r; i++) {
         int currX = p[i].x, currY = p[i].y;
-        while (stTop1 && stack1[stTop1].y >= currY) stTop1--;
+        while (stTop1 && stack1[stTop1].y >= currY) stTop1--; // find first stack1[stTop1].y < currY
         stack1[++stTop1] = p[i];
         while (now <= mid && p[now].x < currX) {
             int yy = p[now].y;
-            while (stTop2 && stack2[stTop2].y <= yy) stTop2--;
+            while (stTop2 && stack2[stTop2].y <= yy) stTop2--; // find first stack2[stTop2].y > yy
             stack2[++stTop2] = p[now++];
         }
         int k = stack1[stTop1 - 1].x, remain = stTop2 + 1;
-        // 二分
+        // lower_bound the position of first stack2[MID].x < k
         int L = 1, R = stTop2;
         while (L <= R) {
             int MID = L + R >> 1;
@@ -67,6 +67,7 @@ int main() {
         int x, y; scanf("%d%d", &x, &y);
         p[i] = Point(x, y);
     }
+	// sort by value of Y
     sort(p + 1, p + 1 + n);
     stack1[0].x = stack2[0].x = -1;
     cdq_divition(1, n);
