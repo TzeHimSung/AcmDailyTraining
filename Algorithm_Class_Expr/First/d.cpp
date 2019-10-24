@@ -67,7 +67,7 @@ int main() {
         int x, y; scanf("%d%d", &x, &y);
         p[i] = Point(x, y);
     }
-	// sort by value of Y
+    // sort by value of Y
     sort(p + 1, p + 1 + n);
     stack1[0].x = stack2[0].x = -1;
     cdq_divition(1, n);
