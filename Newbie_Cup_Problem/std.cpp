@@ -14,8 +14,8 @@ bool cmp(const pair<ll, ll> &a, const pair<ll, ll> &b) {
 }
 
 int main() {
-    freopen("./Newbie_Cup_Problem/data/6.in", "r", stdin);
-    freopen("./Newbie_Cup_Problem/data/6.out", "w", stdout);
+    freopen("./Newbie_Cup_Problem/data/7.in", "r", stdin);
+    freopen("./Newbie_Cup_Problem/data/7.out", "w", stdout);
 
     scanf("%d", &n);
     for (int i = 1; i <= n; i++) {
