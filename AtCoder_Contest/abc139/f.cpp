@@ -44,4 +44,3 @@ int main() {
     printf("%.15f\n", sqrt(ans));
     return 0;
 }
-
