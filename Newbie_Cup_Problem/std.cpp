@@ -14,8 +14,8 @@ bool cmp(pair<ll, ll> &a, pair<ll, ll> &b) {
 }
 
 int main() {
-    // freopen("./Newbie_Cup_Problem/data/5.in", "r", stdin);
-    // freopen("./Newbie_Cup_Problem/data/5.out", "w", stdout);
+    // freopen("./Newbie_Cup_Problem/data/7.in", "r", stdin);
+    // freopen("./Newbie_Cup_Problem/data/7.out", "w", stdout);
     int T; scanf("%d", &T);
     while (T--) {
         scanf("%d", &n);
@@ -38,9 +38,9 @@ int main() {
                 if (++j == n) j = 0;
             }
         }
-        printf("%lld\n", (ll)floor(sqrt(ans)));
+        printf("%lld\n", ans);
     }
-    // fclose(stdin);
-    // fclose(stdout);
+    fclose(stdin);
+    fclose(stdout);
     return 0;
 }
