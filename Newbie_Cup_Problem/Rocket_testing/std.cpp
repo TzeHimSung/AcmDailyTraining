@@ -40,7 +40,7 @@ int main() {
         }
         printf("%lld\n", ans);
     }
-    fclose(stdin);
-    fclose(stdout);
+    // fclose(stdin);
+    // fclose(stdout);
     return 0;
 }
