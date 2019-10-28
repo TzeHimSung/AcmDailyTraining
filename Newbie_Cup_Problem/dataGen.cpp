@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cmath>
 #include <random>
+#include <climits>
 
 using namespace std;
 
@@ -26,10 +27,10 @@ void makeExtreData() {
 }
 
 int main() {
-    freopen("./Newbie_Cup_Problem/data/6.in", "w", stdout);
+    freopen("./Newbie_Cup_Problem/data/8.in", "w", stdout);
 
     // makeRandomData();
-    makeExtreData();
+    // makeExtreData();
 
     fclose(stdout);
     return 0;
