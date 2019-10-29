@@ -54,6 +54,15 @@
 
 ### Hints
 
-> JHSeng：老板，宵夜真香！
+> JHSeng：老板，我不会读入啊！
 >
-> SJoshua：别吵啊啊啊啊啊题目好难我不会啊啊啊啊啊啊。
+> SJoshua：来，让我教你！
+
+```c++
+int a,b,c;
+while (cin >> a >> b >> c){
+	// to be continued
+}
+```
+
+> SJoshua：怎么样，是不是很简单？
