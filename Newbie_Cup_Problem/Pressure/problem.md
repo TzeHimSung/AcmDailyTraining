@@ -4,7 +4,7 @@
 
 1. 集训队已退役神仙$hry$的姓名拼音全称是什么？
 
-   A. HuangRiyang B.HanRiYang C.HuRiYang D. HeRiYang
+   A. HuangRiYang B.HanRiYang C.HuRiYang D. HeRiYang
 
 2. 以下表达式的值和哪个值最接近
 
