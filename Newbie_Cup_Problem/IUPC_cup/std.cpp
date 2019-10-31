@@ -1,5 +1,3 @@
-#define DATAGEN
-// #define TEST
 #include <iostream>
 #include <string>
 
@@ -9,15 +7,10 @@ const int maxn = 1e5 + 10;
 int l[maxn], r[maxn];
 
 int main() {
-#ifdef DATAGEN
-    // data gen
-    freopen("./Newbie_Cup_Problem/IUPC_cup/data/2.in", "r", stdin);
-    freopen("./Newbie_Cup_Problem/IUPC_cup/data/2.out", "w", stdout);
-#endif // DATAGEN
-    // 初始化
     int t;
     cin >> t;
     while (t--) {
+        // 初始化
         for (int i = 0; i < maxn; i++)
             l[i] = r[i] = 0;
         int n;
@@ -33,14 +26,6 @@ int main() {
                 r[i] = 1;
                 if (i + 1 < n) r[i] += r[i + 1];
             }
-#ifdef TEST
-        for (int i = 0; i < n; i++) cout << s[i] << " ";
-        cout << endl << endl;
-        for (int i = 0; i < n; i++) cout << r[i] << " ";
-        cout << endl;
-        for (int i = 0; i < n; i++) cout << l[i] << " ";
-        cout << endl;
-#endif // TEST
         int ans = 0, total = 0;
         for (int i = 0; i < n; i++)
             if (s[i] == '1') total++;
@@ -55,9 +40,5 @@ int main() {
         if (total == n) ans = n;
         cout << ans << endl;
     }
-#ifdef DATAGEN
-    fclose(stdin);
-    fclose(stdout);
-#endif
     return 0;
 }
