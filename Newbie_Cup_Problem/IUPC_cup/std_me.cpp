@@ -1,26 +1,7 @@
-//basic
 #include <iostream>
-#include <cstdio>
-#include <cstdlib>
 #include <string>
 #include <cstring>
-#include <climits>
-#include <algorithm>
 #include <cmath>
-#include <array>
-#include <cstdint>
-//STL
-#include <vector>
-#include <set>
-#include <map>
-#include <queue>
-#include <stack>
-//define
-#define ll long long
-#define pb push_back
-#define mp make_pair
-#define mem(a,b) memset(a,b,sizeof(a))
-#define eps 1e-8
 
 using namespace std;
 
@@ -55,11 +36,11 @@ int main() {
     }
     int sum = 0;
     for (int i = 1; i <= p; i++)
-        if (v[i].c == 'G') sum += v[i].len;
+        if (v[i].c == '1') sum += v[i].len;
     int ans = 0;
     for (int i = 1; i <= p; i++) {
         Node curr = v[i];
-        if (curr.c == 'G') {
+        if (curr.c == '1') {
             if (curr.len == sum) ans = max(ans, curr.len);
             else ans = max(ans, curr.len + 1);
         } else if (curr.len == 1 && i > 1 && i < n) {

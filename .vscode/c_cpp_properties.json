@@ -4,14 +4,15 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}",
-                "/usr/lib/gcc/x86_64-pc-linux-gnu/9.1.0/include",
-                "/usr/lib/gcc/x86_64-pc-linux-gnu/9.1.0/include/sanitizer",
-                "/usr/lib/gcc/x86_64-pc-linux-gnu/9.1.0/include-fixed",
-                "/usr/lib/gcc/x86_64-pc-linux-gnu/9.1.0/install-tools/include",
-                "/usr/lib/gcc/x86_64-pc-linux-gnu/9.1.0/plugin/include",
-                "/usr/include/c++/9.1.0",
-                "/usr/include/c++/9.1.0/x86_64-pc-linux-gnu",
-                "/usr/include/c++/9.1.0/x86_64-pc-linux-gnu/32"
+                "/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include",
+                "/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include/sanitizer",
+                "/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include-fixed",
+                "/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/install-tools/include",
+                "/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/plugin/include",
+                "/usr/include/c++/9.2.0",
+                "/usr/include/c++/9.2.0/x86_64-pc-linux-gnu",
+                "/usr/include/c++/9.2.0/x86_64-pc-linux-gnu/32",
+                "/usr/include"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/g++",
