@@ -62,10 +62,8 @@ int main() {
     // }
     // makeExtreData();
     cout << n_lim << endl;
-    for (int i = 1; i <= n_lim; i++)
-        if (i % 2 == 0) cout << 2;
-        else cout << 1;
-    cout << endl;
+    for (int i = 1; i < n_lim; i++) cout << 2;
+    cout << 1 << endl;
 
     fclose(stdout);
     return 0;

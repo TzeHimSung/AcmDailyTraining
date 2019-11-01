@@ -7,6 +7,9 @@ const int maxn = 1e5 + 10;
 int l[maxn], r[maxn];
 
 int main() {
+    // freopen("./Newbie_Cup_Problem/IUPC_cup/data/2.in", "r", stdin);
+    // freopen("./Newbie_Cup_Problem/IUPC_cup/data/2.out", "w", stdout);
+
     int t;
     cin >> t;
     while (t--) {
