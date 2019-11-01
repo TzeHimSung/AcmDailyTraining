@@ -52,15 +52,20 @@ void makeExtreData() {
 }
 
 int main() {
-    freopen("./Newbie_Cup_Problem/IUPC_cup/data/2.in", "w", stdout);
+    freopen("./Newbie_Cup_Problem/IUPC_cup/data/3.in", "w", stdout);
 
-    int t = 10;
-    cout << t << endl;
+    // int t = 10;
+    // cout << t << endl;
     // while (t--) {
     //     if (t & 1) makeIntensiveData();
     //     else makeSparseData();
     // }
-    makeExtreData();
+    // makeExtreData();
+    cout << n_lim << endl;
+    for (int i = 1; i <= n_lim; i++)
+        if (i % 2 == 0) cout << 2;
+        else cout << 1;
+    cout << endl;
 
     fclose(stdout);
     return 0;
