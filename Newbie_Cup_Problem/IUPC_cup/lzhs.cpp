@@ -16,15 +16,12 @@ int main() {
                 a[cnt] = 0;
             } else cur++;
         a[cnt] = cur;
-        //for(int i=1;i<=cnt;i++)cout<<a[i]<<" ";cout<<endl;
         int ans = 0, another1 = 0, another2 = 0;
         if ((cnt == 3 && a[1] > 0) || cnt >= 5)another1 = 1;
-        //if((cnt==5&&a[1]>0)||cnt>=7)another2=1;
         for (int i = 1; i <= cnt; i++) {
             if (i & 1)ans = max(ans, a[i] + another1);
             else if (i + 1 <= cnt && a[i] == 1 && a[i - 1] > 0) {
-                /*if(another2)*/ans = max(ans, a[i - 1] + a[i + 1] + 1);
-                //else ans=max(ans,a[i-1]+a[i+1]);
+                ans = max(ans, a[i - 1] + a[i + 1] + 1);
             }
         }
         cout << ans << endl;
