@@ -1,9 +1,0 @@
-000 not exist
-001 not exist
-010 2013 # can not be divided by 4/100/400, 
-100 100 # can be divided by 4 and 100, belongs to (0,400)
-110 2008 # can be divided by 4 but not 100
-101 not exist # the second and the third condition is disti~
-011 not exist
-111 not exist
-
