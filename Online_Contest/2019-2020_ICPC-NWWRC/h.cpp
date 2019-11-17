@@ -18,20 +18,20 @@ using namespace std;
 /* header end */
 
 const int maxn = 1e6 + 10;
-int n, a[maxn], pos[maxn], d[maxn], preSum[maxn], maxx;
+int n, a[maxn], pos[maxn], cnt[maxn], preSum[maxn], maxx;
 
 int solve(int x) {
     if (x < maxx) return -int_inf;
-    if (d[x]) return d[x];
+    if (cnt[x]) return cnt[x];
     int res = 0, i = 0;
     while (i < n) {
         res += x;
         res = min(res, 1000000);
         i = pos[res];
         res = preSum[i];
-        d[x]++;
+        cnt[x]++;
     }
-    return d[x];
+    return cnt[x];
 }
 
 int main() {
