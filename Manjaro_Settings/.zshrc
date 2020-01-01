@@ -8,7 +8,8 @@
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="agnoster"
+# to my personal config, agnoster/bira/ys/avit
+ZSH_THEME="ys"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -64,7 +65,6 @@ ZSH_THEME="agnoster"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git
         zsh-syntax-highlighting
-        zsh-completions
         zsh-autosuggestions
         web-search
         encode64
@@ -101,6 +101,27 @@ export SSH_KEY_PATH="~/.ssh/rsa_id"
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias ll="ls -l"
-alias yays="yay -Syyu"
-alias pacs="sudo pacman -Syyu"
+alias yays="yay -Syu"
+alias pacs="sudo pacman -Syu"
 alias cls="clear"
+alias install="yay -S "
+alias uninstall="yay -Rsc "
+alias search="yay -Ss "
+alias connectWiFiRouterInPublicNetByEth0="ssh admin@2001:250:3000:3ca1:6eb0:ceff:fec0:9c80"
+alias connectWiFiRouterInPrivateNetByWlp2s0="ssh admin@fe80::6eb0:ceff:fec0:9c80%wlp2s0"
+alias connectRaspi4bByEth0="ssh jhseng@2001:250:3000:3ca1:f717:72c1:4d46:759c"
+alias connect203="ssh czq@2001:250:3000:3ca1:4637:e6ff:fea5:5c06"
+
+# Java settings
+# Attention! My computer has 2 version of java, openjdk-10 && openjdk-11.
+# If you want to change current version, use "archlinux-java status" to check and use "sudo archlinux-java set [version]" to change it.
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk
+export PATH=$JAVA_HOME/bin:$PATH
+export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
+
+# Node.js settings
+export NODE_MIRROR=https://mirrors.sjtug.sjtu.edu.cn/nodejs-release/
+
+# proxy settings
+export http_proxy=
+export https_proxy=
