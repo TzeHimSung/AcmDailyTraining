@@ -2,7 +2,7 @@
 #include <bits/stdc++.h>
 /* define */
 #define ll long long
-#define ull unsigned long long
+#define ull unsigned long long 
 #define dou double
 #define pb emplace_back
 #define mp make_pair
@@ -16,55 +16,59 @@
 using namespace std;
 /* header end */
 
-const int maxn = 4e4 + 10;
-const int x = 123;
-int n, m, _rank[maxn];
-char str[maxn];
-ull h[maxn], xp[maxn], _hash[maxn];
+const int maxn=4e4+10, base=133;
+int n,len,pos,res;
+ull p[maxn],_hash[maxn];
+unordered_map<ull,int>ma;
+string name;
 
-void init() {
-    h[n] = 0;
-    for (int i = n - 1; i >= 0; i--) h[i] = h[i + 1] * x + str[i] - 'a';
-    xp[0] = 1;
-    for (int i = 1; i <= n; i++) xp[i] = xp[i - 1] * x;
+void init(){
+	p[0]=1;
+	for (int i=1;i<maxn;i++) p[i]=p[i-1]*base;
 }
 
-bool cmp(const int &a, const int &b) {
-    return _hash[a] < _hash[b] || (_hash[a] == _hash[b] && a < b);
+ull get(int left,int right,ull g[]){
+	return g[right]-g[left-1]*p[right-left+1];
 }
 
-int possible(int curLen) {
-    int cnt, pos = -1;
-    for (int i = 0; i < n - curLen + 1; i++) {
-        _rank[i] = i;
-        _hash[i] = h[i] - h[i + curLen] * xp[curLen];
-    }
-    sort(_rank, _rank + n - curLen + 1, cmp);
-    for (int i = 0; i < n - curLen + 1; i++) {
-        if (!i || _hash[_rank[i]] != _hash[_rank[i - 1]]) cnt = 0;
-        if (++cnt >= m) pos = max(pos, _rank[i]);
-    }
-    return pos;
+int check(int currLen){
+	ma.clear();
+	int ans=-1;
+	for (int i=1;i<=len-currLen+1;i++){
+		int pos=get(i,i+currLen-1,_hash);
+		ma[pos]++;
+		if (ma[pos]>=n) ans=i;
+	}
+	return ans;
+}
+
+bool binarySearch(int left,int right){
+	pos=-1, res=-1;
+	while (left<=right){
+		int mid=left+right>>1;
+		int num=check(mid);
+		if (num!=-1){
+			res=mid, pos=num;
+			left=mid+1;
+		} else right=mid-1;
+	}
+	return res!=-1;
 }
 
 int main() {
-    while (scanf("%d", &m) == 1 && m) {
-        scanf("%s", str);
-        n = strlen(str);
-        init();
-        if (possible(1) == -1) {
-            puts("none");
-            continue;
-        }
-        int l = 1, r = n + 1;
-        while (l + 1 < r) {
-            int mid = l + (r - l) / 2;
-            if (possible(mid) != -1) l = mid;
-            else r = mid;
-        }
-        int pos = possible(l);
-        printf("%d %d\n", l, pos);
-    }
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	init();
+	while (cin>>n && n){
+		cin>>name;
+		_hash[0]=0;
+		len=name.size();
+		name=" "+name;
+		for (int i=1;i<=len;i++) _hash[i]=_hash[i-1]*base+name[i]-'a';
+		bool flag=binarySearch(1,len-n+1);
+		if (!flag) cout<<"none"<<endl;
+		else cout<<res<<" "<<pos-1<<endl;
+	}
     return 0;
 }
 
