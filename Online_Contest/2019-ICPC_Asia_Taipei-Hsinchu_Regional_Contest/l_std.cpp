@@ -79,6 +79,7 @@ void Solve() {
     if (res % 2)printf("%lld.5\n", res / 2);
     else printf("%lld\n", res / 2);
 }
+
 int main() {
     int TC;
     scanf("%d", &TC);
