@@ -18,15 +18,17 @@ using namespace std;
 /* header end */
 
 const int maxn = 1e5 + 10;
-int n, maxx = 0;
-ll a[maxn];
+int n;
+ll maxx = 0, a[maxn];
+
+
 
 int main() {
-    // scanf("%d", &n);
-    // for (int i = 1; i <= n; i++) scanf("%lld", &a[i]);
-    // sort(a + 1, a + 1 + n);
-    // for (int i = n; i >= 1; i--) printf("%lld ", a[i]);
-    cout << (1 << 31) - 1;
-    puts("");
+    scanf("%d", &n);
+    for (int i = 1; i <= n; i++) {
+        scanf("%lld", &a[i]);
+        maxx = max(maxx, a[i]);
+    }
+
     return 0;
 }
