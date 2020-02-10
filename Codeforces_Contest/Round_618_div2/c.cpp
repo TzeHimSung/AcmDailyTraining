@@ -18,17 +18,28 @@ using namespace std;
 /* header end */
 
 const int maxn = 1e5 + 10;
-int n;
-ll maxx = 0, a[maxn];
-
-
+int n, a[maxn];
 
 int main() {
     scanf("%d", &n);
-    for (int i = 1; i <= n; i++) {
-        scanf("%lld", &a[i]);
-        maxx = max(maxx, a[i]);
+    for (int i = 1; i <= n; i++) scanf("%d", &a[i]);
+    for (int j = 30; ~j; j--) {
+        int cnt = 0, pos;
+        for (int i = 1; i <= n; i++)
+            if ((a[i] >> j) & 1) {
+                cnt++;
+                pos = i;
+            }
+        if (cnt == 1) {
+            printf("%d ", a[pos]);
+            for (int i = 1; i <= n; i++) {
+                if (i != pos) printf("%d ", a[i]);
+            }
+            puts("");
+            return 0;
+        }
     }
-
+    for (int i = 1; i <= n; i++) printf("%d ", a[i]);
+    puts("");
     return 0;
 }
