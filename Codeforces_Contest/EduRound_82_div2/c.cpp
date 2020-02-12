@@ -17,24 +17,24 @@
 using namespace std;
 /* header end */
 
-const int maxn = 110;
-int t;
+const int maxn = 210;
+int t, a[26][26];
 char s[maxn];
+
+void init() {
+    for (int i = 0; i < 26; i++)
+        for (int j = 0; j < 26; j++)
+            a[i][j] = 0;
+}
 
 int main() {
     scanf("%d", &t);
     while (t--) {
-        int ans = 0;
+        init();
         scanf("%s", s + 1);
         int len = strlen(s + 1);
-        int p, q;
-        for (p = 1; p <= len; p++)
-            if (s[p] == '1') break;
-        for (q = len; q >= 1; q--)
-            if (s[q] == '1') break;
-        for (int i = p; i <= q; i++)
-            if (s[i] == '0') ans++;
-        printf("%d\n", ans);
+        for (int i = 1; i < len; i++) a[s[i] - 'a'][s[i + 1] - 'a'] = 1;
+
     }
     return 0;
 }
