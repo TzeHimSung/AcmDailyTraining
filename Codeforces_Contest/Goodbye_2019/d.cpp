@@ -11,9 +11,9 @@
 using namespace std;
 /* header end */
 
-
+int n, k;
 
 int main() {
-
+    scanf("%d%d", &n, &k);
     return 0;
 }
