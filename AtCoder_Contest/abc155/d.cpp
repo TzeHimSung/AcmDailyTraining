@@ -21,28 +21,28 @@ int main() {
     vector<ll>a(n);
     for (int i = 0; i < n; i++) cin >> a[i];
     sort(a.begin(), a.end());
-    ll u = inf, d = -inf;
-    while (d + 1 < u) {
-        ll m = u + d >> 1, c = 0;
+    ll l = -inf, r = inf;
+    while (l + 1 < r) {
+        ll mid = l + r >> 1, c = 0;
         for (int i = 0; i < n; i++) {
-            if (a[i]*a[i] <= m) c--;
+            if (a[i] * a[i] <= mid) c--;
             if (a[i] < 0) {
-                ll mn = (m / a[i]) - 5;
-                while (mn * a[i] > m) mn++;
+                ll mn = (mid / a[i]) - 5;
+                while (mn * a[i] > mid) mn++;
                 ll pos = lower_bound(a.begin(), a.end(), mn) - a.begin();
                 c += n - pos;
             } else if (a[i] > 0) {
-                ll mx = (m / a[i]) + 5;
-                while (mx * a[i] > m) mx--;
+                ll mx = (mid / a[i]) + 5;
+                while (mx * a[i] > mid) mx--;
                 ll pos = upper_bound(a.begin(), a.end(), mx) - a.begin();
                 c += pos;
             } else {
-                if (m >= 0) c += n;
+                if (mid >= 0) c += n;
             }
         }
         c /= 2;
-        if (c >= k) u = m; else d = m;
+        if (c >= k) r = mid; else l = mid;
     }
-    cout << u << endl;
+    cout << r << endl;
     return 0;
 }
