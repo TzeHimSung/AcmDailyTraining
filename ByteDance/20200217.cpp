@@ -54,5 +54,4 @@ int main() {
         for (int j = 1; j <= m; j++)
             if (!vis[i][j] && a[i][j]) dfs(i, j, "");
     printf("%s\n", ans.c_str());
-    return 0;
 }

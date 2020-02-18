@@ -5,64 +5,68 @@
 #define pb emplace_back
 #define mp make_pair
 #define eps 1e-8
-#define lson (curpos << 1)
-#define rson (curpos << 1 | 1)
+#define lson (curpos<<1)
+#define rson (curpos<<1|1)
 /* namespace */
 using namespace std;
 /* header end */
 
-const ll mod = 1e9 + 7;
-const int maxn = 2e6 + 10;
-map<int, ll> m;
-map<int, vector<int>>pos;
-set<int>num;
+const ll mod = 1e9 + 7, maxn = 1e6 + 10;
+ll ans = 1, fac[maxn << 1], cartlan[maxn];
+unordered_map<ll, ll>m; // m维护的是次数的次数，方便后续计算
+stack<ll>st;
 int n;
-ll ans = 1, fac[maxn + 10], inv[maxn + 10];
 
-ll qp(ll a, ll b) {
+ll qp(ll x, ll y) {
     ll ret = 1;
-    a %= mod;
-    while (b) {
-        if (b & 1) {
-            ret = ret * a % mod;
-            b--;
-        }
-        b >>= 1;
-        a = a * a % mod;
+    while (y) {
+        if (y & 1) ret = ret * x % mod;
+        x = x * x % mod;
+        y >>= 1;
     }
     return ret;
 }
 
-ll C(ll n, ll m) {
-    return fac[n] * inv[m] % mod * inv[n - m] % mod;
-}
-
-ll lucas(ll n, ll m) {
-    if (!m) return 1LL;
-    return C(n % mod, m % mod) * lucas(n / mod, m / mod) % mod;
+void init() {
+    m.clear();
+    while (st.size()) st.pop();
+    fac[0] = 1;
+    for (ll i = 1; i < (maxn << 1); i++) fac[i] = i * fac[i - 1] % mod;
+    for (ll i = 1; i < maxn; i++) cartlan[i] = fac[i << 1] * qp(fac[i], mod - 2) % mod * qp(fac[i], mod - 2) % mod * qp(i + 1, mod - 2) % mod;
 }
 
 int main() {
-    m.clear();
-    fac[0] = 1LL, inv[0] = 1;
-    for (ll i = 1; i <= maxn; i++) fac[i] = fac[i - 1] * i % mod;
-    inv[maxn] = qp(fac[maxn], mod - 2);
-    for (ll i = maxn - 1; i >= 1; i--) inv[i] = inv[i + 1] * (i + 1) % mod;
-
+    init();
     scanf("%d", &n);
-    for (int i = 1; i <= n; i++) {
-        int x; scanf("%d", &x);
-        m[x]++; pos[x].pb(i); num.insert(x);
+    while (n--) {
+        ll x; scanf("%lld", &x);
+        ll currElement = x, cnt = 0;
+        while ((int)st.size() && x < st.top()) {
+            if (st.top() == currElement) cnt++;
+            else {
+                if (cnt >= 2) m[cnt]++;
+                currElement = st.top(), cnt = 1;
+            }
+            st.pop();
+        }
+        if (cnt >= 2) m[cnt]++;
+        st.push(x);
     }
-    queue<pair<int, int>>q;
-    while (!q.empty()) q.pop();
-    q.push(mp(1, n));
-    for (auto cur : num) {
-        int curl = q.front().first, curr = q.front().second;
-        pos[cur]
+    ll currElement = -1, cnt = 0;
+    while ((int)st.size() && -1 < st.top()) {
+        if (st.top() == currElement) cnt++;
+        else {
+            if (cnt >= 2) m[cnt]++;
+            currElement = st.top(), cnt = 1;
+        }
+        st.pop();
+    }
+    if (cnt >= 2) m[cnt]++;
+
+    for (auto i : m) {
+        ll t = qp(cartlan[i.first], i.second);
+        ans = (ans * t) % mod;
     }
     printf("%lld\n", ans);
-
-    fclose(stdin);
     return 0;
 }
