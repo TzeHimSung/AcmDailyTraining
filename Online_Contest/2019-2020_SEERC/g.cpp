@@ -1,91 +1,59 @@
 #include <bits/stdc++.h>
 using namespace std;
-char lproj[201][201];
-char fproj[201][201];
-bool lsolid[201][201];
-bool fsolid[201][201];
-
-struct point {
-    int x, y, z;
-    point() {}
-    point(int _x, int _y, int _z) {
+struct projection {
+    int x, y;
+    projection() {}
+    projection(int _x, int _y) {
         x = _x;
         y = _y;
-        z = _z;
-    }
-    bool operator < (const point &b) const {
-        if (x != b.x) return x < b.x;
-        if (y != b.y) return y < b.y;
-        return z < b.z;
     }
 };
-
-vector<point> ans1, ans2;
-
-bool check(int n, int m, int h) {
-    for (int x = 0; x < n; ++x)
-        for (int y = 0; y < m; ++y)
-            for (int z = 0; z < h; ++z) {
-                if (fproj[x][y] == '1' != fsolid[x][y]) {
-                    return false;
-                }
-                if (lproj[x][z] == '1' != lsolid[x][z]) {
-                    return false;
-                }
-            }
+vector<int> y[201];
+vector<int> z[201];
+bool check(int n) {
+    for (int i = 0; i < n; ++i) {
+        if (y[i].size() > 0 && z[i].size() == 0) return false;
+        if (y[i].size() == 0 && z[i].size() > 0) return false;
+    }
     return true;
 }
-
 int main() {
     int n, m, h;
-
     scanf("%d%d%d", &n, &m, &h);
     for (int i = 0; i < n; ++i)
         for (int j = 0; j < m; ++j) {
-            scanf(" %c", &fproj[i][j]);
+            char ch;
+            scanf(" %c", &ch);
+            if (ch == '1') y[i].push_back(j);
         }
     for (int i = 0; i < n; ++i)
         for (int j = 0; j < h; ++j) {
-            scanf(" %c", &lproj[i][j]);
+            char ch;
+            scanf(" %c", &ch);
+            if (ch == '1') z[i].push_back(j);
         }
-    for (int x = 0; x < n; ++x)
-        for (int y = 0; y < m; ++y)
-            for (int z = 0; z < h; ++z) {
-                if (fproj[x][y] == '1' && lproj[x][z] == '1') {
-                    ans2.push_back(point(x, y, z));
-                }
-            }
-
-    for (int x = 0; x < n; ++x)
-        for (int y = 0; y < m; ++y)
-            for (int z = 0; z < h; ++z) {
-                if (fproj[x][y] == '1' && lproj[x][z] == '1') {
-                    if (!fsolid[x][y] && !lsolid[x][z]) {
-                        ans1.push_back(point(x, y, z));
-                        fsolid[x][y] = true;
-                        lsolid[x][z] = true;
-                    }
-                }
-            }
-    for (int x = 0; x < n; ++x)
-        for (int y = 0; y < m; ++y)
-            for (int z = 0; z < h; ++z) {
-                if (fproj[x][y] == '1' && lproj[x][z] == '1') {
-                    if (!fsolid[x][y] || !lsolid[x][z]) {
-                        ans1.push_back(point(x, y, z));
-                        fsolid[x][y] = true;
-                        lsolid[x][z] = true;
-                    }
-                }
-            }
-    sort(ans1.begin(), ans1.end());
-    if (!check(n, m, h)) {
-        printf("-1\n");
+    if (!check(n)) {
+        printf("-1");
         return 0;
     }
-    printf("%d\n", ans2.size());
-    for (auto p : ans2) printf("%d %d %d\n", p.x, p.y, p.z);
-    printf("%d\n", ans1.size());
-    for (auto p : ans1) printf("%d %d %d\n", p.x, p.y, p.z);
-
+    int ans = 0;
+    for (int x = 0; x < n; ++x) ans += y[x].size() * z[x].size();
+    printf("%d\n", ans);
+    for (int x = 0; x < n; ++x) {
+        for (auto Y : y[x])
+            for (auto Z : z[x]) {
+                printf("%d %d %d\n", x, Y, Z);
+            }
+    }
+    ans = 0;
+    for (int x = 0; x < n; ++x) ans += max(y[x].size(), z[x].size());
+    printf("%d\n", ans);
+    for (int x = 0; x < n; ++x) {
+        int leny = y[x].size();
+        int lenz = z[x].size();
+        int len = max(leny, lenz);
+        for (int i = len; i >= 1; --i) {
+            printf("%d %d %d\n", x, y[x][max(0, leny - i)], z[x][max(0, lenz - i)]);
+        }
+    }
 }
