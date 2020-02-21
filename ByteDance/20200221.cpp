@@ -16,8 +16,7 @@ struct Game {
     ll originPrice, currentPrice, happy;
 } game[maxn];
 int n;
-ll x, totalHappy = 0, totalDiscount = 0, totalCost = 0;
-ll dp[maxn][10010];
+ll x, dp[maxn][10010];
 // 合法条件是 sigma(originPrice) - sigma(currentPrice) >= sigma(currentPrice) - x
 // sigma(originPrice) - 2sigma(currentPrice) >= - x
 // x >= 2 * sigma(currentPrice) - sigma(originPrice)
