@@ -43,12 +43,10 @@ const int maxn = 1e6 + 10;
 ll fac[maxn], inv[maxn], pown[maxn], powm[maxn], ans = 0;
 int n, m, a, b;
 
-ll quick_mod(ll a, ll b)
-{
+ll quick_mod(ll a, ll b) {
     a %= mod, b %= mod;
     ll ret = 1;
-    while (b)
-    {
+    while (b) {
         if (b & 1)
             ret = ret * a % mod;
         a = a * a % mod;
@@ -57,38 +55,32 @@ ll quick_mod(ll a, ll b)
     return ret;
 }
 
-ll A(int p, int q)
-{
+ll A(int p, int q) {
     if (p - q < 0 || p < 0)
         return 0;
     return fac[p] * inv[p - q] % mod;
 }
 
-ll C(int p, int q)
-{
+ll C(int p, int q) {
     if (p - q < 0 || p < 0 || q < 0)
         return 0;
     return fac[p] * inv[q] % mod * inv[p - q] % mod;
 }
 
-int main()
-{
+int main() {
     cin >> n >> m >> a >> b;
     int tmp = max(n, m);
     fac[0] = fac[1] = 1;
-    rep1(i, 2, tmp)
-    fac[i] = fac[i - 1] * i % mod;
+    rep1(i, 2, tmp) fac[i] = fac[i - 1] * i % mod;
     inv[tmp] = quick_mod(fac[tmp], mod - 2);
     for (int i = tmp; i >= 1; i--)
         inv[i - 1] = inv[i] * i % mod;
     pown[0] = powm[0] = 1;
-    rep1(i, 1, tmp)
-    {
+    rep1(i, 1, tmp) {
         powm[i] = powm[i - 1] * m % mod;
         pown[i] = pown[i - 1] * n % mod;
     }
-    rep1(i, 1, n - 1)
-    {
+    rep1(i, 1, n - 1) {
         ll mul = A(n - 2, i - 1) * C(m - 1, i - 1) % mod * powm[n - i - 1] % mod;
         if (n - i - 2 >= 0)
             mul = mul * (i + 1) % mod * pown[n - i - 2] % mod;
