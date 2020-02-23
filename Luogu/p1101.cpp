@@ -32,8 +32,12 @@ int dfs(int x, int y, int k, int pos) {
     }
     if (s[x][y] != st[pos]) return 0;
     int newX = x + px[k], newY = y + py[k];
-    if (check(newX, newY)) vis[x][y] = max(vis[x][y], dfs(newX, newY, k, pos + 1));
-    else return 0;
+    if (check(newX, newY)) {
+        int result = dfs(newX, newY, k, pos + 1);
+        vis[x][y] = max(result, vis[x][y]);
+        return result;
+    }
+    return 0;
 }
 
 int main() {
