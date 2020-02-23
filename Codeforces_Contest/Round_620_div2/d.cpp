@@ -11,42 +11,35 @@
 using namespace std;
 /* header end */
 
-int t, n;
+const int maxn = 2e5 + 10;
+int t, n, m, a[maxn], b[maxn];
 string s;
 
-auto solve(string s) {
-    s += '>';
-    vector<int>ret;
-    for (int i = 0, last = -1; i < n; i++) {
-        if (s[i] == '>') {
-            for (int j = n - i; j <= n - last - 1; j++) ret.pb(j);
-            last = i;
-        }
-    }
-    return ret;
-}
-
 int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(0);
     cin >> t;
     while (t--) {
-        cin >> n >> s;
-        auto ans = solve(s);
-        for (auto i : ans) cout << i << " \n"[i == ans.back()];
-        for (auto &i : s) i ^= '<'^'>';
-        ans = solve(s);
-        for (auto i : ans) cout << n - i + 1 << " \n"[i == ans.back()];
+        cin >> n >> s; m = n;
+        for (int i = 0; i < n; i++) {
+            int len = 1;
+            while (i < s.size() && s[i] == '<') {
+                len++; i++;
+            }
+            for (int j = i; j > i - len; j--) a[j] = m--;
+        }
+        for (int i = 0; i < n; i++) cout << a[i] << " ";
+        cout << endl;
+        m = 1;
+        for (int i = 0; i < n; i++) {
+            int len = 1;
+            while (i < s.size() && s[i] == '>') {
+                len++; i++;
+            }
+            for (int j = i; j > i - len; j--) b[j] = m++;
+        }
+        for (int i = 0; i < n; i++) cout << b[i] << " ";
+        cout << endl;
     }
     return 0;
 }
-/*
-3
-3 <<
-7 >><>><
-5 >>><
-1 2 3
-1 2 3
-7 6 4 5 3 1 2
-3 2 1 6 5 4 7
-5 4 3 1 2
-4 3 2 1 5
- */

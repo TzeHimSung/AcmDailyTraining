@@ -18,8 +18,7 @@ int main() {
     while (t--) {
         int n, x, y;
         scanf("%d%d%d", &n, &x, &y);
-        int o1min = x == 1 ? 2 : 1, o2max = y == n ? n - 1 : n;
-        printf("%d %d\n", min(x, x + y + 1 - n), min(x + y - 1, n));
+        printf("%d %d\n", max(1, min(n, x + y + 1 - n)), min(x + y - 1, n));
     }
     return 0;
 }
