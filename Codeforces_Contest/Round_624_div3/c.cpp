@@ -12,7 +12,6 @@ using namespace std;
 /* header end */
 
 const int maxn = 2e5 + 10;
-// const int maxn = 5;
 int t, n, m, p[maxn], cnt[maxn][26], ans[26];
 char s[maxn];
 
