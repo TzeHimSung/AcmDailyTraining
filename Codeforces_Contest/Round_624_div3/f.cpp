@@ -11,31 +11,46 @@
 using namespace std;
 /* header end */
 
-const int maxn = 2e5 + 10;
-struct Point {
-    int pos, val;
-    bool operator<(const Point &rhs)const {
-        return val < rhs.val;
+struct FenwickTree {
+    int n;
+    vector<ll>num;
+    FenwickTree(): n(0) {}
+    FenwickTree(int _n) {
+        n = _n;
+        num.assign(n, 0);
     }
-} a[maxn], l[maxn], r[maxn];
-int n, p = 0, q = 0;
+    void add(int i, int val) {
+        for (; i < n; i |= i + 1) num[i] += val;
+    }
+    ll sum(int i) {
+        ll ret = 0;
+        for (; i >= 0; i = (i & (i + 1)) - 1) ret += num[i];
+        return ret;
+    }
+};
 
 int main() {
-    scanf("%d", &n);
-    for (int i = 1; i <= n; i++) scanf("%d", &a[i].pos);
-    for (int i = 1; i <= n; i++) scanf("%d", &a[i].val);
-    for (int i = 1; i <= n; i++) {
-        if (a[i].val > 0) {
-            p++;
-            l[p].pos = a[i].pos, l[p].val = a[i].val;
-        }
-        if (a[i].val < 0) {
-            q++;
-            r[q].pos = a[i].pos, r[q].val = a[i].val;
-        }
+    int n; scanf("%d", &n);
+    vector<pair<int, int>>point(n);
+    vector<int>speed;
+    for (int i = 0; i < n; i++) scanf("%d", &point[i].first);
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &point[i].second);
+        speed.push_back(point[i].second);
     }
-    sort(l + 1, l + 1 + p);
-    sort(r + 1, r + 1 + q);
 
+    sort(speed.begin(), speed.end());
+    speed.erase(unique(speed.begin(), speed.end()), speed.end());
+    sort(point.begin(), point.end());
+
+    ll ans = 0;
+    FenwickTree cnt(n), sumx(n);
+    for (auto i : point) {
+        i.second = lower_bound(speed.begin(), speed.end(), i.second) - speed.begin();
+        ans += cnt.sum(i.second) * i.first - sumx.sum(i.second);
+        cnt.add(i.second, 1);
+        sumx.add(i.second, i.first);
+    }
+    printf("%lld\n", ans);
     return 0;
 }
