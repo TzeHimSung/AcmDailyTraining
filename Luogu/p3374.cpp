@@ -10,9 +10,7 @@ private:
     // 存储的信息类型
     typedef int StoreType;
     int n;
-    // num用于存储元素值，用于实现单点修改、区间查询
-    // diff用于存储差分，用于实现区间修改
-    vector<StoreType>num, diff;
+    vector<StoreType>num;
 public:
     FenwickTree(): n(0) {}
     FenwickTree(int _n) {
@@ -33,10 +31,6 @@ public:
     StoreType querySum(int l, int r) {
         return sum(r) - sum(l - 1);
     }
-    // 区间修改，给区间[l..r]里的元素都加上val
-    void intervalFix(int l, int r, int val) {
-        add(l, val); add(r + 1, -val);
-    }
 };
 
 int main() {
@@ -48,5 +42,10 @@ int main() {
     for (int i = 1; i <= n; i++) {
         int x; cin >> x;
         bit.add(i, x);
+    }
+    while (m--) {
+        int op, x, y; cin >> op >> x >> y;
+        if (op == 1) bit.add(x, y);
+        else cout << bit.querySum(x, y) << endl;
     }
 }

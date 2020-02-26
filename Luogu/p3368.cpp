@@ -1,19 +1,23 @@
+/* basic header */
 #include <bits/stdc++.h>
-#include <vector>
+/* define */
+#define ll long long
+#define pb emplace_back
+#define mp make_pair
+#define eps 1e-8
+#define lson (curpos<<1)
+#define rson (curpos<<1|1)
+/* namespace */
 using namespace std;
+/* header end */
 
-// Fenwick Tree, 又叫Binary Indexed Tree(BIT)，中文名称树状数组
-// 依赖: vector
-// 注意，下标从0开始，但不影响使用
 class FenwickTree {
-private:
+public:
     // 存储的信息类型
     typedef int StoreType;
     int n;
-    // num用于存储元素值，用于实现单点修改、区间查询
-    // diff用于存储差分，用于实现区间修改
-    vector<StoreType>num, diff;
-public:
+    vector<StoreType>num;
+
     FenwickTree(): n(0) {}
     FenwickTree(int _n) {
         n = _n;
@@ -42,11 +46,23 @@ public:
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(0);
-    int n, m;
+    int n, m, last = 0;
     cin >> n >> m;
     FenwickTree bit(n + 1);
     for (int i = 1; i <= n; i++) {
         int x; cin >> x;
-        bit.add(i, x);
+        bit.add(i, x - last);
+        last = x;
     }
+    while (m--) {
+        int op; cin >> op;
+        if (op == 1) {
+            int x, y, k; cin >> x >> y >> k;
+            bit.intervalFix(x, y, k);
+        } else {
+            int x; cin >> x;
+            cout << bit.sum(x) << endl;
+        }
+    }
+    return 0;
 }
