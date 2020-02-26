@@ -38,18 +38,22 @@ int main() {
         scanf("%d", &point[i].second);
         speed.push_back(point[i].second);
     }
-
+    // 对速度离散化
     sort(speed.begin(), speed.end());
     speed.erase(unique(speed.begin(), speed.end()), speed.end());
+    // 先按位置排序，再按速度排序
     sort(point.begin(), point.end());
 
     ll ans = 0;
     FenwickTree cnt(n), sumx(n);
+    // 枚举每一个点
     for (auto i : point) {
-        i.second = lower_bound(speed.begin(), speed.end(), i.second) - speed.begin();
-        ans += cnt.sum(i.second) * i.first - sumx.sum(i.second);
-        cnt.add(i.second, 1);
-        sumx.add(i.second, i.first);
+        // 找到所有点j，满足Xj<Xi且Vj<=Vi
+        int pos = lower_bound(speed.begin(), speed.end(), i.second) - speed.begin();
+        ans += cnt.sum(pos) * i.first - sumx.sum(pos);
+        // 记录出现次数和横坐标总和
+        cnt.add(pos, 1);
+        sumx.add(pos, i.first);
     }
     printf("%lld\n", ans);
     return 0;
