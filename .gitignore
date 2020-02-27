@@ -4,3 +4,4 @@
 *.out
 *.ans
 ByteDance/*_*
+*.jar
