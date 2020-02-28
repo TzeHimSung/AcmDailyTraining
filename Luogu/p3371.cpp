@@ -1,4 +1,3 @@
-// luogu p3371
 /* basic header */
 #include <bits/stdc++.h>
 /* define */

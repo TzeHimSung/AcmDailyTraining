@@ -1,4 +1,3 @@
-// luogu p3371
 /* basic header */
 #include <bits/stdc++.h>
 /* define */
@@ -12,7 +11,7 @@
 using namespace std;
 /* header end */
 
-const int maxn = 1e4 + 10, maxm = 5e5 + 10;
+const int maxn = 1e5 + 10, maxm = 2e5 + 10;
 const ll INF = (1LL << 31) - 1;
 
 struct Node {
