@@ -39,17 +39,17 @@ int main() {
     // 实在找不出这么多钱，题目也没有说，隐藏坑点？
     if (remain) return puts("No solution!"), 0;
     int printed = 0;
-    printf("[");
+    cout << "[";
     for (auto i : ans) {
         while (i.second--) {
             if (!printed) {
                 printed = 1;
-                printf("%d", i.first);
+                cout << i.first;
             } else {
-                printf(",%d", i.first);
+                cout << "," << i.first;
             }
         }
     }
-    printf("]");
+    cout << "]" << endl;
     return 0;
 }
