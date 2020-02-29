@@ -44,6 +44,7 @@ int prim() {
             }
         }
         ans += minn;
+        // 从新点相连的边出发，找新边，并维护dis
         for (int i = head[currPoint]; i; i = edge[i].next) {
             int v = edge[i].v;
             if (dis[v] > edge[i].w && !vis[v]) dis[v] = edge[i].w;

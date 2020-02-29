@@ -11,9 +11,9 @@
 using namespace std;
 /* header end */
 
-const int maxn = 1e8 + 10, maxp = 5e6 + 10;
-bool isPrime[maxn];
+const int maxn = 1e8 + 10, maxp = 6e6 + 10;
 int prime[maxp], cnt = 0;
+bool isPrime[maxn];
 
 void getPrime(int n) {
     memset(isPrime, 1, sizeof(isPrime));

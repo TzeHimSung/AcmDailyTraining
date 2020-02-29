@@ -1,9 +1,21 @@
+// O(n)欧拉筛
+// luogu p3383
 /* basic header */
 #include <bits/stdc++.h>
+/* define */
+#define ll long long
+#define pb emplace_back
+#define mp make_pair
+#define eps 1e-8
+#define lson (curpos<<1)
+#define rson (curpos<<1|1)
+/* namespace */
 using namespace std;
+/* header end */
 
-bool isPrime[100000010];
-int prime[5000010], cnt = 0;
+const int maxn = 1e8 + 10, maxp = 6e6 + 10;
+int prime[maxp], cnt = 0;
+bool isPrime[maxn];
 
 void getPrime(int n) {
     memset(isPrime, 1, sizeof(isPrime));
@@ -19,11 +31,10 @@ void getPrime(int n) {
 
 int main() {
     int n, q;
-    scanf("%d %d", &n, &q);
+    scanf("%d%d", &n, &q);
     getPrime(n);
     while (q--) {
-        int k;
-        scanf("%d", &k);
+        int k; scanf("%d", &k);
         printf("%d\n", prime[k]);
     }
     return 0;
