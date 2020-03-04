@@ -14,7 +14,7 @@ using namespace std;
 vector<int>a, b;
 
 int main() {
-    a.push_back(1);
+    a.push_back(0);
     a.push_back(1);
     a.push_back(1);
     b.push_back(1);
