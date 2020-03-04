@@ -11,19 +11,13 @@
 using namespace std;
 /* header end */
 
-class A {
-public:
-    int a;
-    A() {}
-    explicit A(int _a): a(_a) {}
-    virtual ~A() {}
-    virtual void print() {
-        cout << a << endl;
-    }
-};
+vector<int>a, b;
 
 int main() {
-    A a = 10;
-    a.print();
+    a.push_back(1);
+    a.push_back(1);
+    a.push_back(1);
+    b.push_back(1);
+    cout << (a < b) << endl;
     return 0;
 }
