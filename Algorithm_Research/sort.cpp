@@ -90,5 +90,6 @@ int main() {
     // 归并排序
     mergeSort(1, n);
     print();
+
     return 0;
 }
